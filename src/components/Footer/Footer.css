@@ -1,0 +1,21 @@
+.scroll-container {
+    position: relative;
+}
+
+
+.scroll-top {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    background-color: blue;
+    z-index: 10;
+    display: none;
+
+}
+
+.show {
+    display: block;
+}

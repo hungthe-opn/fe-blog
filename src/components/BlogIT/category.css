@@ -1,0 +1,8 @@
+.nav-link a {
+   color: darkblue;
+}
+.nav-link a:hover {
+   color: #0f0f1c;
+   background-color: cornflowerblue;
+   border-radius: 5px;
+}

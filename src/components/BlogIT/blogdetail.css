@@ -1,0 +1,44 @@
+
+blockquote {
+    border-left: 6px solid #005282;
+    font-size: 1rem;
+    line-height: 1.4;
+    margin: 0 0 24px;
+    max-width: 100%;
+    overflow: auto;
+    padding: 24px;
+    width: 100%;
+    border-radius: 0 4px 4px 0;
+    background: #a3b4cf;
+}
+
+.author {
+    width: 50%;
+    margin-left: 16px;
+
+}
+
+a:hover {
+    color: cornflowerblue;
+}
+
+a {
+    color: blue;
+
+}
+
+.blog-title {
+    color: #2c2f34;
+    font-family: Barlow;
+
+}
+
+pre{
+    background-color: #f4f4f4;
+    color: #1b1b1b;
+    font-family: monospace;
+    letter-spacing: -0.0444444px;
+    line-height: 22.4px;
+    margin: 0px 0px 24px;
+    padding: 24px;
+}

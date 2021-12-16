@@ -1,0 +1,16 @@
+.img-blog img {
+    height: 210px;
+    vertical-align: middle;
+    border-style: none;
+
+    padding-right: 16px;
+}
+.featured {
+        font-size: 2.5rem;
+}
+
+.fabbi-imgs {
+    width: 100%;
+    height: fit-content;
+    background-size: cover;
+}
