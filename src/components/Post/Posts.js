@@ -52,8 +52,6 @@ const Posts = (props) => {
         <p>Bạn đang không có bài viết nào</p>
     </div>
 
-    console.log(posts)
-    console.log("ahihi1")
 
     return (
         <React.Fragment>

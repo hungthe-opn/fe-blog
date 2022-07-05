@@ -13,9 +13,8 @@ const Blog = () => {
     // get featured data
    useEffect(() => {
         axiosInstance.get('blog/featured').then((res) => {
-            const allPosts = res.data[0];
+            const allPosts = res.data;
             setFeaturedBlog(allPosts);
-            console.log(allPosts);
         });
 
     }, []);
@@ -24,7 +23,6 @@ const Blog = () => {
         axiosInstance.get('blog/').then((res) => {
             const allPosts = res.data;
             setBlogs(allPosts);
-            console.log(allPosts);
         });
     }, []);
 
@@ -38,7 +36,7 @@ const Blog = () => {
     const getBlogs = () => {
 
         let result = [];
-        const list = blogs.map((blogPost, index) => {
+        const list =blogs && blogs.length>0 && blogs.map((blogPost) => {
                 return (
                         <div
                             className="row blog-strong g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
@@ -88,9 +86,6 @@ const Blog = () => {
     }
 
     //increments to 6 when is pressed
-    const handleSetNumber = () => {
-        setNumberPage(numberPage + 6)
-    }
 
     return (<>
 
@@ -107,44 +102,53 @@ const Blog = () => {
                 </div>
             </div>
             <div className='container mt-3'>
-                <div id="id"></div>
-                <div className="alert alert-primary" role="alert">
-                    DANH MỤC
-                </div>
-                <div className="nav-scroller py-1 mb-2">
-                    <nav className="nav d-flex justify-content-between nav-link">
-                        <Link className="p-2 link-secondary" to='/category/html'>HTML</Link>
-                        <Link className="p-2 link-secondary" to='/category/python'>PYTHON</Link>
-                        <Link className="p-2 link-secondary" to='/category/react'>REACT</Link>
-                        <Link className="p-2 link-secondary" to='/category/java'>JAVA</Link>
-                        <Link className="p-2 link-secondary" to='/category/javascript'>JAVASCRIPT</Link>
-                        <Link className="p-2 link-secondary" to='/category/c'>C</Link>
-                        <Link className="p-2 link-secondary" to='/category/c++'>C++</Link>
-                        <Link className="p-2 link-secondary" to='/category/c#'>C#</Link>
-                        <Link className="p-2 link-secondary" to='/category/ruby'>RUBY</Link>
-                        <Link className="p-2 link-secondary" to='/category/django'>DJANGO</Link>
-                    </nav>
-                </div>
-                <div className="alert alert-info" role="alert">
-                    BÀI ĐĂNG CHÚ Ý
-                </div>
-                <div className="p-4 p-md-5 mb-4 text-white rounded bg-dark">
-                    {featuredBlog.length === 0 ? "Chờ xíu....." :
+                <div className="row">
+                    <div className="col col-9">
+                    <div id="id"></div>
+                    <div className="alert alert-primary" role="alert">
+                        DANH MỤC
+                    </div>
+                    <div className="nav-scroller py-1 mb-2">
+                        <nav className="nav d-flex justify-content-between nav-link">
+                            <Link className="p-2 link-secondary" to='/category/html'>HTML</Link>
+                            <Link className="p-2 link-secondary" to='/category/python'>PYTHON</Link>
+                            <Link className="p-2 link-secondary" to='/category/react'>REACT</Link>
+                            <Link className="p-2 link-secondary" to='/category/java'>JAVA</Link>
+                            <Link className="p-2 link-secondary" to='/category/javascript'>JAVASCRIPT</Link>
+                            <Link className="p-2 link-secondary" to='/category/c'>C</Link>
+                            <Link className="p-2 link-secondary" to='/category/c++'>C++</Link>
+                            <Link className="p-2 link-secondary" to='/category/c#'>C#</Link>
+                            <Link className="p-2 link-secondary" to='/category/ruby'>RUBY</Link>
+                            <Link className="p-2 link-secondary" to='/category/django'>DJANGO</Link>
+                        </nav>
+                    </div>
+                    <div className="alert alert-info" role="alert">
+                        BÀI ĐĂNG CHÚ Ý
+                    </div>
+                    <div className="p-4 p-md-5 mb-4 text-white rounded bg-dark">
+                        {featuredBlog.length === 0 ? "Chờ xíu....." :
 
-                        <div className="col-md-6 px-0">
+                            <div className="col-md-6 px-0">
 
-                            <h1 className="display-4 fst-italic">{featuredBlog.title}</h1>
-                            <p className="lead my-3">{featuredBlog.excerpt.substr(0, 60)}...</p>
-                            <p className="lead mb-0">
-                                <Link to={`/blog/${featuredBlog.slug}`} className="text-white fw-bold btn btn-info">
-                                    Continue reading...</Link>
-                            </p>
-                        </div>}
+                                <h1 className="display-4 fst-italic">{featuredBlog.title}</h1>
+                                <p className="lead my-3">{featuredBlog.excerpt.substr(0, 60)}...</p>
+                                <p className="lead mb-0">
+                                    <Link to={`/blog/${featuredBlog.slug}`} className="text-white fw-bold btn btn-info">
+                                        Continue reading...</Link>
+                                </p>
+                            </div>}
+                    </div>
+                    {blogs && blogs.length>0 && getBlogs()}
+                </div >
+                 <div className="col col-3">
+                <button className="btn btn-primary"></button>
+
                 </div>
-                {getBlogs()}
+                </div>
+
             </div>
-            <div className="footer"><h2 className="footer-item"></h2>
-            </div>
+            <div className="footer"><h2 className="footer-item"></h2></div>
+
         </>
     )
 
