@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import Loader from 'react-loader-spinner'
+import React, {useState} from "react";
+// import Loader from 'react-loader-spinner'
 import axiosInstance from '../axios'
 import Button from "@material-ui/core/Button";
 import "./Contac.css"
@@ -8,10 +8,10 @@ import {makeStyles} from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import {Grid} from "@material-ui/core";
-import Link from "@material-ui/core/Link";
+// import FormControlLabel from "@material-ui/core/FormControlLabel";
+// import Checkbox from "@material-ui/core/Checkbox";
+// import {Grid} from "@material-ui/core";
+// import Link from "@material-ui/core/Link";
 import Container from "@material-ui/core/Container";
 import {useNavigate} from "react-router-dom";
 
@@ -47,7 +47,7 @@ const Contact = () => {
     });
     const [formData, setFormData] = useState(initialFormData);
     const [loading, setLoading] = useState(false)
-
+    console.log(loading)
     //onChange target name
     const onChange = (e) => {
         setFormData({
@@ -87,28 +87,30 @@ const Contact = () => {
                     Contact Admin
                 </Typography>
                 <form className={classes.form} noValidate>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="name"
-                        label="Name"
-                        name="name"
-                        autoComplete="name"
-                        autoFocus
-                        onChange={e => onChange(e)}/>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                        autoFocus
-                        onChange={e => onChange(e)}/>
+                    <div>
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="name"
+                            label="Name"
+                            name="name"
+                            autoComplete="name"
+                            autoFocus
+                            onChange={e => onChange(e)}/>
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="email"
+                            label="Email Address"
+                            name="email"
+                            autoComplete="email"
+                            autoFocus
+                            onChange={e => onChange(e)}/>
+                    </div>
                     <TextField
                         variant="outlined"
                         margin="normal"

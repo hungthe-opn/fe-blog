@@ -1,3 +1,56 @@
 .avatar {
     background-color: #e90707;
 }
+
+.animation:hover {
+    background-color: #e90707;
+}
+
+.fa {
+    margin-right: 1rem;
+}
+
+.form {
+    text-align: left;
+    margin: 12px 16px;
+    line-height: 21px;
+}
+
+.forms:hover {
+    background-color: #a3b4cf;
+
+
+}
+
+.avatar {
+    margin-left: 10px;
+    line-height: 5px;
+    float: left;
+
+}
+
+.user {
+    width: 200px;
+}
+
+.menu-user {
+    width: 196px;
+}
+
+.user_name {
+    float: right;
+    margin-right: 10px;
+    margin-left: 10px;
+    color:#005282;
+    line-height: 5px;
+    padding-top: 9px;
+}
+
+.aax-container {
+    height: 61px;
+    padding-top: 10px;
+}
+.email{
+    margin-top:14px;
+    color:#9b9b9b !important;
+}

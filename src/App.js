@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './App.css'
 import Posts from "./components/Post/Posts";
-import PostLoading from './components/Post/PostLoading'
 import axiosInstance from '../src/axios'
 import {Link} from "react-router-dom";
 
@@ -37,7 +36,7 @@ function App({loading, dataBlog}) {
     }
     return (
         <div className="App">
-            <h1 className='fabbi-text'>FABBIER</h1>
+            <h1 className='fabbi-text'>Blog</h1>
             <Link to='/admin'> <button type="button" className="btn btn-info"> Admin</button></Link>
             <Link to='admin/create'>  <button type="button" className="btn btn-primary"> Add Blog</button></Link>
             <Posts posts={appState.posts} loading={appState.loading}/>

@@ -1,13 +1,16 @@
 a {
     text-decoration: none;
-    color: #ffffff;
-    font-family: -apple-system;
-    font-size: 17px;
+    /*font-family: -apple-system;*/
+    font-size: 14px;
+    font-weight:700;
+    line-height:22.4px;
+    color: white;
+
 }
 
 a:hover {
-    color: rgba(255, 255, 255, .5);
-        text-decoration: none;
+    color: #0b1a33;
+    text-decoration: none;
 
 }
 

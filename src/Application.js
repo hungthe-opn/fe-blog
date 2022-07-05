@@ -30,7 +30,7 @@ const Application = () => {
 
     useEffect(() => {
         const token = localStorage.getItem('access_token')
-        axiosInstance.get().then((res) => {
+        axiosInstance.get('blog/').then((res) => {
             const allPosts = res.data;
             setBlogs(allPosts)
         })
@@ -46,7 +46,7 @@ const Application = () => {
 
     useEffect(() => {
         const fetch = async () => {
-            const res = await axios.get("http://127.0.0.1:8000/api/blog/")
+            // const res = await axios.get("http://127.0.0.1:8000/api/blog/")
             setLoading(false)
         }
         setTimeout(() => {

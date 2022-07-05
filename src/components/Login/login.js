@@ -56,8 +56,7 @@ export default function SignIn({login}) {
     };
 
     const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(formData);
+       e.preventDefault();
         localStorage.setItem("user", formData.email)
 
         axiosInstance
@@ -72,6 +71,8 @@ export default function SignIn({login}) {
                 axiosInstance.defaults.headers['Authorization'] =
                     'JWT ' + localStorage.getItem('access_token');
                 history('/');
+                window.location.reload();
+
             })
             .catch(function (error) {
                 alert("Password, email error!!! Change again");

@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-import axios from "axios";
 import {Link} from "react-router-dom";
 import "./blogit.css"
 import axiosInstance from "../../axios";
@@ -40,11 +39,8 @@ const Blog = () => {
 
         let result = [];
         const list = blogs.map((blogPost, index) => {
-            if (index < numberPage) {
                 return (
-
                         <div
-
                             className="row blog-strong g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                             <div className="col p-2 d-flex flex-column position-static"
                                  style={{minHeight: '150px', width: '100px'}}>
@@ -72,7 +68,7 @@ const Blog = () => {
                             </div>
                         </div>
                 );
-            }
+
         })
 
         //automatically incremented by 1 value
@@ -146,7 +142,6 @@ const Blog = () => {
                         </div>}
                 </div>
                 {getBlogs()}
-                <button type="button" onClick={handleSetNumber} className="btn btn-success add">Thêm</button>
             </div>
             <div className="footer"><h2 className="footer-item"></h2>
             </div>
