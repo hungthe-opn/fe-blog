@@ -1,0 +1,225 @@
+.user-profile {
+  font-size: 14px;
+  line-height: 22.4px;
+  margin: 0px 352.5px;
+  padding: 32px 15px;
+  text-align: left;
+  width: 1200px;
+  height: 154px;
+
+  &_card {
+    align-items: center;
+    color: #1b1b1b;
+    display: grid;
+    gap: normal 5px;
+    grid-template-columns:100px 1055px;
+    grid-template-rows:80px;
+    padding: 5px;
+    text-align: left;
+    height: 90px;
+    width: 1170px;
+
+    &_main_body {
+      align-items: start;
+      width: 1055px;
+      height: 61px;
+
+      &_username {
+        width: 739px;
+        padding: 0px 10px;
+
+
+        &_name {
+          width: 107px;
+          height: 24px;
+          font-size: 20.8px;
+          font-weight: 500;
+          line-height: 24.96px;
+
+        }
+
+        &_email {
+          color: #9b9b9b;
+          margin: 8px 0px;
+          line-height: 19.2px;
+        }
+      }
+
+    }
+
+  }
+
+
+}
+
+.profile-tabs {
+  border-color: #d6d6d7;
+  border-style: solid;
+  border-width: 1px 0px 0px;
+  box-shadow: #000000 0px 0.1px 0px;
+  color: #1b1b1b;
+  font-size: 14px;
+  line-height: 22.4px;
+  text-align: left;
+
+  &_item {
+    height: 45px;
+    width: 1200px;
+    display: flex;
+    margin: 0px 352.5px;
+
+    &_link {
+      width: 125px;
+      height: 43px;
+      font-weight: 700;
+      padding: 13px 14px 8px;
+      color: #464a4c;
+
+    }
+
+    &_link:hover {
+      color: #5488c7;
+    }
+  }
+
+
+}
+
+.hidden-md-down {
+  width: 300px;
+  height: 950px;
+  color: #1b1b1b;
+  flex-basis: 25%;
+  font-size: 14px;
+  line-height: 22.4px;
+  padding: 0px 15px;
+  text-align: left;
+
+  &_user-profile {
+    width: 270px;
+    height: 910px;
+
+    &_btn-share {
+      width: 270px;
+      height: 40px;
+      align-items: center;
+      background-color: #eef3f9;
+      border-radius: 4px;
+      border-color: #bbcfe9;
+      border-style: solid;
+      color: #5488c7;
+      display: inline-block;
+      font-weight: 500;
+      line-height: 14px;
+      padding: 12px 20px;
+      text-align: center;
+
+      a {
+        color: #5488c7;
+        display: inline;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 14px;
+        text-align: center;
+      }
+    }
+
+    &_btn-share:hover {
+      background-color: #5488c7;
+
+      a {
+        color: #ffffff;
+        display: inline;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 14px;
+        text-align: center;
+      }
+    }
+
+    &_stats {
+      height: 308px;
+      width: 270px;
+      border-color: #d6d6d7;
+      border-style: solid;
+      border-width: 1px;
+      color: #1b1b1b;
+      margin: 16px 0px;
+      padding: 16px;
+      text-align: left;
+
+      &_link {
+        width: 236px;
+        height: 30px;
+        color: #292b2c;
+        display: flex;
+        justify-content: space-between;
+        text-align: left;
+
+        p {
+          width: 157px;
+          height: 22px;
+          color: #9b9b9b;
+          margin: 0px 0px 8px;
+        }
+
+        &_count {
+          text-align: right;
+        }
+      }
+    }
+  }
+
+
+}
+
+.hidden-rd-infor {
+  color: #212529;
+  line-height: 24px;
+  padding: 16px 15px;
+  text-align: left;
+
+  &_body {
+    color: #303133;
+    padding: 20px;
+
+    h1 {
+      font-size: 22px;
+      margin: 0px 0px 12px;
+      line-height: 26.4px;
+    }
+
+    p {
+      line-height: 21px;
+      margin: -6px 0px 20px;
+      padding: 4.8px 0px 0px;
+    }
+
+    &_user {
+      padding: 0px 4px;
+      margin: 0px 0px 22px;
+
+
+      label {
+        color: #606266;
+        display: inline-block;
+        line-height: 36px;
+        padding: 0px 0px 10px;
+
+
+      }
+
+      input {
+        padding: 0px 15px;
+        display: inline-block;
+        border-style: solid;
+        border-radius: 4px;
+
+      }
+    }
+  }
+}
+
+.text-ara {
+  height: 204px;
+}

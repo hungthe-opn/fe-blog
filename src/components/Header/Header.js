@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect,useContext} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -11,13 +11,13 @@ import {axiosInstance} from '../../axios'
 import SearchBar from 'material-ui-search-bar';
 import './Header.css'
 import image from "../../img/logofabbi.png"
-import {faExchange, faInfo, faSignOut, faUser, faUserEdit} from "@fortawesome/free-solid-svg-icons";
+import {faSignOut, faUser, faUserEdit} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
-
+import UserContext from '../../Application'
 
 const useStyles = makeStyles((theme) => ({
         appBar: {
@@ -47,11 +47,12 @@ const useStyles = makeStyles((theme) => ({
 function Header({login, user, isLogin}) {
     const classes = useStyles();
     const history = useNavigate();
-    const [users, setUser] = useState("")
+    const infor = useContext(UserContext)
+    console.log(infor)
+    const [user_name, setUser] = useState("")
     let navigate = useNavigate();
     const [data, setData] = useState({search: ''});
     const [anchorEl, setAnchorEl] = React.useState(null);
-    //save users in localStorage
     useEffect(() => {
         setUser(user)
         const userName = localStorage.getItem("user")
@@ -60,13 +61,15 @@ function Header({login, user, isLogin}) {
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
     };
-
-
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+    // const user1 = useContext(UserContext)
     const handleClose = () => {
         setAnchorEl(null);
+    };
+    const handleUser = () => {
+        history('/user');
+    };
+    const handleEdit = () => {
+        history('/user-edit');
     };
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
@@ -79,6 +82,7 @@ function Header({login, user, isLogin}) {
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('user');
         axiosInstance.defaults.headers['Authorization'] = null;
+        history('/login')
     }
     const goSearch = (e) => {
         navigate('/search/?search=' + data.search, {replace: true});
@@ -109,7 +113,7 @@ function Header({login, user, isLogin}) {
                         color="textPrimary"
                         className={classes.banner}
                     >
-                        <img className="logo" src={image} width="6%" height="48px;" alt="sssss"/>
+                        <img className="logo" src={image} width="6%" height="30px;" alt="sssss"/>
 
                     </Link>
 
@@ -207,19 +211,20 @@ function Header({login, user, isLogin}) {
 
                                 <Avatar alt="Remy Sharp" className='avatar'
                                         src="http://localhost:8001/media/291330163_3285768135022912_5520841210545778977_n.jpg"/>
-                                <p className='user_name'>{users}
-                                    <div className='email'> @{users}</div>
+                                <p className='user_name'>{user_name}
+                                    <div className='email'> @{user_name}</div>
                                 </p>
-
 
 
                             </div>
 
-                            <MenuItem onClick={handleClose} className="fa"> {users}</MenuItem>
-                            <MenuItem onClick={handleClose} className="fa"> <FontAwesomeIcon icon={faUser}
-                                                                                             className="fa"/>Thông tin cá nhân</MenuItem>
-                                 <MenuItem onClick={handleClose} className="fa"> <FontAwesomeIcon icon={faUserEdit}
-                                                                                             className="fa"/>Chỉnh sửa thông tin</MenuItem>
+                            <MenuItem onClick={handleClose} className="fa"> {`infor.user_name`}</MenuItem>
+                            <MenuItem onClick={handleUser} className="fa"> <FontAwesomeIcon icon={faUser}
+                                                                                            className="fa"/>Thông tin cá
+                                nhân</MenuItem>
+                            <MenuItem onClick={handleEdit} className="fa"> <FontAwesomeIcon icon={faUserEdit}
+                                                                                            className="fa"/>Chỉnh sửa
+                                thông tin</MenuItem>
                             <MenuItem onClick={logoutHandle}>
                                 <FontAwesomeIcon icon={faSignOut} className="fa"/>
                                 Đăng xuất</MenuItem>

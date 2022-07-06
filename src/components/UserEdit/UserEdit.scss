@@ -1,0 +1,68 @@
+.form-edit {
+  color: #212529;
+  line-height: 24px;
+  margin: 0px 330.5px;
+  text-align: left;
+
+  &_body {
+    color: #303133;
+    padding: 20px;
+    width: 466px;
+
+    h1 {
+      height: 26px;
+      font-size: 22px;
+      line-height: 26.4px;
+      margin: 0px 0px 12px;
+    }
+
+    p {
+      height: 26px;
+      margin: -6px 0px 0px;
+      padding: 4.8px 0px 0px;
+      line-height: 21px;
+      font-size: 14px;
+      color: #303133;
+    }
+
+    &_image {
+      display: flex;
+      justify-content: center;
+      margin: 8px 0px 0px;
+      height: 128px;
+
+      &_rounded {
+        width: 128px;
+        height: 128px;
+        border-radius: 50%;
+        display: inline;
+      }
+    }
+
+    &_user {
+      padding: 0px 4px;
+      margin: 0px 0px 22px;
+
+      label {
+        color: #606266;
+        display: inline-block;
+        line-height: 36px;
+        padding: 0px 0px 10px;
+
+
+      }
+
+      input {
+        padding: 0px 15px;
+        display: inline-block;
+        border-style: solid;
+        border-radius: 4px;
+
+      }
+    }
+
+    &_btn-summit {
+      text-align: center;
+    }
+  }
+}

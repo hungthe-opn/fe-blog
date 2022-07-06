@@ -58,7 +58,8 @@ const Posts = (props) => {
             <Container maxWidth="md" component="main">
                 <Grid container spacing={5} alignItems="flex-end">
 
-                    {posts.map((post) => {
+                    {
+                      posts && posts.length > 0 && posts.map((post) => {
                         return (
                             // Enterprise card is full width at sm breakpoint
                             <Grid item key={post.id} xs={12} md={4}>

@@ -8,11 +8,9 @@ const Blog = () => {
 
     const [blogs, setBlogs] = useState([]);
     const [featuredBlog, setFeaturedBlog] = useState([]);
-    const [numberPage, setNumberPage] = useState(4)
-
     // get featured data
    useEffect(() => {
-        axiosInstance.get('blog/featured').then((res) => {
+        axiosInstance.get('blog/featured/').then((res) => {
             const allPosts = res.data;
             setFeaturedBlog(allPosts);
         });
@@ -131,7 +129,7 @@ const Blog = () => {
                             <div className="col-md-6 px-0">
 
                                 <h1 className="display-4 fst-italic">{featuredBlog.title}</h1>
-                                <p className="lead my-3">{featuredBlog.excerpt.substr(0, 60)}...</p>
+                                {/*<p className="lead my-3">{featuredBlog.excerpt.substr(0, 60)}...</p>*/}
                                 <p className="lead mb-0">
                                     <Link to={`/blog/${featuredBlog.slug}`} className="text-white fw-bold btn btn-info">
                                         Continue reading...</Link>

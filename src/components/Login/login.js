@@ -54,11 +54,14 @@ export default function SignIn({login}) {
             [e.target.name]: e.target.value.trim(),
         });
     };
-    const getRole = () =>{
+    const getRole = () => {
         axiosInstance
             .get(`post-empl/user-role`)
             .then((res) => {
-               console.log(11111111111,res)
+                console.log(11111111111, res)
+                localStorage.setItem("user", res.data.data.user_name)
+                localStorage.setItem("role", res.data.data.user_role)
+                localStorage.setItem("email", res.data.data.email)
 
 
             })
@@ -67,8 +70,7 @@ export default function SignIn({login}) {
             });
     }
     const handleSubmit = (e) => {
-       e.preventDefault();
-        localStorage.setItem("user", formData.email)
+        e.preventDefault();
 
         axiosInstance
             .post(`token/`, {
@@ -80,9 +82,10 @@ export default function SignIn({login}) {
                 localStorage.setItem('refresh_token', res.data.refresh);
                 login(formData.email)
 
+
                 axiosInstance.defaults.headers['Authorization'] =
                     'JWT ' + localStorage.getItem('access_token');
-                 getRole()
+                getRole()
                 history('/blog');
 
 

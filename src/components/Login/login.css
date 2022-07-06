@@ -8,6 +8,7 @@
 
 .fa {
     margin-right: 1rem;
+    text-align: center;
 }
 
 .form {
@@ -39,7 +40,7 @@
 
 .user_name {
     float: right;
-    margin-right: 10px;
+    margin-right: 40px;
     margin-left: 10px;
     color:#005282;
     line-height: 5px;

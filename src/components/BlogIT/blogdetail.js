@@ -38,42 +38,41 @@ const BlogDetail = (props) => {
 
 
         let result = [];
-        const list = blogs.map((blogPost, index) => {
+        const list = blogs && blogs.length > 0 && blogs.map((blogPost) => {
+            return (
 
-                return (
+                <div
 
-                    <div
+                    className="row blog-strong g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative pre-hight">
+                    <div className="col p-2 d-flex flex-column position-static"
+                         style={{minHeight: '150px', width: '100px'}}>
 
-                        className="row blog-strong g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative pre-hight">
-                        <div className="col p-2 d-flex flex-column position-static"
-                             style={{minHeight: '150px', width: '100px'}}>
+                        <div className="row">
+                            <div className="col-4"><img className="blog-image"
+                                                        src={blogPost.thumbnall} alt="thumbnail"/></div>
+                            <div className="col-6 post-list">
+                                <strong className="d-inline-block mb-2 text-primary">
 
-                            <div className="row">
-                                <div className="col-4"><img className="blog-image"
-                                                            src={blogPost.thumbnall} alt="thumbnail"/></div>
-                                <div className="col-6 post-list">
-                                    <strong className="d-inline-block mb-2 text-primary">
+                                    Danh mục
+                                    : {capitalizeFirstLetter(blogPost.category)}</strong>
+                                <h3 className="mb-0 blog-title">{blogPost.title.substr(0, 20)}</h3>
 
-                                        Danh mục
-                                        : {capitalizeFirstLetter(blogPost.category)}</strong>
-                                    <h3 className="mb-0 blog-title">{blogPost.title.substr(0, 20)}</h3>
-
-                                    <p className="card-text mb-auto"> Excrerpt: {blogPost.excerpt.substr(0, 20)}</p>
-                                    <button type="button" className="btn btn-dark">
-                                        <Link
+                                <p className="card-text mb-auto"> Excrerpt: {blogPost.excerpt.substr(0, 20)}</p>
+                                <button type="button" className="btn btn-dark">
+                                    <Link
                                         to={`/blog/${blogPost.slug}`}
                                         className="blog-link">
                                         Đọc tiếp...
                                     </Link>
-                                    </button>
-
-                                </div>
+                                </button>
 
                             </div>
+
                         </div>
                     </div>
+                </div>
 
-                );
+            );
 
         })
 
@@ -81,15 +80,15 @@ const BlogDetail = (props) => {
         for (let i = 0; i < list.length; i += 2) {
             result.push
             (
-               <div key={i} className='row mb-2'>
-                        <div className='col-md-6'>
-                            {list[i]}
-                        </div>
-                        <div className='col-md-6'>{list[i + 1] ? list[i + 1] : null}
-                        </div>
-
-
+                <div key={i} className='row mb-2'>
+                    <div className='col-md-6'>
+                        {list[i]}
                     </div>
+                    <div className='col-md-6'>{list[i + 1] ? list[i + 1] : null}
+                    </div>
+
+
+                </div>
             )
         }
         return result
@@ -132,7 +131,7 @@ const BlogDetail = (props) => {
 
             </div>
 
-                <div className='mt-5 mb-5' dangerouslySetInnerHTML={createBlog()}/>
+            <div className='mt-5 mb-5' dangerouslySetInnerHTML={createBlog()}/>
 
 
             <hr/>
