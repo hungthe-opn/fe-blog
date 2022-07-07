@@ -1,4 +1,4 @@
-import React, {useState, useEffect,useContext} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -48,7 +48,6 @@ function Header({login, user, isLogin}) {
     const classes = useStyles();
     const history = useNavigate();
     const infor = useContext(UserContext)
-    console.log(infor)
     const [user_name, setUser] = useState("")
     let navigate = useNavigate();
     const [data, setData] = useState({search: ''});
@@ -60,10 +59,9 @@ function Header({login, user, isLogin}) {
     useEffect(() => {
         axiosInstance.get('user-blog/info/').then((res) => {
             const allPosts = res.data.data;
-            console.log(allPosts)
             setBlogs(allPosts);
-
-        });
+        })
+        ;
     }, []);
 
 
@@ -96,7 +94,9 @@ function Header({login, user, isLogin}) {
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('user');
         axiosInstance.defaults.headers['Authorization'] = null;
+
         history('/login')
+
     }
     const goSearch = (e) => {
         navigate('/search/?search=' + data.search, {replace: true});
@@ -203,7 +203,7 @@ function Header({login, user, isLogin}) {
                             color="inherit"
                         >
                             <Avatar alt="Remy Sharp"
-                                    src={blogs.images}/>
+                                    src={blogs.image}/>
                         </IconButton>
                         <Menu
                             id="menu-appbar"
@@ -224,7 +224,7 @@ function Header({login, user, isLogin}) {
                             <div className='aax-container'>
 
                                 <Avatar alt="Remy Sharp" className='avatar'
-                                       src={blogs.images}/>
+                                        src={blogs.image}/>
                                 <p className='user_name'>{blogs.user_name}
                                     <div className='email'> @{blogs.email}</div>
                                 </p>

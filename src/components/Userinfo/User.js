@@ -10,11 +10,10 @@ const UserInfo = () => {
 
     const [infor, setInfor] = useState([]);
     const [blogs, setBlogs] = useState([]);
-    const data1 = useContext(UserContext).setData("1", infor.image, infor.email);
+    const data1 = useContext(UserContext).setData(infor.user, infor.image, infor.email);
     useEffect(() => {
         axiosInstance.get('user-blog/info/').then((res) => {
             const allPosts = res.data.data;
-            console.log(allPosts)
             setInfor(allPosts);
         });
     }, []);
@@ -84,6 +83,11 @@ const UserInfo = () => {
                                         <label htmlFor="">Họ và tên</label>
                                         <input className='form-control' type="text" name="" id="" disabled
                                                value={infor.first_name}/>
+                                    </div>
+                                      <div className='hidden-rd-infor_body_user'>
+                                        <label htmlFor="">Giới tính</label>
+                                        <input className='form-control' type="text" name="" id="" disabled
+                                               value={infor.sex}/>
                                     </div>
                                     <div className='hidden-rd-infor_body_user'>
                                         <label htmlFor="">Danh hiệu</label>
