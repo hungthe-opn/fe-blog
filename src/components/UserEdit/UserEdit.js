@@ -48,10 +48,9 @@ const UserEdit = () => {
 
     const handleChange = (e) => {
         console.log(e)
+
         if (e.target.name === 'image') {
-            setImage({
-                image: e.target.files,
-            });
+            setImage(e.target.files[0]);
         }
         updateFormData({
             ...formData,
@@ -67,13 +66,47 @@ const UserEdit = () => {
         let formData = new FormData();
 
         formData.append('id', data.data.id)
-        formData.append('image', data.data.image[0])
+        formData.append('image', image)
         formData.append('user_name', data.data.user_name)
         formData.append('first_name', data.data.first_name)
         formData.append('about', data.data.about)
-        axiosInstance.patch('user/update/', formData)
+        axiosInstance.patch('user/update/', formData).then((res) =>
+        {
+            console.log(res)
+        })
     }
+    const handleChange1 = e=> {
+        console.log(e)
+        setImage(e.target.files[0]);
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        console.log(e.target[0].value)
+                console.log(e.target[0].value)
 
+                console.log(e.target[1].value)
+
+                console.log(e.target[2].value)
+
+                console.log(e.target[3].value)
+
+                console.log(e.target[4].value)
+
+        let formData = new FormData();
+
+        formData.append('image', image)
+        formData.append('user_name', "e.user.name")
+        formData.append('first_name', "e.first_name")
+        formData.append('about', "e.about")
+
+        axiosInstance.patch('user/update/',formData)
+            .then((res) => {
+                console.log(res)
+            })
+         history({
+            pathname: '/user/',
+        });
+    }
     return (<>
             <div>
                 <div className='container'>
@@ -81,14 +114,14 @@ const UserEdit = () => {
                         <div className='form-edit_body'>
                             <h1>Chỉnh sửa thông tin tài khoản</h1>
                             <p>Quản lý thông tin</p>
-                            <form action="">
+                            <form  onSubmit={handleSubmit}>
                                 <div className='form-edit_body_image'>
                                     <div style={{position: 'relative'}}>
                                         <img className='form-edit_body_image_rounded' src={formData.image} alt=""/>
                                         <div style={{position: 'absolute', bottom: '0',}}>
-                                            <input id="image"
-                                                   type="file" onChange={handleChange}
-                                                   multiple accept="image/*"
+                                            <input id="image" name="image"
+                                                   type="file" onChange={handleChange1}
+                                                    accept="image/*"
                                             />
                                         </div>
                                     </div>
@@ -122,7 +155,7 @@ const UserEdit = () => {
                                 </div>
                                 <div style={{display: 'flex', justifyContent: 'space-between'}}>
                                     <div><Button className='btn-summit' variant="contained" color="success"
-                                                 type="submit" onClick={onSubmit}
+                                                 type="submit"
                                     >
                                         Update
                                     </Button></div>

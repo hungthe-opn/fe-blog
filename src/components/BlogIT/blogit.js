@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import {Link} from "react-router-dom";
 import "./blogit.css"
 import axiosInstance from "../../axios";
-
+import "./Blog.scss"
 
 const Blog = () => {
 
@@ -87,64 +87,83 @@ const Blog = () => {
 
     return (<>
 
-            <div
-                style={{
-                    backgroundImage: 'url("https://images.pexels.com/photos/5483064/pexels-photo-5483064.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")',
-                }}
-                className="banner">
-                <div className="banner-content">
-                    <h2>GAMO</h2>
-                    <span>TUỔI TRẺ HÃY LUÔN LUÔN CỐ GẮNG!!</span>
-                    <h1><a href="#id">Bắt đầu nào!!!</a></h1>
+            <div className="body">
+                <div className="body_image">
+                    <img src="" alt=""/>
 
                 </div>
+               <div className="body_bg">
+                   <div className="body_bg_row">
+                    <ul>
+                        <a href="">
+Flow
+                        </a><a href=""> New
+                    </a><a href="">Featured</a>
+                        <a href="">For My</a>
+                        <a href="">Strending</a>
+                        <a href="">Series</a>
+                    </ul>
+                       </div>
+               </div>
             </div>
-            <div className='container mt-3'>
-                <div className="row">
-                    <div className="col col-9">
-                    <div id="id"></div>
-                    <div className="alert alert-primary" role="alert">
-                        DANH MỤC
-                    </div>
-                    <div className="nav-scroller py-1 mb-2">
-                        <nav className="nav d-flex justify-content-between nav-link">
-                            <Link className="p-2 link-secondary" to='/category/html'>HTML</Link>
-                            <Link className="p-2 link-secondary" to='/category/python'>PYTHON</Link>
-                            <Link className="p-2 link-secondary" to='/category/react'>REACT</Link>
-                            <Link className="p-2 link-secondary" to='/category/java'>JAVA</Link>
-                            <Link className="p-2 link-secondary" to='/category/javascript'>JAVASCRIPT</Link>
-                            <Link className="p-2 link-secondary" to='/category/c'>C</Link>
-                            <Link className="p-2 link-secondary" to='/category/c++'>C++</Link>
-                            <Link className="p-2 link-secondary" to='/category/c#'>C#</Link>
-                            <Link className="p-2 link-secondary" to='/category/ruby'>RUBY</Link>
-                            <Link className="p-2 link-secondary" to='/category/django'>DJANGO</Link>
-                        </nav>
-                    </div>
-                    <div className="alert alert-info" role="alert">
-                        BÀI ĐĂNG CHÚ Ý
-                    </div>
-                    <div className="p-4 p-md-5 mb-4 text-white rounded bg-dark">
-                        {featuredBlog.length === 0 ? "Chờ xíu....." :
+            {/*<div*/}
+            {/*    style={{*/}
+            {/*        backgroundImage: 'url("https://images.pexels.com/photos/5483064/pexels-photo-5483064.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")',*/}
+            {/*    }}*/}
+            {/*    className="banner">*/}
+            {/*    <div className="banner-content">*/}
+            {/*        <h2>GAMO</h2>*/}
+            {/*        <span>TUỔI TRẺ HÃY LUÔN LUÔN CỐ GẮNG!!</span>*/}
+            {/*        <h1><a href="#id">Bắt đầu nào!!!</a></h1>*/}
 
-                            <div className="col-md-6 px-0">
+            {/*    </div>*/}
+            {/*</div>*/}
+            {/*<div className='container mt-3'>*/}
+            {/*    <div className="row">*/}
+            {/*        <div className="col col-9">*/}
+            {/*        <div id="id"></div>*/}
+            {/*        <div className="alert alert-primary" role="alert">*/}
+            {/*            DANH MỤC*/}
+            {/*        </div>*/}
+            {/*        <div className="nav-scroller py-1 mb-2">*/}
+            {/*            <nav className="nav d-flex justify-content-between nav-link">*/}
+            {/*                <Link className="p-2 link-secondary" to='/category/html'>HTML</Link>*/}
+            {/*                <Link className="p-2 link-secondary" to='/category/python'>PYTHON</Link>*/}
+            {/*                <Link className="p-2 link-secondary" to='/category/react'>REACT</Link>*/}
+            {/*                <Link className="p-2 link-secondary" to='/category/java'>JAVA</Link>*/}
+            {/*                <Link className="p-2 link-secondary" to='/category/javascript'>JAVASCRIPT</Link>*/}
+            {/*                <Link className="p-2 link-secondary" to='/category/c'>C</Link>*/}
+            {/*                <Link className="p-2 link-secondary" to='/category/c++'>C++</Link>*/}
+            {/*                <Link className="p-2 link-secondary" to='/category/c#'>C#</Link>*/}
+            {/*                <Link className="p-2 link-secondary" to='/category/ruby'>RUBY</Link>*/}
+            {/*                <Link className="p-2 link-secondary" to='/category/django'>DJANGO</Link>*/}
+            {/*            </nav>*/}
+            {/*        </div>*/}
+            {/*        <div className="alert alert-info" role="alert">*/}
+            {/*            BÀI ĐĂNG CHÚ Ý*/}
+            {/*        </div>*/}
+            {/*        <div className="p-4 p-md-5 mb-4 text-white rounded bg-dark">*/}
+            {/*            {featuredBlog.length === 0 ? "Chờ xíu....." :*/}
 
-                                <h1 className="display-4 fst-italic">{featuredBlog.title}</h1>
-                                {/*<p className="lead my-3">{featuredBlog.excerpt.substr(0, 60)}...</p>*/}
-                                <p className="lead mb-0">
-                                    <Link to={`/blog/${featuredBlog.slug}`} className="text-white fw-bold btn btn-info">
-                                        Continue reading...</Link>
-                                </p>
-                            </div>}
-                    </div>
-                    {blogs && blogs.length>0 && getBlogs()}
-                </div >
-                 <div className="col col-3">
-                <button className="btn btn-primary"></button>
+            {/*                <div className="col-md-6 px-0">*/}
 
-                </div>
-                </div>
+            {/*                    <h1 className="display-4 fst-italic">{featuredBlog.title}</h1>*/}
+            {/*                    /!*<p className="lead my-3">{featuredBlog.excerpt.substr(0, 60)}...</p>*!/*/}
+            {/*                    <p className="lead mb-0">*/}
+            {/*                        <Link to={`/blog/${featuredBlog.slug}`} className="text-white fw-bold btn btn-info">*/}
+            {/*                            Continue reading...</Link>*/}
+            {/*                    </p>*/}
+            {/*                </div>}*/}
+            {/*        </div>*/}
+            {/*        {blogs && blogs.length>0 && getBlogs()}*/}
+            {/*    </div >*/}
+            {/*     <div className="col col-3">*/}
+            {/*    <button className="btn btn-primary"></button>*/}
 
-            </div>
+            {/*    </div>*/}
+            {/*    </div>*/}
+
+            {/*</div>*/}
             <div className="footer"><h2 className="footer-item"></h2></div>
 
         </>
