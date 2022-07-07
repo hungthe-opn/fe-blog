@@ -1,15 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import './App.css'
 import Posts from "./components/Post/Posts";
 import axiosInstance from '../src/axios'
 import {Link} from "react-router-dom";
+import {UserContext} from "./components/Context/Context";
 
 function App({loading, dataBlog}) {
     const [appState, setAppState] = useState({
             loading: false,
             posts: [],
         }
+
     )
+
     useEffect(() => {
         setAppState({loading: false, posts: dataBlog});
     }, [])

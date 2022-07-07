@@ -21,6 +21,7 @@ import Create from './components/adminblog/create'
 import Edit from './components/adminblog/edit'
 import UserInfo from './components/Userinfo/User'
 import UserEdit from './components/UserEdit/UserEdit'
+import Store from './components/Context/Context'
 
 const Application = () => {
     const [loading, setLoading] = useState(true)
@@ -32,7 +33,6 @@ const Application = () => {
     const scrollRef = useRef();
 
 
-    const UserContext = createContext()
     const [infor, setInfor] = useState([]);
     useEffect(() => {
         axiosInstance.get('user-blog/info/').then((res) => {
@@ -99,7 +99,7 @@ const Application = () => {
 
         <Router>
 
-            <UserContext.Provider value={infor}>
+            <Store>
                 <div className="scroll-container" style={{marginTop: '64px'}}>
                     <div ref={scrollRef} className="scroll-top" onClick={() => window.scrollTo(0, 0)}/>
                     {loading ? <Loading/> : <div>
@@ -127,7 +127,7 @@ const Application = () => {
                         <Footer/>
                     </div>}
                 </div>
-            </UserContext.Provider>
+            </Store>
         </Router>
 
     );

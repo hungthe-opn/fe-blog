@@ -17,7 +17,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
-import UserContext from '../../Application'
+import {UserContext} from "../Context/Context";
 
 const useStyles = makeStyles((theme) => ({
         appBar: {
@@ -53,6 +53,20 @@ function Header({login, user, isLogin}) {
     let navigate = useNavigate();
     const [data, setData] = useState({search: ''});
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [blogs, setBlogs] = useState([]);
+    const data1 = useContext(UserContext).setData(blogs.user_name, blogs.image, blogs.email);
+
+
+    useEffect(() => {
+        axiosInstance.get('user-blog/info/').then((res) => {
+            const allPosts = res.data.data;
+            console.log(allPosts)
+            setBlogs(allPosts);
+
+        });
+    }, []);
+
+
     useEffect(() => {
         setUser(user)
         const userName = localStorage.getItem("user")
@@ -189,7 +203,7 @@ function Header({login, user, isLogin}) {
                             color="inherit"
                         >
                             <Avatar alt="Remy Sharp"
-                                    src="http://localhost:8001/media/291330163_3285768135022912_5520841210545778977_n.jpg"/>
+                                    src={blogs.images}/>
                         </IconButton>
                         <Menu
                             id="menu-appbar"
@@ -210,15 +224,15 @@ function Header({login, user, isLogin}) {
                             <div className='aax-container'>
 
                                 <Avatar alt="Remy Sharp" className='avatar'
-                                        src="http://localhost:8001/media/291330163_3285768135022912_5520841210545778977_n.jpg"/>
-                                <p className='user_name'>{user_name}
-                                    <div className='email'> @{user_name}</div>
+                                       src={blogs.images}/>
+                                <p className='user_name'>{blogs.user_name}
+                                    <div className='email'> @{blogs.email}</div>
                                 </p>
 
 
                             </div>
 
-                            <MenuItem onClick={handleClose} className="fa"> {`infor.user_name`}</MenuItem>
+                            <MenuItem onClick={handleClose} className="fa"> Xin chào {blogs.user_name}</MenuItem>
                             <MenuItem onClick={handleUser} className="fa"> <FontAwesomeIcon icon={faUser}
                                                                                             className="fa"/>Thông tin cá
                                 nhân</MenuItem>

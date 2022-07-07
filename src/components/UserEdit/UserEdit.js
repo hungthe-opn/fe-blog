@@ -1,10 +1,16 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import axiosInstance from "../../axios";
 import './UserEdit.scss'
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
+import {UserContext} from "../Context/Context";
 
 const UserEdit = () => {
+
+        const imageID = useContext(UserContext).image;
+        const usernameID = useContext(UserContext).user;
+
+
     return (<>
             <div>
                 <div className='container'>
@@ -14,12 +20,21 @@ const UserEdit = () => {
                             <p>Quản lý thông tin</p>
                             <form action="">
                                 <div className='form-edit_body_image'>
-                                    <img className='form-edit_body_image_rounded' src="" alt=""/>
+                                    <div style={{ position: 'relative' }}>
+                                        <img className='form-edit_body_image_rounded'  src={imageID} alt=""/>
+                                            <div style={{position: 'absolute',bottom: '0',}}>
+  <input
+    type="file"
+ multiple
+  />
+                                            </div>
+                                    </div>
+
                                 </div>
                                 <div className='form-edit_body_user'>
                                     <label htmlFor="">Tên tài khoản</label>
                                     <input className='form-control' type="text" name="" id="" disabled
-                                    />
+                                   value={usernameID} />
                                 </div>
                                 <div className='form-edit_body_user'>
                                     <label htmlFor="">Tên hiển thị</label>
@@ -36,12 +51,15 @@ const UserEdit = () => {
                                     <input className='form-control text-ara' type="text" name="" id=""
                                     />
                                 </div>
-                                <Button className='btn-summit'variant="contained" color="success">
+                                <div style={{display: 'flex',justifyContent : 'space-between'}}>
+                                    <div> <Button className='btn-summit'variant="contained" color="success">
                                     Success
-                                </Button>
-                                <Button className='btn-close'src='/blog' variant="contained" color="error">
+                                </Button></div>
+                               <div><Button className='btn-close'src='/blog' variant="contained" color="error">
                                     Close
-                                </Button>
+                                </Button></div>
+                                </div>
+
 
                             </form>
                         </div>

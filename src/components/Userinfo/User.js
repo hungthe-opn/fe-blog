@@ -1,15 +1,16 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import axiosInstance from "../../axios";
 import {Link, useParams} from "react-router-dom";
 import './User.scss'
 import Avatar from "@mui/material/Avatar";
+import {UserContext} from "../Context/Context";
 
 const UserInfo = () => {
 
     const [infor, setInfor] = useState([]);
     const [blogs, setBlogs] = useState([]);
-
+    const data1 = useContext(UserContext).setData("1", infor.image, infor.email);
     useEffect(() => {
         axiosInstance.get('user-blog/info/').then((res) => {
             const allPosts = res.data.data;
@@ -19,10 +20,17 @@ const UserInfo = () => {
     }, []);
 
     useEffect(() => {
-        axiosInstance.get('blog/count/').then((res) => {
-            const allPosts = res.data;
+        axiosInstance.get('blog/count/').
+        then((res) => {
+            const allPosts = res.data.data;
             setBlogs(allPosts);
-        });
+                        console.log(1111111111111111111111,res)
+
+        }
+            )
+        .catch((err) => {
+                console.log(1111111111111111111111111111111,err)
+            });
     }, []);
 
     // toUpperCase text
