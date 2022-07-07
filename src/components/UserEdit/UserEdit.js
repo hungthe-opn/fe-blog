@@ -81,7 +81,6 @@ const UserEdit = () => {
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(e.target[0].value)
                 console.log(e.target[0].value)
 
                 console.log(e.target[1].value)
@@ -95,13 +94,14 @@ const UserEdit = () => {
         let formData = new FormData();
 
         formData.append('image', image)
-        formData.append('user_name', "e.user.name")
-        formData.append('first_name', "e.first_name")
-        formData.append('about', "e.about")
+        formData.append('user_name', e.target[2].value)
+        formData.append('first_name', e.target[3].value)
+        formData.append('about', e.target[4].value)
 
         axiosInstance.patch('user/update/',formData)
             .then((res) => {
                 console.log(res)
+                window.location.reload()
             })
          history({
             pathname: '/user/',

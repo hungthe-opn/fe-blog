@@ -89,22 +89,37 @@ const Blog = () => {
 
             <div className="body">
                 <div className="body_image">
-                    <img src="" alt=""/>
+                    <img src="https://images.viblo.asia/full/f6e3d256-a4d4-4751-8fc6-895e53f6c74f.jpg
+" alt=""/>
 
                 </div>
-               <div className="body_bg">
-                   <div className="body_bg_row">
-                    <ul>
-                        <a href="">
-Flow
-                        </a><a href=""> New
-                    </a><a href="">Featured</a>
-                        <a href="">For My</a>
-                        <a href="">Strending</a>
-                        <a href="">Series</a>
+               <div className="">
+                    <div className='profile-tab'>
+                    <ul className='profile-tab_item'>
+                        <a href="/" className='profile-tab_item_link'>Bài viết </a>
+                        <a href="/" className='profile-tab_item_link'>Series</a>
+                        <a href="/" className='profile-tab_item_link'>Câu hỏi</a>
+                        <a href="/" className='profile-tab_item_link'>Đang theo dõi</a>
+                        <a href="/" className='profile-tab_item_link'>Liên hệ</a>
                     </ul>
-                       </div>
+                </div>
                </div>
+                <div className="text-center">
+                    <a href="" className="text-center_body"> :(((((((((((9</a>
+                </div>
+                <div className="container"></div>
+                <div className="container  mt-3">
+                    <div className='row'>
+                        <div className='col col-9'>
+
+                        </div>
+                        <div className='col col-3'>
+
+                        </div>
+                    </div>
+
+
+                </div>
             </div>
             {/*<div*/}
             {/*    style={{*/}
