@@ -28,10 +28,6 @@ const UserEdit = () => {
     const [formData, updateFormData] = useState(initialFormData);
     const [image, setImage] = useState(null);
 
-// const FileHandler = (e) => {
-    //     var picture = e.target.files[0];
-    //     setImage(e.target.files[0]);
-    // };
     useEffect(() => {
         axiosInstance.get('user/update/').then((res) => {
             updateFormData({
@@ -42,68 +38,49 @@ const UserEdit = () => {
                 ['about']: res.data.data.about,
                 ['image']: res.data.data.image
             });
-            console.log('check-get', res)
+            setImage(res.data.data.image);
         });
     }, [updateFormData]);
 
     const handleChange = (e) => {
         console.log(e)
-
-        if (e.target.name === 'image') {
-            setImage(e.target.files[0]);
-        }
         updateFormData({
             ...formData,
-            // Trimming any whitespace
             [e.target.name]: e.target.value,
         });
-        console.log(e)
-                console.log(formData)
-
     };
-    const onSubmit = (data) => {
-
-        let formData = new FormData();
-
-        formData.append('id', data.data.id)
-        formData.append('image', image)
-        formData.append('user_name', data.data.user_name)
-        formData.append('first_name', data.data.first_name)
-        formData.append('about', data.data.about)
-        axiosInstance.patch('user/update/', formData).then((res) =>
-        {
-            console.log(res)
-        })
-    }
-    const handleChange1 = e=> {
+    const handleChange1 = e => {
         console.log(e)
-        setImage(e.target.files[0]);
+        setImage(URL.createObjectURL(e.target.files[0]));
+        console.log(image)
+
     }
+
     const handleSubmit = (e) => {
         e.preventDefault()
-                console.log(e.target[0].value)
+        console.log(e.target[0].value)
 
-                console.log(e.target[1].value)
+        console.log(e.target[1].value)
 
-                console.log(e.target[2].value)
+        console.log(e.target[2].value)
 
-                console.log(e.target[3].value)
+        console.log(e.target[3].value)
 
-                console.log(e.target[4].value)
-
+        console.log(e.target[4].value)
+        console.log(e.target[0].files)
+        const file = new File(e.target[0].files,'image.png',)
         let formData = new FormData();
-
-        formData.append('image', image)
+        formData.append('image', file)
         formData.append('user_name', e.target[2].value)
         formData.append('first_name', e.target[3].value)
         formData.append('about', e.target[4].value)
-
-        axiosInstance.patch('user/update/',formData)
+        console.log('file', file)
+        axiosInstance.patch('user/update/', formData)
             .then((res) => {
                 console.log(res)
                 window.location.reload()
             })
-         history({
+        history({
             pathname: '/user/',
         });
     }
@@ -114,14 +91,14 @@ const UserEdit = () => {
                         <div className='form-edit_body'>
                             <h1>Chỉnh sửa thông tin tài khoản</h1>
                             <p>Quản lý thông tin</p>
-                            <form  onSubmit={handleSubmit}>
+                            <form onSubmit={handleSubmit}>
                                 <div className='form-edit_body_image'>
                                     <div style={{position: 'relative'}}>
-                                        <img className='form-edit_body_image_rounded' src={formData.image} alt=""/>
+                                        <img className='form-edit_body_image_rounded' src={image} alt=""/>
                                         <div style={{position: 'absolute', bottom: '0',}}>
                                             <input id="image" name="image"
                                                    type="file" onChange={handleChange1}
-                                                    accept="image/*"
+                                                   accept="image/*"
                                             />
                                         </div>
                                     </div>
