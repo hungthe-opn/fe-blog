@@ -36,6 +36,8 @@
         height: 128px;
         border-radius: 50%;
         display: inline;
+        object-fit: cover;
+        object-position: center;
       }
       input{
         padding-left: 20px;

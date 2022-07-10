@@ -5,7 +5,7 @@ import axiosInstance from "../../axios";
 import "./Blog.scss"
 import mainLogo from "../../img/1.png"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEye, faUser} from "@fortawesome/free-solid-svg-icons";
+import {faAnchorCircleCheck, faCheck, faEye, faUser, faUsersViewfinder} from "@fortawesome/free-solid-svg-icons";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import Banner from '../../Banner/Banner'
@@ -13,11 +13,21 @@ const Blog = () => {
 
     const [blogs, setBlogs] = useState([]);
     const [featuredBlog, setFeaturedBlog] = useState([]);
+    const [categories, setCategory] = useState([]);
+
     // get featured data
     useEffect(() => {
         axiosInstance.get('blog/featured/').then((res) => {
-            const allPosts = res.data;
-            setFeaturedBlog(allPosts);
+            const allPosts = res.data.data;
+            setFeaturedBlog(allPosts[0]);
+        });
+
+    }, []);
+ useEffect(() => {
+        axiosInstance.get('category/').then((res) => {
+            const allPosts = res.data.data;
+            setCategory(allPosts);
+            console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',allPosts)
         });
 
     }, []);
@@ -26,7 +36,7 @@ const Blog = () => {
         axiosInstance.get('blog/').then((res) => {
             const allPosts = res.data.data;
             setBlogs(allPosts);
-            console.log(allPosts)
+
         });
     }, []);
 
@@ -36,65 +46,137 @@ const Blog = () => {
             return word.charAt(0).toUpperCase() + word.slice(1);
         return '';
     }
+    const category = ()=>{
+        let result = [];
+        const list = categories && categories.length > 0 && categories.map((categorys) => {
+            return (
+                                    <span className="hidden-md-down_user-profile_stats_link">
+                                        <p>
+                                            <a href="">
+                                                <Link to={`/blog/${categorys.id}`}>
+                                            {categorys.name}
+                                            </Link></a>
 
+
+                                        </p>
+                                        <p className='hidden-md-down_user-profile_stats_link_count'>
+                                            3
+                                        </p>
+                                    </span>
+
+
+            )
+                ;
+
+        })
+  for (let i = 0; i < list.length; i +=2) {
+            result.push
+            (
+                <div>
+                    <div className=''>
+                        {list[i]}
+
+                    </div>
+                    <div className=''>{list[i + 1] ? list[i + 1] : null}
+                    </div>
+                </div>
+            )
+        }
+        return result
+    }
     const getBlogs = () => {
 
         let result = [];
         const list = blogs && blogs.length > 0 && blogs.map((blogPost) => {
             return (
-                // <div
-                //     className="row blog-strong g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                //     <div className="col p-2 d-flex flex-column position-static"
-                //          style={{minHeight: '150px', width: '100px'}}>
-                //
-                //         <div className="row">
-                //             <div className="col-4"><img className="blog-image"
-                //                                         src={blogPost.thumbnall} alt="thumbnail"/></div>
-                //             <div className="col-6 post-list">
-                //                 <strong className="d-inline-block mb-2 text-primary">
-                //
-                //                     Danh mục
-                //                     : {capitalizeFirstLetter(blogPost.category)}</strong>
-                //                 <h3 className="mb-0 blog-title">{blogPost.title}</h3>
-                //
-                //                 <p className="card-text mb-auto"> Excrerpt: {blogPost.excerpt}</p>
-                //                 <button type="button" className="btn btn-dark"><Link
-                //                     to={`/blog/${blogPost.slug}`}
-                //                     className="blog-link">
-                //                     Đọc tiếp...
-                //                 </Link></button>
-                //
-                //             </div>
-                //
-                //         </div>
-                //     </div>
-                // </div>
                 <div className='body-post'>
                     <img className='body-post_img' src={blogPost.avatar_author} alt=""/>
 
-                    <div className='body-post-feed'>
-                        <div className='body-post-feed_meta'>
-                            <a href="" className='body-post-feed_meta_user'>{blogPost.author_name}</a>
-                            <span className='body-post-feed_meta_link'> Thời gian tạo {blogPost.time_post}</span>
-                            <span className='body-post-feed_meta_link'> Ngày cập nhật {blogPost.time_update}</span>
+                    <div className='body-post_feed'>
+                        <div className='body-post_feed_meta'>
+                            <a href="" className='body-post_feed_meta_user'>
+                                  {blogPost.rank=='Quản trị viên'?(
+                                                <span>
+                                            <FontAwesomeIcon icon={faUser}
+                                             className="fa" />{blogPost.author_name}
+                                                </span>
+                                               ):(<div>{blogPost.author_name}
+                                            </div>)
+                                            }
+                            <div className='body-post_feed_meta_user_info'>
+                                <div className='body-post_feed_meta_user_info_user'>
+
+                                    <a href="" className='body-post_feed_meta_user_info_user_a'>
+                                        <img src={blogPost.avatar_author} className='body-post_feed_meta_user_info_user_a_img' alt=""/>
+                                    </a>
+                                    <div className='body-post_feed_meta_user_info_user_name' >
+                                        <a href="" className='body-post_feed_meta_user_info_user_name_a'>
+                                            {blogPost.rank=='Quản trị viên'?(
+
+                                                <span>
+                                            <FontAwesomeIcon icon={faCheck}
+                                             className="fa" />{blogPost.author_name}
+                                                </span>
+                                               ):(<div>{blogPost.author_name}
+                                            </div>)
+                                            }
+
+                                        </a>
+                                        <div><span className='body-post_feed_meta_user_info_user_name_span'>
+                                                @{blogPost.author_email}
+
+
+                                        </span>
+                                             <div>
+                                                 {blogPost.rank=='Quản trị viên'?(
+                                                     <span className="badge rounded-pill bg-primary">{blogPost.rank}</span>
+                                                 ):(<span className="badge rounded-pill bg-success">{blogPost.rank}</span>
+                                                 )}
+
+                                             </div>
+                                        <div className='body-post_feed_meta_user_info_user_name_div'>
+                                             <FontAwesomeIcon icon={faEye}
+                                             className="fa"/>
+                                {blogPost.view_count}
+                                        </div></div>
+
+                                    </div>
+                                    <div className='body-post_feed_meta_user_info_user_follow'>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            </a>
+                            <span className='body-post_feed_meta_link'> Thời gian tạo {blogPost.time_post}</span>
+                            <span className='body-post_feed_meta_link'> Ngày cập nhật {blogPost.time_update}</span>
                         </div>
-                        <div className='body-post-feed_title'>
-                            <h3 className='body-post-feed_title_word'>
-                                <a href="" className='body-post-feed_title_word_a'>{blogPost.title}</a>
-                                <div className='body-post-feed_title_word_tags'>
-                                    <span className="badge text-bg-secondary "
-                                          style={{fontSize: '35%'}}>{blogPost.category_name}
+                        <div className='body-post_feed_title'>
+                            <h3 className='body-post_feed_title_word'>
+                                <div className='body-post_feed_title_word_title'>
+                                <a href="" className='body-post_feed_title_word_a'>
+                                <Link to={`/blog/${blogPost.id}`}>
+                                    {blogPost.title}
+                                </Link></a></div>
+                                <div className='body-post_feed_title_word_tags'>
+                                    {blogPost.tags.map(item =>
+                                         <span className="badge text-bg-secondary body-post_feed_title_word_tags_cate "
+                                          style={{fontSize: '60%%'}}>
+                                        {item.title}
                                     </span>
+                                        )}
+
+
                                 </div>
                             </h3>
                         </div>
-                        <div className='body-post-feed_starts'>
-                            <span className='body-post-feed_starts_item'>
+                        <div className='body-post_feed_starts'>
+                            <span className='body-post_feed_starts_item'>
                             <FontAwesomeIcon icon={faEye}
                                              className="fa"/>
-                                2K
+                                {blogPost.view_count}
                         </span>
-                            <span className='body-post-feed_starts_item'>
+                            <span className='body-post_feed_starts_item'>
                             </span>
 
                         </div>
@@ -105,7 +187,6 @@ const Blog = () => {
                 ;
 
         })
-
         //automatically incremented by 1 value
         for (let i = 0; i < list.length; i += 2) {
             result.push
@@ -120,6 +201,7 @@ const Blog = () => {
             )
         }
         return result
+
     }
 
     //increments to 6 when is pressed
@@ -156,10 +238,41 @@ const Blog = () => {
                                 <div className="sticky_section">
                                     <a className="sticky-section_a" href="">
                                         <h4 className="sticky-section_a_h4">
-                                            Bài viết mới nhất
+                                            Bài biết đáng chú ý
                                         </h4>
                                     </a>
 
+                                </div>
+
+                                <div className="sticky_featured">
+                                        <h4>
+                                             <Link to={`/blog/${featuredBlog.id}`}>
+                                     {featuredBlog.title}
+                                </Link>
+
+                                        </h4>
+                                    <div className="sticky_featured_sidebar">
+                                        {featuredBlog.view_count}
+                                    </div>
+                                     <div className="sticky_featured_feed">
+                                         <a href="">{featuredBlog.author_name} - {featuredBlog.time_post} </a>
+                                    </div>
+                                </div>
+                                 <div className="sticky_section">
+                                     <div> <a className="sticky-section_a" href="">
+                                        <h4 className="sticky-section_a_h4">
+                                           Danh mục bài biết
+                                        </h4>
+                                    </a></div>
+
+                                </div>
+                                 <div>
+                                               <div className='hidden-md-down_user-profile_stats'>
+
+                                         {category()}
+                                               </div>
+                                     </div>
+                                <div>
                                 </div>
                             </div>
                         </div>

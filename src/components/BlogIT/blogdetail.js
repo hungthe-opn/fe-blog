@@ -1,21 +1,59 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
-import './blogdetail.css'
+import './BlogDetail.scss'
 import {Link, useParams} from "react-router-dom";
 import axiosInstance from "../../axios";
-
+import {faCaretDown, faCaretUp, faCheck, faEye, faFan, faShare, faUser,} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import mainLogo from "../../img/1.png"
+import {
+    FacebookIcon,
+    FacebookShareButton,
+    TwitterShareButton,
+    TwitterIcon,
+    EmailShareButton,
+    EmailIcon
+} from 'react-share';
+import Button from '@material-ui/core/Button';
+import {Alert, AlertTitle} from "@mui/material";
+import {FacebookProvider, Comments ,Share} from 'react-facebook';
+import Comment from '../Comment/Comment'
 const BlogDetail = (props) => {
     const [blog, setBlog] = useState({})
     const [blogs, setBlogs] = useState([]);
-    const {slug} = useParams()
-    const {id} = useParams()
-    const a = slug
-    // get blog
+    const [upvote, setUpvote] = useState();
+    const [downvote, setDownvote] = useState();
+    const id = useParams()
+    const up = id.id
+    const shareUrl = +process.env.REACT_APP_IS_LOCALHOST === 1 ? "https://peing.net/ja/" : window.location.href;
+    console.log(process.env.REACT_APP_IS_LOCALHOST)
     useEffect(() => {
-        axiosInstance.get('blog/').then((res) => {
+        axiosInstance.post('blog/upvote/' + up).then((res) => {
             const allPosts = res.data;
-            setBlogs(allPosts);
-            console.log(allPosts);
+            setUpvote(allPosts);
+        });
+    }, []);
+    useEffect(() => {
+        axiosInstance.post('blog/downvote/' + up).then((res) => {
+            const allPosts = res.data;
+            setDownvote(allPosts);
+        });
+    }, []);
+    const increment = (e) => {
+        console.log(e.target.value)
+        setUpvote(upvote + 1)
+    }
+
+    const decrement = () => {
+        setDownvote(downvote - 1)
+    }
+    useEffect(() => {
+        axiosInstance.get('blog/' + up).then((res) => {
+            console.log(res)
+            const allPosts = res.data.data;
+            console.log(allPosts)
+
+            setBlog(allPosts);
         });
     }, []);
 
@@ -78,18 +116,15 @@ const BlogDetail = (props) => {
 
         //automatically incremented by 1 value
         for (let i = 0; i < list.length; i += 2) {
-            result.push
-            (
-                <div key={i} className='row mb-2'>
-                    <div className='col-md-6'>
-                        {list[i]}
-                    </div>
-                    <div className='col-md-6'>{list[i + 1] ? list[i + 1] : null}
-                    </div>
-
-
+            result.push(<div key={i} className='row mb-2'>
+                <div className='col-md-6'>
+                    {list[i]}
                 </div>
-            )
+                <div className='col-md-6'>{list[i + 1] ? list[i + 1] : null}
+                </div>
+
+
+            </div>)
         }
         return result
     }
@@ -101,47 +136,240 @@ const BlogDetail = (props) => {
 
     //auto-capitalize
     const capitalizeFirstLetter = (word) => {
-        if (word)
-            return word.charAt(0).toUpperCase() + word.slice(1);
+        if (word) return word.charAt(0).toUpperCase() + word.slice(1);
         return '';
     }
 
-    return (
-        <div className='container mt-3'>
-            <h1 className='display-2'>
-                {blog.title}
-            </h1>
-            <div className="alert alert-primary" role="alert">
-                Category: {capitalizeFirstLetter(blog.category)}
-            </div>
-            <div className='row '>
-                <div className="alert alert-danger author" role="alert">
-                    Auhor: {blog.author}
-                </div>
-                <div className="alert alert-warning" role="alert">
-                    Thời gian đăng bài: Tháng:{blog.month} - Ngày:{blog.day} -
+    return (<div>
+        <div className="body_image">
 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                         className="bi bi-eye-fill" viewBox="0 0 16 16">
-                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
-                        <path
-                            d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
-                    </svg> Lượt xem: {blog.viewCount}
-                </div>
+            <img src={mainLogo} alt="" className='body_image_banner'/>
 
-            </div>
-
-            <div className='mt-5 mb-5' dangerouslySetInnerHTML={createBlog()}/>
-
-
-            <hr/>
-            <p className='lead mb-5 font-weight-bold'>Nguồn tham khảo:<a href="{blog.source}">{blog.source}</a>.</p>
-            <hr/>
-            <p className='lead mb-5 font-weight-bold'><Link to='/blog'> Back to blogs</Link></p>
-            {getBlogs()}
         </div>
+        <div className='container py-2'>
+            <div className='screen-default'>
+                <div className='row'>
+                    <div className='col col-1 screen-default_upvote'>
+                        <Button onClick={increment}><FontAwesomeIcon icon={faCaretUp} style={{paddingLeft: '16px'}}
+                                                                     className="fa"/>
+                        </Button>
 
-    );
+                        <div className='screen-default_upvote_count' style={{paddingLeft: '9px'}}>
+                            {blog.upvote}
+                        </div>
+                        <Button onClick={decrement}><FontAwesomeIcon icon={faCaretDown}
+                                                                     style={{paddingLeft: '16px'}}
+                                                                     onClick={decrement}
+                                                                     className="fa"/></Button>
+
+
+                        <FacebookShareButton
+                            url={shareUrl}
+                            quote={blog.title}
+                            hashtag={"#Blog"}
+                            description={blog.description}
+                            className="Demo__some-network__share-button"
+                        >
+                            <FacebookIcon size={32} round={true}/>
+                        </FacebookShareButton>
+                        <br/>
+                        <TwitterShareButton
+                            title={"test"}
+                            url={"https://peing.net/ja/"}
+                            hashtags={["hashtag1", "hashtag2"]}
+                        >
+                            <TwitterIcon size={32} round={true}/>
+                        </TwitterShareButton>
+                        <br/>
+                        <EmailShareButton
+                            title={"test"}
+                            url={"https://drive.google.com/drive/u/0/my-drive"}
+                            hashtags={["hashtag1", "hashtag2"]}
+                        >
+                            <EmailIcon size={32} round={true}/>
+                        </EmailShareButton>
+                    </div>
+                    <div className='col col-8'>
+                        <header className='mb-05'>
+                            {/*<div className='post-content'>*/}
+                            {/*    <div className='post-content_author'>*/}
+                            {/*        <a href="" className='post-content_author_a'>*/}
+                            {/*            <img src={blog.avatar_author}  className='post-content_author_a_img'/>*/}
+                            {/*        </a>*/}
+                            {/*        <div className='post-content_author_flex'>*/}
+                            {/*            <a href="">{blog.author_name}</a></div>*/}
+                            {/*        <div className='post-content_author_stats'></div>*/}
+                            {/*    </div>*/}
+                            {/*    <div className='post-content_post'>*/}
+                            {/*        <div className='post-content_post_text'>*/}
+                            {/*            {blog.time_post}*/}
+                            {/*            <div>*/}
+                            {/*                10 phut*/}
+                            {/*            </div>*/}
+                            {/*        </div>*/}
+                            {/*        <div className='post-content_post_flex' >*/}
+                            {/*            <div className='post-content_post_flex_view'>*/}
+                            {/*                 <FontAwesomeIcon icon={faEye}*/}
+                            {/*                 className="fa"/>*/}
+                            {/*                <span>{blog.view_count}</span>*/}
+                            {/*            </div>*/}
+                            {/*        </div>*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
+                            <div className='body-post' style={{width: '760px', height: '73px'}}>
+                                <img className='body-post_img' style={{width: '45px', height: '45px'}}
+                                     src={blog.avatar_author} alt=""/>
+
+                                <div className='body-post_feed' style={{width: '700px', height: '73px'}}>
+                                    <div className='body-post_feed_meta'>
+                                        <a href="" className='body-post_feed_meta_user'>
+                                            {blog.rank == 'Quản trị viên' ? (
+                                                <span>
+                                            <FontAwesomeIcon icon={faUser}
+                                                             className="fa"/>{blog.author_name}
+                                                </span>
+                                            ) : (<div>{blog.author_name}
+                                            </div>)
+                                            }
+                                            <div className='body-post_feed_meta_user_info'>
+                                                <div className='body-post_feed_meta_user_info_user'>
+
+                                                    <a href="" className='body-post_feed_meta_user_info_user_a'>
+                                                        <img src={blog.avatar_author}
+                                                             className='body-post_feed_meta_user_info_user_a_img'
+                                                             alt=""/>
+                                                    </a>
+                                                    <div className='body-post_feed_meta_user_info_user_name'>
+                                                        <a href=""
+                                                           className='body-post_feed_meta_user_info_user_name_a'>
+                                                            {blog.rank == 'Quản trị viên' ? (
+
+                                                                <span>
+                                            <FontAwesomeIcon icon={faCheck}
+                                                             className="fa"/>{blog.author_name}
+                                                </span>
+                                                            ) : (<div>{blog.author_name}
+                                                            </div>)
+                                                            }
+
+                                                        </a>
+                                                        <div><span
+                                                            className='body-post_feed_meta_user_info_user_name_span'>
+                                                @{blog.author_email}
+
+
+                                        </span>
+                                                            <div>
+                                                                {blog.rank == 'Quản trị viên' ? (
+                                                                    <span
+                                                                        className="badge rounded-pill bg-primary">{blog.rank}</span>
+                                                                ) : (<span
+                                                                        className="badge rounded-pill bg-success">{blog.rank}</span>
+                                                                )}
+
+                                                            </div>
+                                                            <div
+                                                                className='body-post_feed_meta_user_info_user_name_div'>
+                                                                <FontAwesomeIcon icon={faEye}
+                                                                                 className="fa"/>
+                                                                {blog.view_count}
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div className='body-post_feed_meta_user_info_user_follow'>
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+
+                                        <span
+                                            className='body-post_feed_meta_link'> Thời gian tạo: {blog.time_post}</span>
+                                        <span
+                                            className='body-post_feed_meta_link'> Thời gian đọc: 9 phút</span>
+                                    </div>
+                                    {/*<div className='body-post_feed_title'>*/}
+                                    {/*    <h3 className='body-post_feed_title_word'>*/}
+                                    {/*        <div className='body-post_feed_title_word_title'>*/}
+                                    {/*        <a href="" className='body-post_feed_title_word_a'>*/}
+                                    {/*        <Link to={`/blog/${blogPost.id}`}>*/}
+                                    {/*            {blogPost.title}*/}
+                                    {/*        </Link></a></div>*/}
+                                    {/*        <div className='body-post_feed_title_word_tags'>*/}
+                                    {/*            {blogPost.tags.map(item =>*/}
+                                    {/*                 <span className="badge text-bg-secondary body-post_feed_title_word_tags_cate "*/}
+                                    {/*                  style={{fontSize: '60%%'}}>*/}
+                                    {/*                {item.title}*/}
+                                    {/*            </span>*/}
+                                    {/*                )}*/}
+
+
+                                    {/*        </div>*/}
+                                    {/*    </h3>*/}
+                                    <div className='body-post_feed_starts'>
+                                        <span className='body-post_feed_starts_item'>
+                                        <FontAwesomeIcon icon={faEye}
+                                                         className="fa"/>
+                                            {blog.view_count}
+                                    </span>
+                                        <span className='body-post_feed_starts_item'>
+                                        </span>
+                                        <span className='body-post_feed_starts_item'>
+                                        <FontAwesomeIcon icon={faShare}
+                                                         className="fa"/>
+                                            7
+                                    </span>
+                                        <span className='body-post_feed_starts_item'>
+                                        </span>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </header>
+                        <h1 className='content-type'>Version 1.x.x: compatible with React versions 0.13.x, 0.14.x and
+                            15.x.x.</h1>
+                        <div className='d-md-flex'></div>
+                        <div>
+                            Từ thuở sơ khai, systems administrators chuẩn bị server vật lý như cài đặt OS, driver, đảm
+                            bảo memory/disk/processor để deploy phần mềm. Ngoài ra họ còn phải quan tâm tới việt
+                            upgrades và những thứ khác liên quan phần cứng để deploy phần mềm(software). Phần
+                            cứng(hardware) bị gắn chặt với software. Giai đoạn này có tên là Bare metal
+
+                            Tiếp theo đó tới giai đoạn virtual machine, ở giai đoạn này, người ta tạo ra các máy ảo, khi
+                            phần hardware bị lỗi, người ta có thể migrate máy ảo sang phần hardware khác. Ngoài ra
+                            system administrator cũng có thể cho chạy nhiều máy ảo trên cùng một phần cứng để tiết kiệm
+                            chi phí. Tuy nhiên máy ảo có khá nhiều hạn chế.
+
+                            Kỉ nguyên containerized development, tiêu biểu của containerized development là Docker,
+                            OpenVZ... Kỹ thuật này cho phép system administrator chạy nhiều ứng dụng khác nhau trên cùng
+                            hệ thống mà không làm ảnh hưởng tới nhau, cung cấp môi trường nhẹ hơn nhiều so với virtual
+                            machine, hoạt động thống nhất giữa các môi trường.... bạn có thể tìm hiểu thêm về điểm vượt
+                            bật của containerized development so với virtual machine tại đây
+
+                            Với các kiểu mô hình server truyền thống ở trên, chúng ta xây dựng và triển khai trang
+                            web/ứng dụng trên một số cơ sở hạ tầng và phải có trách nhiệm cung cấp, quản lý tài nguyên
+                            cho server. Tuy nhiên, chúng ta có thể gặp một số vấn đề sau:
+
+
+                        </div>
+                        <div className=''>
+                            <Alert severity="info">
+                                <AlertTitle>Nguồn :</AlertTitle>
+                                Tài liệu tham khảo tại : — <strong><a href="">{blog.source}</a></strong>
+                            </Alert>
+                        </div>
+
+                    </div>
+                    <div className='col col-3'>
+                        <Comment></Comment>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>);
 };
 
 export default BlogDetail;

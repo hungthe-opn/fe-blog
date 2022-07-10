@@ -14,6 +14,9 @@ export default function SignUp() {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('user');
+        localStorage.removeItem('role');
+        localStorage.removeItem('email');
+
         axiosInstance.defaults.headers['Authorization'] = null;
         history('/login');
 

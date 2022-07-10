@@ -55,7 +55,9 @@ const UserEdit = () => {
         console.log(image)
 
     }
-
+const handleUser = () => {
+        history('/user');
+    };
     const handleSubmit = (e) => {
         e.preventDefault()
         console.log(e.target[0].value)
@@ -68,7 +70,13 @@ const UserEdit = () => {
 
         console.log(e.target[4].value)
         console.log(e.target[0].files)
-        const file = new File(e.target[0].files,'image.png',)
+        const min = 1;
+        const max = 100;
+        const rand = min + Math.random() *(max - min)
+
+        const fileName = rand+(e.target[0].files) +('.png')
+        console.log(fileName)
+        const file = new File(e.target[0].files,fileName,)
         let formData = new FormData();
         formData.append('image', file)
         formData.append('user_name', e.target[2].value)
@@ -80,9 +88,7 @@ const UserEdit = () => {
                 console.log(res)
                 window.location.reload()
             })
-        history({
-            pathname: '/user/',
-        });
+
     }
     return (<>
             <div>
@@ -136,9 +142,14 @@ const UserEdit = () => {
                                     >
                                         Update
                                     </Button></div>
-                                    <div><Button className='btn-close' src='/blog' variant="contained" color="error">
+                                    <div>
+
+                                        <Button src='/user'  variant="contained" color="error"
+onClick={handleUser}
+                                    >
                                         Close
-                                    </Button></div>
+                                    </Button>
+                                    </div>
                                 </div>
 
 

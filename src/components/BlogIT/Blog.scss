@@ -116,7 +116,7 @@
 }
 
 .body-post {
-  height: 143px;
+  height: 118px;
   width: 840px;
   align-items: flex-start;
   color: #1b1b1b;
@@ -136,13 +136,13 @@
     border-radius: 100%;
     color: #33629c;
     font-size: 14px;
-
+object-fit: cover;
   }
 
   &_feed {
     height: 103px;
     font-size: 14px;
-
+padding-left:12px;
     &_meta {
       width: 779px;
       height: 20px;
@@ -152,15 +152,96 @@
       flex-wrap: wrap;
       font-size: 12.8px;
       line-height: 20.48px;
-      margin: 0px 0px 4px;
-
       &_user {
         height: 15px;
         color: #33629c;
         display: inline;
         margin: 0px 8px 0px 0px;
+        font-size:12.8px;
+        position: relative;
+      &_info{
+        width:369px;
+        height: 160px;
+        background-color: #ffffff;
+        border-color: #ebeef5;
+        border-radius:4px;
+        border-style: solid;
+        border-width:1px;
+        box-shadow:#000000 0px 2px 12px 0px;
+        color:#606266;
+        font-size:14px;
+        line-height:19.4px;
+        margin:12px 0px 0px;
+        text-align:justify;
+        position: absolute;
+        display: none;
+        z-index: 1000;
+        &_user{
+          width:343px;
+          height: 75px;
+          justify-content:space-around;
+          &_a{
+            width:86px;
+            height: 67px;
+            color:#33629c;
+            display:flex;
+            flex-basis:25%;
+            margin: 0px 8px 0px 0px;
+            padding: 0px 15px;
+            &_img{
+              width:60px;
+              height:60px;
+              border-radius:100%;
+              margin: 3.39062px 0px;
+              object-fit: cover;
+
+            }
+          }
+          &_name{
+            width:257px;
+            height: 67px;
+            color: #606266;
+            flex-basis:75%;
+            padding:0px 15px;
+            &_a{
+              width:73px;
+              height: 16px;
+              display: inline;
+            }
+            &_span{
+              width:122px;
+              height: 16px;
+              color: #9b9b9b;
+              display: inline;
+            }
+            &_div{
+              width:227px;
+              height: 20px;
+              margin: 8px 0px 0px;
+            }
+          }
+          &_follow{
+            width:338px;
+            height:39px;
+            align-items: center;
+            //border-color: #dbe3e8;
+            //border-style: solid none none;
+            border-width: 1px 0px 0px;
+            color: #606266;
+            display: flex;
+            justify-content:space-between;
+            margin: 16px 0px 0px;
+            padding:8px 0px 0px;
+          }
+        }
       }
 
+      }
+       &_user:hover div{
+
+            display: block;
+
+        }
       &_link {
 
         height: 15px;
@@ -180,20 +261,42 @@
         font-weight: 500;
         line-height: 21.12px;
         margin: 0px 8px 0px 0px;
+        padding-top:8px;
+        color: #1b1b1b;
+        &_a{
+          color: #1b1b1b;
+          display: inline;
+          text-decoration: none
 
+        }
+        &_a:hover {
+          color: #5488c7;
+          text-decoration: none
+        }
+        &_title{
+          width:774px;
+          height:29px;
+          color: #1b1b1b;
+          display: flex;
+          font-size:14px;
+
+        }
         &_tags {
           height: 26px;
           width: 426px;
           color: #1b1b1b;
+          padding-left:4px;
 
           &_cate {
-            font-size: 35%;
+            font-size: 60%;
+            margin: 4px;
           }
         }
       }
     }
 
-    &_stats {
+    &_starts {
+      padding-top:8px;
       &_item {
         width: 49px;
         height: 16px;
@@ -214,6 +317,9 @@
   line-height: 22.4px;
   padding: 0px 8px 0px 0px;
   text-align: left;
+    //border-style: solid;
+    //  border-width: 1px;
+    //border-color: #d6d6d7;
 
   &_section {
     display: flex;
@@ -235,6 +341,38 @@
       }
     }
   }
+  &_featured{
+    width:277px;
+    height: 87px;
+    margin: 0px 0px 8px;
+    padding: 0px 0px 8px;
+    h4{
+      height:19px;
+      font-weight: 500;
+      line-height: 19.2px;
+
+    }
+    h4:hover{
+      color: #5488c7;
+    }
+    &_sidebar{
+      height:22px;
+      display: inline-block;
+      text-align: center;
+    }
+    &_feed{
+            height:22px;
+      a{
+        height:16px;
+        width:65px;
+        display: inline;
+        color: #9b9b9b
+      }
+      a:hover{
+     color: #1b1b1b;
+      }
+    }
+  }
 }
 
 .sticky-section_a_h4 {
@@ -245,3 +383,4 @@
   text-align: center;
   display: inline-block;
 }
+

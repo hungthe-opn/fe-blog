@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import {axiosInstance} from '../../axios'
 import SearchBar from 'material-ui-search-bar';
 import './Header.css'
+import './header.scss'
 import image from "../../img/logofabbi.png"
 import {faSignOut, faUser, faUserEdit} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -27,8 +28,10 @@ const useStyles = makeStyles((theme) => ({
             margin: theme.spacing(1, 1.5),
 
         }, banner: {
+            textDecoration: 'none',
             margin: theme.spacing(1, 1.5), color: '#1b1b1b'
-        }, toolbarTitle: {
+        },
+    toolbarTitle: {
             flexGrow: 1,
             marginLeft: 170
         },
@@ -93,6 +96,8 @@ function Header({login, user, isLogin}) {
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
         localStorage.removeItem('user');
+        localStorage.removeItem('role');
+        localStorage.removeItem('email');
         axiosInstance.defaults.headers['Authorization'] = null;
 
         history('/login')
@@ -120,6 +125,7 @@ function Header({login, user, isLogin}) {
                     noWrap
                     className={classes.toolbarTitle}
                 >
+                    <div className='banner-blogs'>
                     <Link
                         component={NavLink}
                         to="/blog"
@@ -138,6 +144,7 @@ function Header({login, user, isLogin}) {
                         underline="none"
                         color="textPrimary"
                         className={classes.banner}
+
                     >
                         Bài viết
                     </Link>
@@ -168,7 +175,7 @@ function Header({login, user, isLogin}) {
                     >
                         Liên hệ
                     </Link>
-
+</div>
                 </Typography>
                 <SearchBar
                     value={data.search}

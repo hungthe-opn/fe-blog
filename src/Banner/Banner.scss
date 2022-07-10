@@ -28,4 +28,22 @@
       color: #5488c7;
     }
   }
+  &_post{
+    width:95px;
+    background-color: #5488c7;
+    border-color: #5488c7;
+    border-radius:4px;
+    border-style: solid;
+    border-width: 1px;
+    padding:6px 12px;
+    text-align: center;
+          color: #ffffff;
+
+    text-transform: uppercase;
+    &_pen{
+      height:14px;
+      width:12px;
+      color: #ffffff;
+    }
+  }
 }

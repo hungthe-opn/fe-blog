@@ -8,6 +8,8 @@ import Register from './components/Register/Register'
 import SignIn from './components/Login/login'
 import SignUp from './components/Logout/logout'
 import Blog from './components/BlogIT/blogit'
+import CreateBlog from './components/BlogIT/CreateBlog'
+
 import BlogDetail from "./components/BlogIT/blogdetail";
 import Loading from "./Loading/Loading"
 import Category from "./components/BlogIT/category";
@@ -112,6 +114,7 @@ const Application = () => {
                             <Route path='/login' element={<SignIn login={handleLogin}/>}/>
                             <Route path='/logout' element={<SignUp/>}/>
                             <Route path='/blog' element={<Blog/>}/>
+                            <Route path='/create' element={<Create/>}/>
                             <Route path='/category/:id' element={<Category/>}/>
                             <Route path='/blog/:id' element={<BlogDetail/>}/>
                             <Route path='/user' element={<UserInfo/>}/>
