@@ -349,7 +349,7 @@ const BlogDetail = (props) => {
                         <div className=''>
                             <Alert severity="info">
                                 <AlertTitle>Nguồn :</AlertTitle>
-                                Tài liệu tham khảo tại : — <strong><a href="">{blog.source}</a></strong>
+                                Tài liệu tham khảo tại : — <strong><a href={blog.source}>{blog.source}</a></strong>
                             </Alert>
                         </div>
 

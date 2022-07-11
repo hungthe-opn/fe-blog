@@ -169,8 +169,6 @@ const handleChangePage=(e,page)=> {
                                         {item.title}
                                     </span>
                                         )}
-
-
                                 </div>
                             </h3>
                         </div>

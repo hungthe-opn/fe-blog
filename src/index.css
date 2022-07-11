@@ -15,3 +15,9 @@ code {
 html {
   scroll-behavior: smooth;
 }
+pre{
+  background-color: #001e3c;
+  color: #1a2027;
+  border-radius:10px;
+  font-family: monospace;
+}

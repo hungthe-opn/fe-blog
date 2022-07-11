@@ -42,14 +42,13 @@ const UserEdit = () => {
     }, [updateFormData]);
 
     const handleChange = (e) => {
-        console.log(e)
+
         updateFormData({
             ...formData,
             [e.target.name]: e.target.value,
         });
     };
     const handleChange1 = e => {
-        console.log(e)
         setImage(URL.createObjectURL(e.target.files[0]));
         console.log(image)
 

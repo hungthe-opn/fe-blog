@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, createContext, } from "react";
+import React, {useState, useEffect, useRef, createContext,} from "react";
 import './index.css';
 import {Route, BrowserRouter as Router, Routes} from 'react-router-dom'
 import App from "./App";
@@ -25,6 +25,7 @@ import UserInfo from './components/Userinfo/User'
 import UserEdit from './components/UserEdit/UserEdit'
 import Store from './components/Context/Context'
 import CustomizedTables from './components/BlogIT/AdminBlog'
+
 const Application = () => {
     const [loading, setLoading] = useState(true)
     const [login, setLogin] = useState(false)
@@ -106,7 +107,7 @@ const Application = () => {
                     <div ref={scrollRef} className="scroll-top" onClick={() => window.scrollTo(0, 0)}/>
                     {loading ? <Loading/> : <div>
 
-                        <Header login={login} isLogin={handleLogout}  user={userName} email={userEmail}/>
+                        <Header login={login} isLogin={handleLogout} user={userName} email={userEmail}/>
 
                         <Routes>
                             <Route path='/' element={<App loading={login} dataBlog={blogs}/>}/>
@@ -115,7 +116,7 @@ const Application = () => {
                             <Route path='/logout' element={<SignUp/>}/>
                             <Route path='/blog' element={<Blog/>}/>
                             <Route path='/create' element={<CreateBlog/>}/>
-                                                        <Route path='/admin-blog' element={<CustomizedTables/>}/>
+                            <Route path='/admin-blog' element={<CustomizedTables/>}/>
 
                             <Route path='/category/:id' element={<Category/>}/>
                             <Route path='/blog/:id' element={<BlogDetail/>}/>
