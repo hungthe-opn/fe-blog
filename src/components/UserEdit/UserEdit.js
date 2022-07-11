@@ -6,7 +6,6 @@ import Button from "@mui/material/Button";
 import {UserContext} from "../Context/Context";
 import {useNavigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
-
 const UserEdit = () => {
 
     const imageID = useContext(UserContext).image;
@@ -60,16 +59,6 @@ const handleUser = () => {
     };
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(e.target[0].value)
-
-        console.log(e.target[1].value)
-
-        console.log(e.target[2].value)
-
-        console.log(e.target[3].value)
-
-        console.log(e.target[4].value)
-        console.log(e.target[0].files)
         const min = 1;
         const max = 100;
         const rand = min + Math.random() *(max - min)
@@ -82,7 +71,6 @@ const handleUser = () => {
         formData.append('user_name', e.target[2].value)
         formData.append('first_name', e.target[3].value)
         formData.append('about', e.target[4].value)
-        console.log('file', file)
         axiosInstance.patch('user/update/', formData)
             .then((res) => {
                 console.log(res)

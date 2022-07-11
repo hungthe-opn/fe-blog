@@ -15,6 +15,7 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "@tinymce/tinymce-react": "^4.1.0",
     "axios": "^0.24.0",
     "bootstrap-icons": "^1.7.2",
     "dotenv": "^16.0.1",
@@ -30,7 +31,9 @@
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.0.2",
     "react-scripts": "4.0.3",
+    "react-select": "^5.4.0",
     "react-share": "^4.4.0",
+    "suneditor-react": "^3.4.0",
     "web-vitals": "^1.0.1"
   },
   "scripts": {

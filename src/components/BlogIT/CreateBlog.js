@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import axiosInstance from "../../axios";
 import {useNavigate} from 'react-router-dom';
 //MaterialUI
@@ -8,185 +8,217 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-//review css for maturial
+import SunEditor, {buttonList} from 'suneditor-react';
+import 'suneditor/dist/css/suneditor.min.css';
+import Select from '@material-ui/core/Select';
+import MenuItem from "@mui/material/MenuItem";
+
 const useStyles = makeStyles((theme) => ({
-	paper: {
-		marginTop: theme.spacing(8),
-		display: 'flex',
-		flexDirection: 'column',
-		alignItems: 'center',
-	},
-	avatar: {
-		margin: theme.spacing(1),
-		backgroundColor: theme.palette.secondary.main,
-	},
-	form: {
-		width: '100%', // Fix IE 11 issue.
-		marginTop: theme.spacing(3),
-	},
-	submit: {
-		margin: theme.spacing(3, 0, 2),
-	},
+    paper: {
+        marginTop: theme.spacing(8), display: 'flex', flexDirection: 'column', alignItems: 'center',
+    }, avatar: {
+        margin: theme.spacing(1), backgroundColor: theme.palette.secondary.main,
+    }, form: {
+        width: '100%', // Fix IE 11 issue.
+        marginTop: theme.spacing(3),
+    }, submit: {
+        margin: theme.spacing(3, 0, 2),
+    },
 }));
 
 export default function CreateBlog() {
-	function slugify(string) {
-		//character conversion
-		const a =
-			'àáâäæãåāăąçćčđďèéêëēėęěğǵḧîïíīįìłḿñńǹňôöòóœøōõőṕŕřßśšşșťțûüùúūǘůűųẃẍÿýžźż·/_,:;';
-		const b =
-			'aaaaaaaaaacccddeeeeeeeegghiiiiiilmnnnnoooooooooprrsssssttuuuuuuuuuwxyyzzz------';
-		const p = new RegExp(a.split('').join('|'), 'g');
+    const history = useNavigate();
+    const initialFormData = Object.freeze({
+        title: '', slug: '', excerpt: '', content: '', description: '', category: '', source: ''
+    });
+    const [formData, updateFormData] = useState(initialFormData);
+    const [contects, setContects] = useState(initialFormData);
 
-		return string
-			.toString()
-			.toLowerCase()
-			.replace(/\s+/g, '-') // Replace spaces with -
-			.replace(p, (c) => b.charAt(a.indexOf(c))) // Replace special characters
-			.replace(/&/g, '-and-') // Replace & with 'and'
-			.replace(/[^\w\-]+/g, '') // Remove all non-word characters
-			.replace(/\-\-+/g, '-') // Replace multiple - with single -
-			.replace(/^-+/, '') // Trim - from start of text
-			.replace(/-+$/,	 ''); // Trim - from end of text
-	}
-	//
-	const history = useNavigate();
-	const initialFormData = Object.freeze({
-		title: '',
-		slug: '',
-		excerpt: '',
-		content: '',
-		user:'',
-	});
+    const [category, setCategory] = useState();
+    useEffect(() => {
+        axiosInstance.get('category/').then((res) => {
+            const allPosts = res.data.data;
+            setCategory(allPosts);
+        });
+    }, []);
+    const onChangeCategory = (e) => {
+        console.log(formData)
 
-	const [formData, updateFormData] = useState(initialFormData);
+        const newFormValue = {...formData, category: e.target.value}
+        updateFormData(newFormValue)
+    }
+    const handleChangeContent = (content) => {
 
-	const handleChange = (e) => {
-		if ([e.target.name] == 'title') {
-			updateFormData({
-				...formData,
-				[e.target.name]: e.target.value.trim(),
-				['slug']: slugify(e.target.value.trim()),
-			});
-		} else {
-			updateFormData({
-				...formData,
-				[e.target.name]: e.target.value.trim(),
-			});
-		}
-	};
-	// summit value
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		axiosInstance
-			.post(`admin/create/`, {
-				title: formData.title,
-				user: formData.user,
-				slug: formData.slug,
-				author: 1,
-				excerpt: formData.excerpt,
-				content: formData.content,
-			})
-			.then((res) => {
-				history('/');
-			});
-	};
+        const newFormValue = {...contects, content: content}
+        setContects(newFormValue)
+    };
+    console.log(contects)
+    const handleChangeDes = (e) => {
+        const newFormValue = {...formData, description: e.target.value}
+        updateFormData(newFormValue)
+    };
+    const onChangeTitle = (e) => {
 
-	const classes = useStyles();
+        const newFormValue = {...formData, title: e.target.value}
+        console.log(newFormValue)
+        updateFormData(newFormValue)
+    };
 
-	return (
-		<Container component="main" maxWidth="xs">
-			<CssBaseline />
-			<div className={classes.paper}>
-				<Avatar className={classes.avatar}></Avatar>
-				<Typography component="h1" variant="h5">
-					Create New Post
-				</Typography>
-				<form className={classes.form} noValidate>
-					<Grid container spacing={2}>
-						<Grid item xs={12}>
-							<TextField
-								variant="outlined"
-								required
-								fullWidth
-								id="title"
-								label="Post Title"
-								name="title"
-								autoComplete="title"
-								onChange={handleChange}
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								variant="outlined"
-								required
-								fullWidth
-								id="user"
-								label="User"
-								name="user"
-								autoComplete="user"
-								onChange={handleChange}
-								multiline
+    const handleChangeSource = (e) => {
+        const newFormValue = {...formData, source: e.target.value}
+        updateFormData(newFormValue)
+    };
 
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								variant="outlined"
-								required
-								fullWidth
-								id="excerpt"
-								label="Post Excerpt"
-								name="excerpt"
-								autoComplete="excerpt"
-								onChange={handleChange}
-								multiline
-								rows={4}
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								variant="outlined"
-								required
-								fullWidth
-								id="slug"
-								label="slug"
-								name="slug"
-								autoComplete="slug"
-								value={formData.slug}
-								onChange={handleChange}
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<TextField
-								variant="outlined"
-								required
-								fullWidth
-								id="content"
-								label="content"
-								name="content"
-								autoComplete="content"
-								onChange={handleChange}
-								multiline
-								rows={4}
-							/>
-						</Grid>
+    const handleChangeExcerpt = (e) => {
+        const newFormValue = {...formData, excerpt: e.target.value}
+        updateFormData(newFormValue)
+    };
 
-					</Grid>
-					<Button
-						type="submit"
-						fullWidth
-						variant="contained"
-						color="primary"
-						className={classes.submit}
-						onClick={handleSubmit}
-					>
-						Create Post
-					</Button>
-				</form>
-			</div>
-		</Container>
-	);
+    const handleChangeSlug = (e) => {
+        const newFormValue = {...formData, slug: e.target.value}
+        updateFormData(newFormValue)
+    };
+
+    console.log(formData)
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axiosInstance
+            .post(`post-empl/`, {
+                title:formData.title,
+                content:contects.content,
+                slug:formData.slug,
+                category:formData.category,
+                source:formData.source,
+                description:formData.description,
+            })
+            .then((res) => {
+                console.log(res)
+                history('/');
+            });
+    };
+
+    const classes = useStyles();
+
+    return (<Container component="main">
+        <CssBaseline/>
+        <div className={classes.paper}>
+            <Avatar className={classes.avatar}></Avatar>
+            <Typography component="h1" variant="h5">
+                Create New Post
+            </Typography>
+            <form className={classes.form} noValidate>
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <TextField
+                            variant="outlined"
+                            required
+                            fullWidth
+                            id="title"
+                            label="Nhập tiêu đề"
+                            name="title"
+                            autoComplete="title"
+                            onChange={onChangeTitle}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            variant="outlined"
+                            required
+                            fullWidth
+                            id="excerpt"
+                            label="Nhập trích dẫn"
+                            name="excerpt"
+                            autoComplete="excerpt"
+                            onChange={handleChangeExcerpt}
+                            multiline
+                            rows={4}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            variant="outlined"
+                            required
+                            fullWidth
+                            id="description"
+                            label="Nhập lý do"
+                            name="description"
+                            autoComplete="description"
+                            onChange={handleChangeDes}
+                            multiline
+                            rows={4}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            variant="outlined"
+                            required
+                            fullWidth
+                            id="source"
+                            label="Nhập nguồn của bài viết!"
+                            name="source"
+                            autoComplete="source"
+                            onChange={handleChangeSource}
+                            multiline
+                            rows={4}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Select
+                            variant="outlined"
+                            required
+                            fullWidth
+                            id="category"
+                            label="Category"
+                            name="category"
+                            autoComplete="category"
+                            onChange={onChangeCategory}
+                            multiline
+                            rows={4}
+                        >
+                            {category?.length > 0 && category.map((item) => {
+                                return (<MenuItem value={item.id}>{item.name}</MenuItem>)
+                            })}
+                        </Select>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            variant="outlined"
+                            required
+                            fullWidth
+                            id="slug"
+                            label="slug"
+                            name="slug"
+                            autoComplete="slug"
+                            onChange={handleChangeSlug}
+                        />
+                    </Grid>
+                </Grid>
+
+                <SunEditor
+                    name="content"
+                    width="100%"
+                    height="150px"
+                    setOptions={{
+                        buttonList: [["undo", "redo"], ["removeFormat"], ["bold", "underline", "italic", "fontSize"], ["fontColor", "hiliteColor"], ["align", "horizontalRule", "list"], ["table", "link", "image", "imageGallery","preview","blockquote","formatBlock","formatBlock","paragraphStyle"], ["showBlocks", "codeView","textStyle"]],
+                        colorList: [["#828282", "#FF5400", "#676464", "#F1F2F4", "#FF9B00", "#F00", "#fa6e30", "#000", "rgba(255, 153, 0, 0.1)", "#FF6600", "#0099FF", "#74CC6D", "#FF9900", "#CCCCCC"]],
+
+                    }}
+                    onChange={handleChangeContent}
+                />
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                    onClick={handleSubmit}
+                >
+                    Đăng bài
+                </Button>
+            </form>
+        </div>
+    </Container>);
 }

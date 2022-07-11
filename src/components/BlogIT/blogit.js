@@ -9,12 +9,13 @@ import {faAnchorCircleCheck, faCheck, faEye, faUser, faUsersViewfinder} from "@f
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import Banner from '../../Banner/Banner'
+const PER_PAGE = 10;
 const Blog = () => {
-
     const [blogs, setBlogs] = useState([]);
     const [featuredBlog, setFeaturedBlog] = useState([]);
     const [categories, setCategory] = useState([]);
-
+    const [page, setPages] = useState(1);
+    const [pagi,setPagi] = useState()
     // get featured data
     useEffect(() => {
         axiosInstance.get('blog/featured/').then((res) => {
@@ -27,18 +28,20 @@ const Blog = () => {
         axiosInstance.get('category/').then((res) => {
             const allPosts = res.data.data;
             setCategory(allPosts);
-            console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',allPosts)
         });
 
     }, []);
+const handleChangePage=(e,page)=> {
+    setPages(page)
 
+    }
     useEffect(() => {
-        axiosInstance.get('blog/').then((res) => {
+        axiosInstance.get(`blog?page=${page}`).then((res) => {
             const allPosts = res.data.data;
             setBlogs(allPosts);
-
+            setPagi(res.data.pagination)
         });
-    }, []);
+    }, [page]);
 
     // toUpperCase text
     const capitalizeFirstLetter = (word) => {
@@ -55,12 +58,13 @@ const Blog = () => {
                                             <a href="">
                                                 <Link to={`/blog/${categorys.id}`}>
                                             {categorys.name}
-                                            </Link></a>
+                                            </Link>
+                                            </a>
 
 
                                         </p>
                                         <p className='hidden-md-down_user-profile_stats_link_count'>
-                                            3
+                                            {categorys.counter}
                                         </p>
                                     </span>
 
@@ -203,16 +207,10 @@ const Blog = () => {
         return result
 
     }
-
-    //increments to 6 when is pressed
-
     return (<>
-
             <div className="body">
                 <div className="body_image">
-
                     <img src={mainLogo} alt="" className='body_image_banner'/>
-
                 </div>
                 <Banner></Banner>
                 <div className="text-center">
@@ -228,10 +226,9 @@ const Blog = () => {
                             </div>
                             <div className='body-pagination'>
                                 <Stack spacing={2}>
-                                <Pagination count={10} variant="outlined"/>
+                                <Pagination count={Math.ceil(pagi?.total_row/PER_PAGE) || 0} page={page} onChange={handleChangePage} variant="outlined"/>
                                 </Stack>
                             </div>
-
                         </div>
                         <div className='col col-3'>
                             <div className='sticky'>
@@ -241,15 +238,12 @@ const Blog = () => {
                                             Bài biết đáng chú ý
                                         </h4>
                                     </a>
-
                                 </div>
-
                                 <div className="sticky_featured">
                                         <h4>
                                              <Link to={`/blog/${featuredBlog.id}`}>
                                      {featuredBlog.title}
                                 </Link>
-
                                         </h4>
                                     <div className="sticky_featured_sidebar">
                                         {featuredBlog.view_count}
@@ -264,11 +258,9 @@ const Blog = () => {
                                            Danh mục bài biết
                                         </h4>
                                     </a></div>
-
                                 </div>
                                  <div>
                                                <div className='hidden-md-down_user-profile_stats'>
-
                                          {category()}
                                                </div>
                                      </div>

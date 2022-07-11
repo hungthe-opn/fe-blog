@@ -24,7 +24,7 @@ import Edit from './components/adminblog/edit'
 import UserInfo from './components/Userinfo/User'
 import UserEdit from './components/UserEdit/UserEdit'
 import Store from './components/Context/Context'
-
+import CustomizedTables from './components/BlogIT/AdminBlog'
 const Application = () => {
     const [loading, setLoading] = useState(true)
     const [login, setLogin] = useState(false)
@@ -114,7 +114,9 @@ const Application = () => {
                             <Route path='/login' element={<SignIn login={handleLogin}/>}/>
                             <Route path='/logout' element={<SignUp/>}/>
                             <Route path='/blog' element={<Blog/>}/>
-                            <Route path='/create' element={<Create/>}/>
+                            <Route path='/create' element={<CreateBlog/>}/>
+                                                        <Route path='/admin-blog' element={<CustomizedTables/>}/>
+
                             <Route path='/category/:id' element={<Category/>}/>
                             <Route path='/blog/:id' element={<BlogDetail/>}/>
                             <Route path='/user' element={<UserInfo/>}/>

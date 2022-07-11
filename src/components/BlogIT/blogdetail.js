@@ -7,22 +7,19 @@ import {faCaretDown, faCaretUp, faCheck, faEye, faFan, faShare, faUser,} from "@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import mainLogo from "../../img/1.png"
 import {
-    FacebookIcon,
-    FacebookShareButton,
-    TwitterShareButton,
-    TwitterIcon,
-    EmailShareButton,
-    EmailIcon
+    FacebookIcon, FacebookShareButton, TwitterShareButton, TwitterIcon, EmailShareButton, EmailIcon
 } from 'react-share';
 import Button from '@material-ui/core/Button';
 import {Alert, AlertTitle} from "@mui/material";
-import {FacebookProvider, Comments ,Share} from 'react-facebook';
+import {FacebookProvider, Comments, Share} from 'react-facebook';
 import Comment from '../Comment/Comment'
+
 const BlogDetail = (props) => {
     const [blog, setBlog] = useState({})
     const [blogs, setBlogs] = useState([]);
     const [upvote, setUpvote] = useState();
     const [downvote, setDownvote] = useState();
+    const content = blog.content
     const id = useParams()
     const up = id.id
     const shareUrl = +process.env.REACT_APP_IS_LOCALHOST === 1 ? "https://peing.net/ja/" : window.location.href;
@@ -40,11 +37,11 @@ const BlogDetail = (props) => {
         });
     }, []);
     const increment = (e) => {
-        console.log(e.target.value)
+        console.log(e.target.value, 11111111111)
         setUpvote(upvote + 1)
     }
 
-    const decrement = () => {
+    const decrement = (e) => {
         setDownvote(downvote - 1)
     }
     useEffect(() => {
@@ -223,14 +220,11 @@ const BlogDetail = (props) => {
                                 <div className='body-post_feed' style={{width: '700px', height: '73px'}}>
                                     <div className='body-post_feed_meta'>
                                         <a href="" className='body-post_feed_meta_user'>
-                                            {blog.rank == 'Quản trị viên' ? (
-                                                <span>
+                                            {blog.rank == 'Quản trị viên' ? (<span>
                                             <FontAwesomeIcon icon={faUser}
                                                              className="fa"/>{blog.author_name}
-                                                </span>
-                                            ) : (<div>{blog.author_name}
-                                            </div>)
-                                            }
+                                                </span>) : (<div>{blog.author_name}
+                                            </div>)}
                                             <div className='body-post_feed_meta_user_info'>
                                                 <div className='body-post_feed_meta_user_info_user'>
 
@@ -247,10 +241,8 @@ const BlogDetail = (props) => {
                                                                 <span>
                                             <FontAwesomeIcon icon={faCheck}
                                                              className="fa"/>{blog.author_name}
-                                                </span>
-                                                            ) : (<div>{blog.author_name}
-                                                            </div>)
-                                                            }
+                                                </span>) : (<div>{blog.author_name}
+                                                            </div>)}
 
                                                         </a>
                                                         <div><span
@@ -260,12 +252,10 @@ const BlogDetail = (props) => {
 
                                         </span>
                                                             <div>
-                                                                {blog.rank == 'Quản trị viên' ? (
+                                                                {blog.rank == 'Quản trị viên' ? (<span
+                                                                    className="badge rounded-pill bg-primary">{blog.rank}</span>) : (
                                                                     <span
-                                                                        className="badge rounded-pill bg-primary">{blog.rank}</span>
-                                                                ) : (<span
-                                                                        className="badge rounded-pill bg-success">{blog.rank}</span>
-                                                                )}
+                                                                        className="badge rounded-pill bg-success">{blog.rank}</span>)}
 
                                                             </div>
                                                             <div
@@ -333,6 +323,7 @@ const BlogDetail = (props) => {
                             15.x.x.</h1>
                         <div className='d-md-flex'></div>
                         <div>
+                            <div dangerouslySetInnerHTML={{__html: content}}/>
                             Từ thuở sơ khai, systems administrators chuẩn bị server vật lý như cài đặt OS, driver, đảm
                             bảo memory/disk/processor để deploy phần mềm. Ngoài ra họ còn phải quan tâm tới việt
                             upgrades và những thứ khác liên quan phần cứng để deploy phần mềm(software). Phần
