@@ -57,6 +57,7 @@ function Header({login, user, isLogin}) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [blogs, setBlogs] = useState([]);
     const data1 = useContext(UserContext).setData(blogs.user_name, blogs.image, blogs.email);
+    var myData = localStorage.getItem('role');
 
 
     useEffect(() => {
@@ -246,6 +247,7 @@ function Header({login, user, isLogin}) {
                             <MenuItem onClick={handleEdit} className="fa"> <FontAwesomeIcon icon={faUserEdit}
                                                                                             className="fa"/>Chỉnh sửa
                                 thông tin</MenuItem>
+
                             <MenuItem onClick={logoutHandle}>
                                 <FontAwesomeIcon icon={faSignOut} className="fa"/>
                                 Đăng xuất</MenuItem>

@@ -16,7 +16,7 @@ const Banner = () => {
                     <a href="/series" className='profile-tab_item_link'>Series</a>
                     <a href="/" className='profile-tab_item_link'>Câu hỏi</a>
                     <a href="/follow" className='profile-tab_item_link'>Đang theo dõi</a>
-                    <a href="/contact" className='profile-tab_item_link'>Liên hệ</a>
+                    <a href="/contacts" className='profile-tab_item_link'>Liên hệ</a>
                     {myData == 'author' || myData == 'admin' ? (
                         <div style={{padding: '11px', marginLeft: '257px'}}>
                          <a href="/create" className='profile-tab_post'>
