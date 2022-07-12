@@ -9,13 +9,30 @@ import {faAnchorCircleCheck, faCheck, faEye, faUser, faUsersViewfinder} from "@f
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import Banner from '../../Banner/Banner'
+import {makeStyles} from "@material-ui/core/styles";
+import cx from 'clsx';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import BrandCardHeader from '@mui-treasury/components/cardHeader/brand';
+import TextInfoContent from '@mui-treasury/components/content/textInfo';
+import {useN03TextInfoContentStyles} from '@mui-treasury/styles/textInfoContent/n03';
+import {useLightTopShadowStyles} from '@mui-treasury/styles/shadow/lightTop';
+
 const PER_PAGE = 10;
+const useStyles = makeStyles(() => ({
+    root: {
+        borderRadius: 20,
+    },
+    content: {
+        padding: 24,
+    },
+}));
 const Blog = () => {
     const [blogs, setBlogs] = useState([]);
     const [featuredBlog, setFeaturedBlog] = useState([]);
     const [categories, setCategory] = useState([]);
     const [page, setPages] = useState(1);
-    const [pagi,setPagi] = useState()
+    const [pagi, setPagi] = useState()
     // get featured data
     useEffect(() => {
         axiosInstance.get('blog/featured/').then((res) => {
@@ -24,15 +41,15 @@ const Blog = () => {
         });
 
     }, []);
- useEffect(() => {
+    useEffect(() => {
         axiosInstance.get('category/').then((res) => {
             const allPosts = res.data.data;
             setCategory(allPosts);
         });
 
     }, []);
-const handleChangePage=(e,page)=> {
-    setPages(page)
+    const handleChangePage = (e, page) => {
+        setPages(page)
 
     }
     useEffect(() => {
@@ -49,11 +66,11 @@ const handleChangePage=(e,page)=> {
             return word.charAt(0).toUpperCase() + word.slice(1);
         return '';
     }
-    const category = ()=>{
+    const category = () => {
         let result = [];
         const list = categories && categories.length > 0 && categories.map((categorys) => {
             return (
-                                    <span className="hidden-md-down_user-profile_stats_link">
+                <span className="hidden-md-down_user-profile_stats_link">
                                         <p>
                                             <a href="">
                                                 <Link to={`/blog/${categorys.id}`}>
@@ -73,7 +90,7 @@ const handleChangePage=(e,page)=> {
                 ;
 
         })
-  for (let i = 0; i < list.length; i +=2) {
+        for (let i = 0; i < list.length; i += 2) {
             result.push
             (
                 <div>
@@ -88,6 +105,52 @@ const handleChangePage=(e,page)=> {
         }
         return result
     }
+    const styles = useStyles();
+    const ProjectCardDemo = () => {
+        const styles = useN03TextInfoContentStyles();
+        const shadowStyles = useLightTopShadowStyles();
+        const cardStyles = useStyles();
+
+        let result = [];
+        const list = blogs && blogs.length > 0 && blogs.map((blogPost) => {
+            return (
+                <Card className={cx(cardStyles.root, shadowStyles.root)}>
+                    <div>
+                        <img className='body-post_img' style={{margin:'33px'}} src={blogPost.avatar_author} alt=""/>
+
+
+                        {blogPost.time_read} MINUTES
+                    </div>
+
+                    <CardContent className={cardStyles.content}>
+                        <TextInfoContent
+                            classes={styles}
+                            overline={'FACEBOOK INC.'}
+                            heading={'React'}
+                            body={
+                                'A JavaScript library for building user interfaces. Build encapsulated components that manage their own state, then compose them to make complex UIs.'
+                            }
+                        />
+                    </CardContent>
+                </Card>)
+                ;
+
+        })
+        for (let i = 0; i < list.length; i += 2) {
+            result.push
+            (
+                <div>
+                    <div className=''>
+                        {list[i]}
+                    </div>
+                    <div className=''>{list[i + 1] ? list[i + 1] : null}
+                    </div>
+                </div>
+            )
+        }
+        return result
+
+    }
     const getBlogs = () => {
 
         let result = [];
@@ -99,58 +162,62 @@ const handleChangePage=(e,page)=> {
                     <div className='body-post_feed'>
                         <div className='body-post_feed_meta'>
                             <a href="" className='body-post_feed_meta_user'>
-                                  {blogPost.rank=='Quản trị viên'?(
-                                                <span>
+                                {blogPost.rank == 'Quản trị viên' ? (
+                                    <span>
                                             <FontAwesomeIcon icon={faUser}
-                                             className="fa" />{blogPost.author_name}
+                                                             className="fa"/>{blogPost.author_name}
                                                 </span>
-                                               ):(<div>{blogPost.author_name}
-                                            </div>)
-                                            }
-                            <div className='body-post_feed_meta_user_info'>
-                                <div className='body-post_feed_meta_user_info_user'>
+                                ) : (<div>{blogPost.author_name}
+                                </div>)
+                                }
+                                <div className='body-post_feed_meta_user_info'>
+                                    <div className='body-post_feed_meta_user_info_user'>
 
-                                    <a href="" className='body-post_feed_meta_user_info_user_a'>
-                                        <img src={blogPost.avatar_author} className='body-post_feed_meta_user_info_user_a_img' alt=""/>
-                                    </a>
-                                    <div className='body-post_feed_meta_user_info_user_name' >
-                                        <a href="" className='body-post_feed_meta_user_info_user_name_a'>
-                                            {blogPost.rank=='Quản trị viên'?(
-
-                                                <span>
-                                            <FontAwesomeIcon icon={faCheck}
-                                             className="fa" />{blogPost.author_name}
-                                                </span>
-                                               ):(<div>{blogPost.author_name}
-                                            </div>)
-                                            }
-
+                                        <a href="" className='body-post_feed_meta_user_info_user_a'>
+                                            <img src={blogPost.avatar_author}
+                                                 className='body-post_feed_meta_user_info_user_a_img' alt=""/>
                                         </a>
-                                        <div><span className='body-post_feed_meta_user_info_user_name_span'>
+                                        <div className='body-post_feed_meta_user_info_user_name'>
+                                            <a href="" className='body-post_feed_meta_user_info_user_name_a'>
+                                                {blogPost.rank == 'Quản trị viên' ? (
+
+                                                    <span>
+                                            <FontAwesomeIcon icon={faCheck}
+                                                             className="fa"/>{blogPost.author_name}
+                                                </span>
+                                                ) : (<div>{blogPost.author_name}
+                                                </div>)
+                                                }
+
+                                            </a>
+                                            <div><span className='body-post_feed_meta_user_info_user_name_span'>
                                                 @{blogPost.author_email}
 
 
                                         </span>
-                                             <div>
-                                                 {blogPost.rank=='Quản trị viên'?(
-                                                     <span className="badge rounded-pill bg-primary">{blogPost.rank}</span>
-                                                 ):(<span className="badge rounded-pill bg-success">{blogPost.rank}</span>
-                                                 )}
+                                                <div>
+                                                    {blogPost.rank == 'Quản trị viên' ? (
+                                                        <span
+                                                            className="badge rounded-pill bg-primary">{blogPost.rank}</span>
+                                                    ) : (<span
+                                                            className="badge rounded-pill bg-success">{blogPost.rank}</span>
+                                                    )}
 
-                                             </div>
-                                        <div className='body-post_feed_meta_user_info_user_name_div'>
-                                             <FontAwesomeIcon icon={faEye}
-                                             className="fa"/>
-                                {blogPost.view_count}
-                                        </div></div>
+                                                </div>
+                                                <div className='body-post_feed_meta_user_info_user_name_div'>
+                                                    <FontAwesomeIcon icon={faEye}
+                                                                     className="fa"/>
+                                                    {blogPost.view_count}
+                                                </div>
+                                            </div>
 
-                                    </div>
-                                    <div className='body-post_feed_meta_user_info_user_follow'>
+                                        </div>
+                                        <div className='body-post_feed_meta_user_info_user_follow'>
 
 
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             </a>
                             <span className='body-post_feed_meta_link'> Thời gian tạo {blogPost.time_post}</span>
                             <span className='body-post_feed_meta_link'> Ngày cập nhật {blogPost.time_update}</span>
@@ -158,17 +225,17 @@ const handleChangePage=(e,page)=> {
                         <div className='body-post_feed_title'>
                             <h3 className='body-post_feed_title_word'>
                                 <div className='body-post_feed_title_word_title'>
-                                <a href="" className='body-post_feed_title_word_a'>
-                                <Link to={`/blog/${blogPost.id}`}>
-                                    {blogPost.title}
-                                </Link></a></div>
+                                    <a href="" className='body-post_feed_title_word_a'>
+                                        <Link to={`/blog/${blogPost.id}`}>
+                                            {blogPost.title}
+                                        </Link></a></div>
                                 <div className='body-post_feed_title_word_tags'>
                                     {blogPost.tags.map(item =>
-                                         <span className="badge text-bg-secondary body-post_feed_title_word_tags_cate "
-                                          style={{fontSize: '60%%'}}>
+                                            <span className="badge text-bg-secondary body-post_feed_title_word_tags_cate "
+                                                  style={{fontSize: '60%%'}}>
                                         {item.title}
                                     </span>
-                                        )}
+                                    )}
                                 </div>
                             </h3>
                         </div>
@@ -222,9 +289,15 @@ const handleChangePage=(e,page)=> {
                             <div>
                                 {getBlogs()}
                             </div>
+                            <div>
+
+                                {ProjectCardDemo()}
+
+                            </div>
                             <div className='body-pagination'>
                                 <Stack spacing={2}>
-                                <Pagination count={Math.ceil(pagi?.total_row/PER_PAGE) || 0} page={page} onChange={handleChangePage} variant="outlined"/>
+                                    <Pagination count={Math.ceil(pagi?.total_row / PER_PAGE) || 0} page={page}
+                                                onChange={handleChangePage} variant="outlined"/>
                                 </Stack>
                             </div>
                         </div>
@@ -238,30 +311,31 @@ const handleChangePage=(e,page)=> {
                                     </a>
                                 </div>
                                 <div className="sticky_featured">
-                                        <h4>
-                                             <Link to={`/blog/${featuredBlog.id}`}>
-                                     {featuredBlog.title}
-                                </Link>
-                                        </h4>
+                                    <h4>
+                                        <Link to={`/blog/${featuredBlog.id}`}>
+                                            {featuredBlog.title}
+                                        </Link>
+                                    </h4>
                                     <div className="sticky_featured_sidebar">
                                         {featuredBlog.view_count}
                                     </div>
-                                     <div className="sticky_featured_feed">
-                                         <a href="">{featuredBlog.author_name} - {featuredBlog.time_post} </a>
+                                    <div className="sticky_featured_feed">
+                                        <a href="">{featuredBlog.author_name} - {featuredBlog.time_post} </a>
                                     </div>
                                 </div>
-                                 <div className="sticky_section">
-                                     <div> <a className="sticky-section_a" href="">
+                                <div className="sticky_section">
+                                    <div><a className="sticky-section_a" href="">
                                         <h4 className="sticky-section_a_h4">
-                                           Danh mục bài biết
+                                            Danh mục bài biết
                                         </h4>
                                     </a></div>
                                 </div>
-                                 <div>
-                                               <div className='hidden-md-down_user-profile_stats'>
-                                         {category()}
-                                               </div>
-                                     </div>
+                                <div>
+                                    <div className='hidden-md-down_user-profile_stats'>
+                                        {category()}
+                                    </div>
+
+                                </div>
                                 <div>
                                 </div>
                             </div>

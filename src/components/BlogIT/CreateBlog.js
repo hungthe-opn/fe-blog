@@ -14,6 +14,7 @@ import SunEditor, {buttonList} from 'suneditor-react';
 import 'suneditor/dist/css/suneditor.min.css';
 import Select from '@material-ui/core/Select';
 import MenuItem from "@mui/material/MenuItem";
+import SelectRE from 'react-select';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -31,11 +32,14 @@ const useStyles = makeStyles((theme) => ({
 export default function CreateBlog() {
     const history = useNavigate();
     const initialFormData = Object.freeze({
-        title: '', slug: '', excerpt: '', content: '', description: '', category: '', source: ''
+        title: '', slug: '', excerpt: '', content: '', description: '', category: '', source: '', tag: '[]'
     });
     const [formData, updateFormData] = useState(initialFormData);
     const [contects, setContects] = useState(initialFormData);
+    const [formtag, setFormTag] = useState(initialFormData);
 
+
+    const [tag, setTag] = useState();
     const [category, setCategory] = useState();
     useEffect(() => {
         axiosInstance.get('category/').then((res) => {
@@ -43,6 +47,14 @@ export default function CreateBlog() {
             setCategory(allPosts);
         });
     }, []);
+
+    useEffect(() => {
+        axiosInstance.get('blog/tag/').then((res) => {
+            const allPosts = res.data.data;
+            setTag(allPosts);
+        });
+    }, [])
+
     const onChangeCategory = (e) => {
         console.log(formData)
 
@@ -71,6 +83,15 @@ export default function CreateBlog() {
         updateFormData(newFormValue)
     };
 
+    const handleChangeTag = (id) => {
+
+        console.log(id);
+
+        const newFormValue = {...formtag, tag: id}
+        console.log(newFormValue)
+        setFormTag(newFormValue)
+    };
+    console.log(tag)
     const handleChangeExcerpt = (e) => {
         const newFormValue = {...formData, excerpt: e.target.value}
         updateFormData(newFormValue)
@@ -87,12 +108,14 @@ export default function CreateBlog() {
         e.preventDefault();
         axiosInstance
             .post(`post-empl/`, {
-                title:formData.title,
-                content:contects.content,
-                slug:formData.slug,
-                category:formData.category,
-                source:formData.source,
-                description:formData.description,
+                title: formData.title,
+                content: contects.content,
+                slug: formData.slug,
+                category: formData.category,
+                source: formData.source,
+                description: formData.description,
+                tags: formtag.tag,
+
             })
             .then((res) => {
                 console.log(res)
@@ -179,9 +202,23 @@ export default function CreateBlog() {
                             rows={4}
                         >
                             {category?.length > 0 && category.map((item) => {
+
                                 return (<MenuItem value={item.id}>{item.name}</MenuItem>)
                             })}
                         </Select>
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        <SelectRE
+                            isMulti
+                            name="colors"
+                            options={tag}
+                            className="basic-multi-select"
+                            classNamePrefix="Chọn thẻ cho bài viết"
+                            getOptionValue={(option) => option.id}
+                            getOptionLabel={(option) => option.title}
+                            onChange={handleChangeTag}
+                        />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
@@ -202,7 +239,7 @@ export default function CreateBlog() {
                     width="100%"
                     height="150px"
                     setOptions={{
-                        buttonList: [["undo", "redo"], ["removeFormat"], ["bold", "underline", "italic", "fontSize"], ["fontColor", "hiliteColor"], ["align", "horizontalRule", "list"], ["table", "link", "image", "imageGallery","preview","blockquote","formatBlock","formatBlock","paragraphStyle"], ["showBlocks", "codeView","textStyle"]],
+                        buttonList: [["undo", "redo"], ["removeFormat"], ["bold", "underline", "italic", "fontSize"], ["fontColor", "hiliteColor"], ["align", "horizontalRule", "list"], ["table", "link", "image", "imageGallery", "preview", "blockquote", "formatBlock", "formatBlock", "paragraphStyle"], ["showBlocks", "codeView", "textStyle"]],
                         colorList: [["#828282", "#FF5400", "#676464", "#F1F2F4", "#FF9B00", "#F00", "#fa6e30", "#000", "rgba(255, 153, 0, 0.1)", "#FF6600", "#0099FF", "#74CC6D", "#FF9900", "#CCCCCC"]],
 
                     }}

@@ -17,33 +17,43 @@ import Comment from '../Comment/Comment'
 const BlogDetail = (props) => {
     const [blog, setBlog] = useState({})
     const [blogs, setBlogs] = useState([]);
-    const [upvote, setUpvote] = useState();
-    const [downvote, setDownvote] = useState();
+    const [upvote, setUpvote] = useState(blog.upvote);
     const content = blog.content
-    const id = useParams()
-    const up = id.id
+    const param = useParams()
+    const up = param.id
     const shareUrl = +process.env.REACT_APP_IS_LOCALHOST === 1 ? "https://peing.net/ja/" : window.location.href;
     console.log(process.env.REACT_APP_IS_LOCALHOST)
-    useEffect(() => {
-        axiosInstance.post('blog/upvote/' + up).then((res) => {
+
+
+    const incrementVote = (e) => {
+        axiosInstance.post(`blog/upvote/${up}`).then((res) => {
             const allPosts = res.data;
-            setUpvote(allPosts);
-        });
-    }, []);
-    useEffect(() => {
-        axiosInstance.post('blog/downvote/' + up).then((res) => {
+            if (allPosts.response_msg === 'SUCCESS') {
+                setUpvote((prev) => prev + 1);
+
+            } else if (allPosts.message === 'downvote to upvote') {
+                setUpvote((prev) => prev + 2);
+            } else alert('errrrrr')
+        }).catch((err) => {
+            alert('errrrrr')
+        })
+        ;
+    }
+    const decrementVote = (e) => {
+        axiosInstance.post(`blog/downvote/${up}`).then((res) => {
             const allPosts = res.data;
-            setDownvote(allPosts);
-        });
-    }, []);
-    const increment = (e) => {
-        console.log(e.target.value, 11111111111)
-        setUpvote(upvote + 1)
+            console.log(allPosts)
+            if (allPosts.response_msg === 'SUCCESS') {
+                setUpvote((prev) => prev - 1);
+
+            } else if (allPosts.message === 'upvote to downvote') {
+                setUpvote((prev) => prev - 2);
+            }
+        }).catch((err) => {
+            alert('vui long nhap lai')
+        })
     }
 
-    const decrement = (e) => {
-        setDownvote(downvote - 1)
-    }
     useEffect(() => {
         axiosInstance.get('blog/' + up).then((res) => {
             console.log(res)
@@ -51,23 +61,11 @@ const BlogDetail = (props) => {
             console.log(allPosts)
 
             setBlog(allPosts);
+            setUpvote(res.data.data.upvote)
+
         });
     }, []);
 
-    //useEffect get id slug
-    useEffect(() => {
-
-        const fetchData = async () => {
-            try {
-                const res = await axios.get(`http://localhost:8000/api/blog/${id}`);
-                setBlog(res.data)
-            } catch (err) {
-            }
-        }
-
-        fetchData()
-
-    }, []);
 
     const getBlogs = () => {
 
@@ -147,17 +145,16 @@ const BlogDetail = (props) => {
             <div className='screen-default'>
                 <div className='row'>
                     <div className='col col-1 screen-default_upvote'>
-                        <Button onClick={increment}><FontAwesomeIcon icon={faCaretUp} style={{paddingLeft: '16px'}}
-                                                                     className="fa"/>
+                        <Button onClick={incrementVote}><FontAwesomeIcon icon={faCaretUp} style={{paddingLeft: '16px'}}
+                                                                         className="fa"/>
                         </Button>
 
                         <div className='screen-default_upvote_count' style={{paddingLeft: '9px'}}>
-                            {blog.upvote}
+                            {upvote}
                         </div>
-                        <Button onClick={decrement}><FontAwesomeIcon icon={faCaretDown}
-                                                                     style={{paddingLeft: '16px'}}
-                                                                     onClick={decrement}
-                                                                     className="fa"/></Button>
+                        <Button onClick={decrementVote}><FontAwesomeIcon icon={faCaretDown}
+                                                                         style={{paddingLeft: '16px'}}
+                                                                         className="fa"/></Button>
 
 
                         <FacebookShareButton
@@ -188,31 +185,6 @@ const BlogDetail = (props) => {
                     </div>
                     <div className='col col-8'>
                         <header className='mb-05'>
-                            {/*<div className='post-content'>*/}
-                            {/*    <div className='post-content_author'>*/}
-                            {/*        <a href="" className='post-content_author_a'>*/}
-                            {/*            <img src={blog.avatar_author}  className='post-content_author_a_img'/>*/}
-                            {/*        </a>*/}
-                            {/*        <div className='post-content_author_flex'>*/}
-                            {/*            <a href="">{blog.author_name}</a></div>*/}
-                            {/*        <div className='post-content_author_stats'></div>*/}
-                            {/*    </div>*/}
-                            {/*    <div className='post-content_post'>*/}
-                            {/*        <div className='post-content_post_text'>*/}
-                            {/*            {blog.time_post}*/}
-                            {/*            <div>*/}
-                            {/*                10 phut*/}
-                            {/*            </div>*/}
-                            {/*        </div>*/}
-                            {/*        <div className='post-content_post_flex' >*/}
-                            {/*            <div className='post-content_post_flex_view'>*/}
-                            {/*                 <FontAwesomeIcon icon={faEye}*/}
-                            {/*                 className="fa"/>*/}
-                            {/*                <span>{blog.view_count}</span>*/}
-                            {/*            </div>*/}
-                            {/*        </div>*/}
-                            {/*    </div>*/}
-                            {/*</div>*/}
                             <div className='body-post' style={{width: '760px', height: '73px'}}>
                                 <img className='body-post_img' style={{width: '45px', height: '45px'}}
                                      src={blog.avatar_author} alt=""/>
@@ -280,24 +252,6 @@ const BlogDetail = (props) => {
                                         <span
                                             className='body-post_feed_meta_link'> Thời gian đọc: 9 phút</span>
                                     </div>
-                                    {/*<div className='body-post_feed_title'>*/}
-                                    {/*    <h3 className='body-post_feed_title_word'>*/}
-                                    {/*        <div className='body-post_feed_title_word_title'>*/}
-                                    {/*        <a href="" className='body-post_feed_title_word_a'>*/}
-                                    {/*        <Link to={`/blog/${blogPost.id}`}>*/}
-                                    {/*            {blogPost.title}*/}
-                                    {/*        </Link></a></div>*/}
-                                    {/*        <div className='body-post_feed_title_word_tags'>*/}
-                                    {/*            {blogPost.tags.map(item =>*/}
-                                    {/*                 <span className="badge text-bg-secondary body-post_feed_title_word_tags_cate "*/}
-                                    {/*                  style={{fontSize: '60%%'}}>*/}
-                                    {/*                {item.title}*/}
-                                    {/*            </span>*/}
-                                    {/*                )}*/}
-
-
-                                    {/*        </div>*/}
-                                    {/*    </h3>*/}
                                     <div className='body-post_feed_starts'>
                                         <span className='body-post_feed_starts_item'>
                                         <FontAwesomeIcon icon={faEye}

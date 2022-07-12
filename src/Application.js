@@ -9,7 +9,7 @@ import SignIn from './components/Login/login'
 import SignUp from './components/Logout/logout'
 import Blog from './components/BlogIT/blogit'
 import CreateBlog from './components/BlogIT/CreateBlog'
-
+import Forum from './components/Forum/Forum'
 import BlogDetail from "./components/BlogIT/blogdetail";
 import Loading from "./Loading/Loading"
 import Category from "./components/BlogIT/category";
@@ -110,7 +110,9 @@ const Application = () => {
                         <Header login={login} isLogin={handleLogout} user={userName} email={userEmail}/>
 
                         <Routes>
-                            <Route path='/' element={<App loading={login} dataBlog={blogs}/>}/>
+                            <Route path='/Fix' element={<App loading={login} dataBlog={blogs}/>}/>
+                            <Route path='/' element={<Forum/>}/>
+
                             <Route path='/register' element={<Register/>}/>
                             <Route path='/login' element={<SignIn login={handleLogin}/>}/>
                             <Route path='/logout' element={<SignUp/>}/>
