@@ -20,11 +20,12 @@ const BlogDetail = (props) => {
     const [upvote, setUpvote] = useState(blog.upvote);
     const content = blog.content
     const param = useParams()
-    const up = param.id
+    const up = param.slug
     const shareUrl = +process.env.REACT_APP_IS_LOCALHOST === 1 ? "https://peing.net/ja/" : window.location.href;
     console.log(process.env.REACT_APP_IS_LOCALHOST)
 
-
+    console.log(param)
+    console.log(up)
     const incrementVote = (e) => {
         axiosInstance.post(`blog/upvote/${up}`).then((res) => {
             const allPosts = res.data;
@@ -273,31 +274,9 @@ const BlogDetail = (props) => {
 
                             </div>
                         </header>
-                        <h1 className='content-type'>Version 1.x.x: compatible with React versions 0.13.x, 0.14.x and
-                            15.x.x.</h1>
                         <div className='d-md-flex'></div>
                         <div>
                             <div dangerouslySetInnerHTML={{__html: content}}/>
-                            Từ thuở sơ khai, systems administrators chuẩn bị server vật lý như cài đặt OS, driver, đảm
-                            bảo memory/disk/processor để deploy phần mềm. Ngoài ra họ còn phải quan tâm tới việt
-                            upgrades và những thứ khác liên quan phần cứng để deploy phần mềm(software). Phần
-                            cứng(hardware) bị gắn chặt với software. Giai đoạn này có tên là Bare metal
-
-                            Tiếp theo đó tới giai đoạn virtual machine, ở giai đoạn này, người ta tạo ra các máy ảo, khi
-                            phần hardware bị lỗi, người ta có thể migrate máy ảo sang phần hardware khác. Ngoài ra
-                            system administrator cũng có thể cho chạy nhiều máy ảo trên cùng một phần cứng để tiết kiệm
-                            chi phí. Tuy nhiên máy ảo có khá nhiều hạn chế.
-
-                            Kỉ nguyên containerized development, tiêu biểu của containerized development là Docker,
-                            OpenVZ... Kỹ thuật này cho phép system administrator chạy nhiều ứng dụng khác nhau trên cùng
-                            hệ thống mà không làm ảnh hưởng tới nhau, cung cấp môi trường nhẹ hơn nhiều so với virtual
-                            machine, hoạt động thống nhất giữa các môi trường.... bạn có thể tìm hiểu thêm về điểm vượt
-                            bật của containerized development so với virtual machine tại đây
-
-                            Với các kiểu mô hình server truyền thống ở trên, chúng ta xây dựng và triển khai trang
-                            web/ứng dụng trên một số cơ sở hạ tầng và phải có trách nhiệm cung cấp, quản lý tài nguyên
-                            cho server. Tuy nhiên, chúng ta có thể gặp một số vấn đề sau:
-
 
                         </div>
                         <div className=''>

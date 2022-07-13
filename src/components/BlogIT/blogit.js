@@ -21,6 +21,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import {useFourThreeCardMediaStyles} from '@mui-treasury/styles/cardMedia/fourThree';
 import {useN04TextInfoContentStyles} from '@mui-treasury/styles/textInfoContent/n04';
 import {useOverShadowStyles} from '@mui-treasury/styles/shadow/over';
+import Container from '@mui/material/Container'
+import {Grid} from "@mui/material";
 
 const PER_PAGE = 10;
 const useStyles = makeStyles(() => ({
@@ -94,7 +96,7 @@ const Blog = () => {
                 <span className="hidden-md-down_user-profile_stats_link">
                                         <p>
                                             <a href="">
-                                                <Link to={`/blog/${categorys.id}`}>
+                                                <Link to={`/blog/${categorys.slug}`}>
                                             {categorys.name}
                                             </Link>
                                             </a>
@@ -140,12 +142,13 @@ const Blog = () => {
                             'https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=934&q=80'
                         }
                     />
-                    <Link to={`/blog/${featuredBlog.id}`} style={{color: '#0056b3'}}>
+                    <Link to={`/blog/${featuredBlog.slug}`} style={{color: '#0056b3',fontSize:'20px'}}>
                         <CardContent>
                             <TextInfoContent
                                 classes={textCardContentStyles}
                                 overline={featuredBlog.category_name}
                                 heading={featuredBlog.title}
+                                style={{}}
                                 body={
                                     featuredBlog.description ? featuredBlog.description.substring(0, 20) : ''
                                 }
@@ -236,9 +239,15 @@ const Blog = () => {
                                     </span>
                             )}
 
-                            <span className='body-post_feed_meta_link'> Thời gian tạo {blogPost.time_post}</span>
+                            <span className='body-post_feed_meta_link'>
+                                <div style={{paddingLeft: '85px'}} >
+                                    Lượt đọc {blogPost.view_count} -
+                                        Thời gian tạo {blogPost.time_post}
+                                </div>
+
+                            </span>
                         </div>
-                        <Link className="link_blog" to={`/blog/${blogPost.id}`} style={{color: '#0056b3'}}>
+                        <Link className="link_blog" to={`/blog/${blogPost.slug}`} style={{color: '#0056b3'}}>
 
                             <CardContent className={cardStyles.content}>
                                 <TextInfoContent
@@ -282,50 +291,71 @@ const Blog = () => {
                     <a href="" className="text-center_body"> >> Tham gia Facebook group "Vì một tương lai lập trình viên
                         hàng đâu" để cùng nhau học tập và kết nối </a>
                 </div>
-                <div className="container"></div>
-                <div className="container  mt-3">
-                    <div className='row'>
-                        <div className='col col-9'>
-                            <div>
+                {/*<div className="container"></div>*/}
+                {/*<div className="container  mt-3">*/}
+                {/*    <div className='row'>*/}
+                {/*        <div className='col col-9'>*/}
+                {/*            <div>*/}
+
+                {/*                {ProjectCardDemo()}*/}
+
+                {/*            </div>*/}
+                {/*            <div className='body-pagination' style={{textAlign: 'center'}}>*/}
+                {/*                <Stack spacing={2}>*/}
+                {/*                    <Pagination color="primary" count={Math.ceil(pagi?.total_row / PER_PAGE) || 0}*/}
+                {/*                                page={page}*/}
+                {/*                                onChange={handleChangePage} variant="outlined"/>*/}
+                {/*                </Stack>*/}
+                {/*            </div>*/}
+                {/*        </div>*/}
+                {/*        <div className='col col-3'>*/}
+                {/*            <div className='sticky'>*/}
+
+                {/*                <div>*/}
+
+                {/*                    {BlogFeatured()}</div>*/}
+
+                {/*                <div className="sticky_section">*/}
+                {/*                    <div><a className="sticky-section_a" href="">*/}
+                {/*                        <h4 className="sticky-section_a_h4">*/}
+                {/*                            Danh mục bài biết*/}
+                {/*                        </h4>*/}
+                {/*                    </a></div>*/}
+                {/*                </div>*/}
+                {/*                <div>*/}
+                {/*                    <div className='hidden-md-down_user-profile_stats'>*/}
+                {/*                        {category()}*/}
+                {/*                    </div>*/}
+
+                {/*                </div>*/}
+                {/*                <div>*/}
+                {/*                     <div>*/}
+
+                {/*                    {BlogFeatured()}</div>*/}
+                {/*                </div>*/}
+                {/*            </div>*/}
+                {/*        </div>*/}
+                {/*    </div>*/}
+
+
+                {/*</div>*/}
+                <Container style={{maxWidth:'1377px !important'}} >
+                    <Grid container spacing={3}>
+                        <Grid item xs={3}>
+                             {BlogFeatured()}
+                        </Grid>
+                        <Grid item xs={6}>
+                             <div>
 
                                 {ProjectCardDemo()}
 
                             </div>
-                            <div className='body-pagination' style={{textAlign: 'center'}}>
-                                <Stack spacing={2}>
-                                    <Pagination color="primary" count={Math.ceil(pagi?.total_row / PER_PAGE) || 0} page={page}
-                                                onChange={handleChangePage} variant="outlined"/>
-                                </Stack>
-                            </div>
-                        </div>
-                        <div className='col col-3'>
-                            <div className='sticky'>
-
-                                <div>
-
-                                    {BlogFeatured()}</div>
-
-                                <div className="sticky_section">
-                                    <div><a className="sticky-section_a" href="">
-                                        <h4 className="sticky-section_a_h4">
-                                            Danh mục bài biết
-                                        </h4>
-                                    </a></div>
-                                </div>
-                                <div>
-                                    <div className='hidden-md-down_user-profile_stats'>
-                                        {category()}
-                                    </div>
-
-                                </div>
-                                <div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
+                        </Grid>
+                        <Grid item xs={3}>
+                            {BlogFeatured()}
+                        </Grid>
+                    </Grid>
+                </Container>
             </div>
             <div className="footer"><h2 className="footer-item"></h2></div>
 

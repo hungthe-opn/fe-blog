@@ -121,7 +121,7 @@ const Application = () => {
                             <Route path='/admin-blog' element={<CustomizedTables/>}/>
 
                             <Route path='/category/:id' element={<Category/>}/>
-                            <Route path='/blog/:id' element={<BlogDetail/>}/>
+                            <Route path='/blog/:slug' element={<BlogDetail/>}/>
                             <Route path='/user' element={<UserInfo/>}/>
                             <Route path='/user-edit' element={<UserEdit/>}/>
                             <Route path='/posts/:slug' element={<PostDetail/>}/>
