@@ -15,19 +15,15 @@ import {FacebookProvider, Comments, Share} from 'react-facebook';
 import Comment from '../Comment/Comment'
 
 const BlogDetail = (props) => {
-    const [blog, setBlog] = useState({})
-    const [blogs, setBlogs] = useState([]);
+    const [blog, setBlog] = useState([])
     const [upvote, setUpvote] = useState(blog.upvote);
     const content = blog.content
     const param = useParams()
     const up = param.slug
+    const idUpvote = blog.id
     const shareUrl = +process.env.REACT_APP_IS_LOCALHOST === 1 ? "https://peing.net/ja/" : window.location.href;
-    console.log(process.env.REACT_APP_IS_LOCALHOST)
-
-    console.log(param)
-    console.log(up)
     const incrementVote = (e) => {
-        axiosInstance.post(`blog/upvote/${up}`).then((res) => {
+        axiosInstance.post(`blog/upvote/${idUpvote}`).then((res) => {
             const allPosts = res.data;
             if (allPosts.response_msg === 'SUCCESS') {
                 setUpvote((prev) => prev + 1);
@@ -41,7 +37,7 @@ const BlogDetail = (props) => {
         ;
     }
     const decrementVote = (e) => {
-        axiosInstance.post(`blog/downvote/${up}`).then((res) => {
+        axiosInstance.post(`blog/downvote/${idUpvote}`).then((res) => {
             const allPosts = res.data;
             console.log(allPosts)
             if (allPosts.response_msg === 'SUCCESS') {
@@ -56,74 +52,18 @@ const BlogDetail = (props) => {
     }
 
     useEffect(() => {
-        axiosInstance.get('blog/' + up).then((res) => {
+        axiosInstance.get(`blog/slug/${up}`).then((res) => {
             console.log(res)
             const allPosts = res.data.data;
             console.log(allPosts)
-
+            console.log(res.data.data.upvote)
             setBlog(allPosts);
             setUpvote(res.data.data.upvote)
 
         });
     }, []);
 
-
-    const getBlogs = () => {
-
-
-        let result = [];
-        const list = blogs && blogs.length > 0 && blogs.map((blogPost) => {
-            return (
-
-                <div
-
-                    className="row blog-strong g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative pre-hight">
-                    <div className="col p-2 d-flex flex-column position-static"
-                         style={{minHeight: '150px', width: '100px'}}>
-
-                        <div className="row">
-                            <div className="col-4"><img className="blog-image"
-                                                        src={blogPost.thumbnall} alt="thumbnail"/></div>
-                            <div className="col-6 post-list">
-                                <strong className="d-inline-block mb-2 text-primary">
-
-                                    Danh mục
-                                    : {capitalizeFirstLetter(blogPost.category)}</strong>
-                                <h3 className="mb-0 blog-title">{blogPost.title.substr(0, 20)}</h3>
-
-                                <p className="card-text mb-auto"> Excrerpt: {blogPost.excerpt.substr(0, 20)}</p>
-                                <button type="button" className="btn btn-dark">
-                                    <Link
-                                        to={`/blog/${blogPost.slug}`}
-                                        className="blog-link">
-                                        Đọc tiếp...
-                                    </Link>
-                                </button>
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-            );
-
-        })
-
-        //automatically incremented by 1 value
-        for (let i = 0; i < list.length; i += 2) {
-            result.push(<div key={i} className='row mb-2'>
-                <div className='col-md-6'>
-                    {list[i]}
-                </div>
-                <div className='col-md-6'>{list[i + 1] ? list[i + 1] : null}
-                </div>
-
-
-            </div>)
-        }
-        return result
-    }
+        console.log(blog)
 
     // display the data returned from the server
     const createBlog = () => {

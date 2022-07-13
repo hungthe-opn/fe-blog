@@ -237,7 +237,7 @@ const Forum = () => {
                                 </div>
                                 <div className="sticky_featured">
                                     <h4>
-                                        <Link to={`/blog/${featuredBlog.id}`}>
+                                        <Link to={`/blog/slug/${featuredBlog.slug}`}>
                                             {featuredBlog.title}
                                         </Link>
                                     </h4>

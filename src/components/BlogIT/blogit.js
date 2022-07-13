@@ -23,6 +23,7 @@ import {useN04TextInfoContentStyles} from '@mui-treasury/styles/textInfoContent/
 import {useOverShadowStyles} from '@mui-treasury/styles/shadow/over';
 import Container from '@mui/material/Container'
 import {Grid} from "@mui/material";
+import MenuItem from "@mui/material/MenuItem";
 
 const PER_PAGE = 10;
 const useStyles = makeStyles(() => ({
@@ -55,7 +56,7 @@ const Blog = () => {
     const [categories, setCategory] = useState([]);
     const [page, setPages] = useState(1);
     const [pagi, setPagi] = useState()
-
+    console.log(categories)
     // get featured data
     useEffect(() => {
         axiosInstance.get('blog/featured/').then((res) => {
@@ -93,21 +94,22 @@ const Blog = () => {
         let result = [];
         const list = categories && categories.length > 0 && categories.map((categorys) => {
             return (
-                <span className="hidden-md-down_user-profile_stats_link">
+
+                <MenuItem><span className="hidden-md-down_user-profile_stats_link">
                                         <p>
                                             <a href="">
-                                                <Link to={`/blog/${categorys.slug}`}>
+                                                <Link to={`/blog/${categorys.id}`}>
                                             {categorys.name}
                                             </Link>
                                             </a>
 
-
                                         </p>
+
                                         <p className='hidden-md-down_user-profile_stats_link_count'>
                                             {categorys.counter}
                                         </p>
                                     </span>
-
+                </MenuItem>
 
             )
                 ;
@@ -128,6 +130,42 @@ const Blog = () => {
         }
         return result
     }
+    const TagBLog = () => {
+        let result = [];
+        const list = blogs && blogs.length > 0 && blogs.map((tag) => {
+            return (
+
+                <MenuItem>
+                    <span className="hidden-md-down_user-profile_stats_link">
+
+                        {tag.tags.map(item =>
+                            <span className="badge text-bg-secondary body-post_feed_title_word_tags_cate "
+                                  style={{fontSize: '100%%', marginLeft: '20px'}}>
+                    #{item.title}
+                        </span>)}
+                                    </span>
+                </MenuItem>
+
+            )
+                ;
+
+        })
+        for (let i = 0; i < list.length; i += 2) {
+            result.push
+            (
+                <div>
+                    <div className=''>
+                        {list[i]}
+
+                    </div>
+                    <div className=''>{list[i + 1] ? list[i + 1] : null}
+                    </div>
+                </div>
+            )
+        }
+        return result
+    }
+    console.log(featuredBlog)
     const BlogFeatured = () => {
         const styles = useStylesFeatured();
         const mediaStyles = useFourThreeCardMediaStyles();
@@ -142,7 +180,7 @@ const Blog = () => {
                             'https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d?ixlib=rb-1.2.1&auto=format&fit=crop&w=934&q=80'
                         }
                     />
-                    <Link to={`/blog/${featuredBlog.slug}`} style={{color: '#0056b3',fontSize:'20px'}}>
+                    <Link to={`/blog/${featuredBlog.slug}`} style={{color: '#0056b3', fontSize: '20px'}}>
                         <CardContent>
                             <TextInfoContent
                                 classes={textCardContentStyles}
@@ -154,6 +192,7 @@ const Blog = () => {
                                 }
 
                             />
+                            {featuredBlog.slug}
                         </CardContent>
                     </Link>
                 </Card>
@@ -176,9 +215,9 @@ const Blog = () => {
                             <a href="" className='body-post_feed_meta_user'>
                                 {blogPost.rank == 'Quản trị viên' ? (
                                     <span>
-                                            <FontAwesomeIcon icon={faUser}
-                                                             className="fa"/>{blogPost.author_name}
-                                                </span>
+                        <FontAwesomeIcon icon={faUser}
+                                         className="fa"/>{blogPost.author_name}
+                        </span>
                                 ) : (
                                     <span>{blogPost.author_name}</span>)
                                 }
@@ -194,19 +233,19 @@ const Blog = () => {
                                                 {blogPost.rank == 'Quản trị viên' ? (
 
                                                     <span>
-                                            <FontAwesomeIcon icon={faCheck}
-                                                             className="fa"/>{blogPost.author_name}
-                                                </span>
+                        <FontAwesomeIcon icon={faCheck}
+                                         className="fa"/>{blogPost.author_name}
+                        </span>
                                                 ) : (<div>{blogPost.author_name}
                                                 </div>)
                                                 }
 
                                             </a>
                                             <div><span className='body-post_feed_meta_user_info_user_name_span'>
-                                                @{blogPost.author_email}
+                        @{blogPost.author_email}
 
 
-                                        </span>
+                        </span>
                                                 <div>
                                                     {blogPost.rank == 'Quản trị viên' ? (
                                                         <span
@@ -233,19 +272,19 @@ const Blog = () => {
                             </a>
 
                             {blogPost.tags.map(item =>
-                                <span className="badge text-bg-secondary body-post_feed_title_word_tags_cate "
-                                      style={{fontSize: '100%%'}}>
-                                        {item.title}
-                                    </span>
+                                    <span className="badge text-bg-secondary body-post_feed_title_word_tags_cate "
+                                          style={{fontSize: '100%%'}}>
+                    {item.title}
+                        </span>
                             )}
 
                             <span className='body-post_feed_meta_link'>
-                                <div style={{paddingLeft: '85px'}} >
-                                    Lượt đọc {blogPost.view_count} -
-                                        Thời gian tạo {blogPost.time_post}
-                                </div>
+                        <div style={{paddingLeft: '85px'}}>
+                        Lượt đọc {blogPost.view_count} -
+                        Thời gian tạo {blogPost.time_post}
+                        </div>
 
-                            </span>
+                        </span>
                         </div>
                         <Link className="link_blog" to={`/blog/${blogPost.slug}`} style={{color: '#0056b3'}}>
 
@@ -288,7 +327,8 @@ const Blog = () => {
                 </div>
                 <Banner></Banner>
                 <div className="text-center">
-                    <a href="" className="text-center_body"> >> Tham gia Facebook group "Vì một tương lai lập trình viên
+                    <a href="" className="text-center_body"> >> Tham gia Facebook group "Vì một tương lai
+                        lập trình viên
                         hàng đâu" để cùng nhau học tập và kết nối </a>
                 </div>
                 {/*<div className="container"></div>*/}
@@ -339,17 +379,31 @@ const Blog = () => {
 
 
                 {/*</div>*/}
-                <Container style={{maxWidth:'1377px !important'}} >
+                <Container style={{maxWidth: '1377px !important'}}>
                     <Grid container spacing={3}>
                         <Grid item xs={3}>
-                             {BlogFeatured()}
+                            <p className='blog_a'>Danh muc</p>
+                            <Card style={{
+                                height: '50%',
+                                padidng: '0px 13px',
+                                marginTop: '22px'
+                            }}>                             {category()}
+                            </Card>
+                            <p className='blog_a'>Tag</p>
+
+                            <Card style={{maxHeight: '200px', height: '40%'}}>{TagBLog()}</Card>
                         </Grid>
                         <Grid item xs={6}>
-                             <div>
-
+                            <div>
                                 {ProjectCardDemo()}
 
+
                             </div>
+                            <div style={{padding: ' 35px 0px 41px 216px'}}><Stack spacing={2}>
+                                <Pagination color="primary" count={Math.ceil(pagi?.total_row / PER_PAGE) || 0}
+                                            page={page}
+                                            onChange={handleChangePage} variant="outlined"/>
+                            </Stack></div>
                         </Grid>
                         <Grid item xs={3}>
                             {BlogFeatured()}
