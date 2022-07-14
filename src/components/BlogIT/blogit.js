@@ -98,7 +98,7 @@ const Blog = () => {
                 <MenuItem><span className="hidden-md-down_user-profile_stats_link">
                                         <p>
                                             <a href="">
-                                                <Link to={`/blog/${categorys.id}`}>
+                                                <Link to={`/blog/category/${categorys.id}`}>
                                             {categorys.name}
                                             </Link>
                                             </a>
@@ -135,17 +135,18 @@ const Blog = () => {
         const list = blogs && blogs.length > 0 && blogs.map((tag) => {
             return (
 
-                <MenuItem>
+
                     <span className="hidden-md-down_user-profile_stats_link">
 
                         {tag.tags.map(item =>
+                              <MenuItem>
                             <span className="badge text-bg-secondary body-post_feed_title_word_tags_cate "
-                                  style={{fontSize: '100%%', marginLeft: '20px'}}>
-                    #{item.title}
-                        </span>)}
-                                    </span>
-                </MenuItem>
+                                  style={{fontSize: '100%%'}}>
 
+                    #{item.title}
+                        </span>                </MenuItem>
+)}
+                                    </span>
             )
                 ;
 
@@ -165,7 +166,6 @@ const Blog = () => {
         }
         return result
     }
-    console.log(featuredBlog)
     const BlogFeatured = () => {
         const styles = useStylesFeatured();
         const mediaStyles = useFourThreeCardMediaStyles();
@@ -216,7 +216,7 @@ const Blog = () => {
                                 {blogPost.rank == 'Quản trị viên' ? (
                                     <span>
                         <FontAwesomeIcon icon={faUser}
-                                         className="fa"/>{blogPost.author_name}
+                                         className="fa"/> <Link to={`/info/${blogPost.author_id}`}>{blogPost.author_name}</Link>
                         </span>
                                 ) : (
                                     <span>{blogPost.author_name}</span>)

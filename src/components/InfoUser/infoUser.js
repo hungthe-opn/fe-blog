@@ -1,35 +1,36 @@
 import React, {useContext, useEffect, useState} from "react";
-import axios from "axios";
 import axiosInstance from "../../axios";
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import './User.scss'
-import Avatar from "@mui/material/Avatar";
 import {UserContext} from "../Context/Context";
-import InformationUser from "./UserFollow"
-import TabInfomation from "./TabsUser"
-const UserInfo = () => {
+import Follow from "./Follow"
+import TabInfomation from "./tabUser"
+
+const Account = () => {
 
     const [infor, setInfor] = useState([]);
     const [blogs, setBlogs] = useState([]);
+    const param = useParams()
+    const IdUser = param.id
+
     const data1 = useContext(UserContext).setData(infor.user, infor.image, infor.email);
     useEffect(() => {
-        axiosInstance.get('user-blog/info/').then((res) => {
+        axiosInstance.get(`user-blog/get-user/${IdUser}`).then((res) => {
             const allPosts = res.data.data;
             setInfor(allPosts);
         });
     }, []);
 
     useEffect(() => {
-        axiosInstance.get('blog/count/').
-        then((res) => {
-            const allPosts = res.data.data;
-            setBlogs(allPosts);
-                        console.log(1111111111111111111111,res)
+        axiosInstance.get('blog/count/').then((res) => {
+                const allPosts = res.data.data;
+                setBlogs(allPosts);
+                console.log(1111111111111111111111, res)
 
-        }
-            )
-        .catch((err) => {
-                console.log(1111111111111111111111111111111,err)
+            }
+        )
+            .catch((err) => {
+                console.log(1111111111111111111111111111111, err)
             });
     }, []);
 
@@ -42,7 +43,7 @@ const UserInfo = () => {
     return (<>
             <div>
                 <div className='user-profile'>
-                    <InformationUser></InformationUser>
+                    <Follow></Follow>
                     <div className='user-profile_card'>
                     </div>
                 </div>

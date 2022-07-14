@@ -3,7 +3,7 @@ import './index.css';
 import {Route, BrowserRouter as Router, Routes} from 'react-router-dom'
 import App from "./App";
 import Header from './components/Header/Header'
-import Footer from './components/Footer/Footer'
+import {Footer} from './components/Footer/Footer'
 import Register from './components/Register/Register'
 import SignIn from './components/Login/login'
 import SignUp from './components/Logout/logout'
@@ -25,7 +25,7 @@ import UserInfo from './components/Userinfo/User'
 import UserEdit from './components/UserEdit/UserEdit'
 import Store from './components/Context/Context'
 import CustomizedTables from './components/BlogIT/AdminBlog'
-
+import Account from './components/InfoUser/tabUser'
 const Application = () => {
     const [loading, setLoading] = useState(true)
     const [login, setLogin] = useState(false)
@@ -119,8 +119,9 @@ const Application = () => {
                             <Route path='/blog' element={<Blog/>}/>
                             <Route path='/create' element={<CreateBlog/>}/>
                             <Route path='/admin-blog' element={<CustomizedTables/>}/>
+                            <Route path='/info/:id' element={<Account/>}/>
 
-                            <Route path='/category/:id' element={<Category/>}/>
+                            <Route path='/blog/category/:id' element={<Category/>}/>
                             <Route path='/blog/:slug' element={<BlogDetail/>}/>
                             <Route path='/user' element={<UserInfo/>}/>
                             <Route path='/user-edit' element={<UserEdit/>}/>
@@ -132,7 +133,7 @@ const Application = () => {
                             <Route path='/admin/edit/:id' element={<Edit/>}/>
                             <Route path='/contacts/' element={<Contact/>}/>
                         </Routes>
-                        <Footer/>
+                        {/*<Footer/>*/}
                     </div>}
                 </div>
             </Store>
