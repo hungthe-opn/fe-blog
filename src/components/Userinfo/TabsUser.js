@@ -197,30 +197,30 @@ export default function TabInfomation() {
 
     const InforBlogs = () => {
         return (
-                                    <div className='hidden-md-down_user-profile'>
-                            <button className='hidden-md-down_user-profile_btn-share'>
-                                <a href="https://www.facebook.com/profile.php?id=100071073641290">Liên kết với
-                                    facebook</a>
-                            </button>
-                            <div className='hidden-md-down_user-profile_stats'>
+            <div className='hidden-md-down_user-profile'>
+                <button className='hidden-md-down_user-profile_btn-share'>
+                    <a href="https://www.facebook.com/profile.php?id=100071073641290">Liên kết với
+                        facebook</a>
+                </button>
+                <div className='hidden-md-down_user-profile_stats'>
                                     <span className="hidden-md-down_user-profile_stats_link">
                                         <p>Tổng lượt xem</p>
                                         <p className='hidden-md-down_user-profile_stats_link_count'>{blogs.total_views}</p>
                                     </span>
-                                <span className="hidden-md-down_user-profile_stats_link">
+                    <span className="hidden-md-down_user-profile_stats_link">
                                         <p>Bài viết</p>
                                         <p className='hidden-md-down_user-profile_stats_link_count'>{blogs.total_blogs}</p>
                                     </span>
-                                <span className="hidden-md-down_user-profile_stats_link">
+                    <span className="hidden-md-down_user-profile_stats_link">
                                         <p>Số câu trả lời</p>
                                         <p className='hidden-md-down_user-profile_stats_link_count'>0</p>
                                     </span>
-                                <span className="hidden-md-down_user-profile_stats_link">
+                    <span className="hidden-md-down_user-profile_stats_link">
                                         <p>Bookmark</p>
                                         <p className='hidden-md-down_user-profile_stats_link_count'>0</p>
                                     </span>
-                            </div>
-                        </div>
+                </div>
+            </div>
 
         )
     }
@@ -314,6 +314,8 @@ export default function TabInfomation() {
                         <Tab label="Thông tin cá nhân" value="1"/>
                         <Tab label="Danh sách bài viết" value="2"/>
                         <Tab label="Người theo dõi" value="3"/>
+                        <Tab label="Danh sách chặn" value="4"/>
+
                     </TabList>
                 </Box>
                 <TabPanel value="1">{Infomations()}</TabPanel>
@@ -322,20 +324,22 @@ export default function TabInfomation() {
                         <div className="row">
                             <div className="col col-9 hidden-rd-infor">
                                 {ProjectCardDemo()}
-                                 <div style={{padding: ' 35px 0px 41px 347px'}}><Stack spacing={2}>
-                                <Pagination color="primary" count={Math.ceil(pagi?.total_row / PER_PAGE) || 0}
-                                            page={page}
-                                            onChange={handleChangePage} variant="outlined"/>
-                            </Stack></div>
+                                <div style={{padding: ' 35px 0px 41px 347px'}}><Stack spacing={2}>
+                                    <Pagination color="primary" count={Math.ceil(pagi?.total_row / PER_PAGE) || 0}
+                                                page={page}
+                                                onChange={handleChangePage} variant="outlined"/>
+                                </Stack></div>
                             </div>
-                              <div className="col col-3 hidden-md-down">
-                                  {InforBlogs()}
-                              </div>
+                            <div className="col col-3 hidden-md-down">
+                                {InforBlogs()}
+                            </div>
                         </div>
                     </div>
 
                 </TabPanel>
                 <TabPanel value="3">Item Three</TabPanel>
+                <TabPanel value="4">Item Three</TabPanel>
+
             </TabContext>
         </Box>
     );

@@ -19,13 +19,15 @@ import axiosInstance from './axios'
 import FabbiDetail from './components/Fabbi/FabbiDetail'
 import Contact from "./Contacts/Contacs";
 import Admin from './Admin'
+import Follow from "./components/InfoUser/Follow"
 import Create from './components/adminblog/create'
 import Edit from './components/adminblog/edit'
 import UserInfo from './components/Userinfo/User'
 import UserEdit from './components/UserEdit/UserEdit'
 import Store from './components/Context/Context'
 import CustomizedTables from './components/BlogIT/AdminBlog'
-import Account from './components/InfoUser/tabUser'
+import Account from './components/InfoUser/infoUser'
+
 const Application = () => {
     const [loading, setLoading] = useState(true)
     const [login, setLogin] = useState(false)
@@ -120,6 +122,7 @@ const Application = () => {
                             <Route path='/create' element={<CreateBlog/>}/>
                             <Route path='/admin-blog' element={<CustomizedTables/>}/>
                             <Route path='/info/:id' element={<Account/>}/>
+                            <Route path='/test' element={<Follow/>}/>
 
                             <Route path='/blog/category/:id' element={<Category/>}/>
                             <Route path='/blog/:slug' element={<BlogDetail/>}/>

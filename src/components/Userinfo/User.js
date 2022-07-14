@@ -1,9 +1,6 @@
 import React, {useContext, useEffect, useState} from "react";
-import axios from "axios";
 import axiosInstance from "../../axios";
-import {Link, useParams} from "react-router-dom";
 import './User.scss'
-import Avatar from "@mui/material/Avatar";
 import {UserContext} from "../Context/Context";
 import InformationUser from "./UserFollow"
 import TabInfomation from "./TabsUser"

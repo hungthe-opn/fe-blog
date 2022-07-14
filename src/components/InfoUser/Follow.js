@@ -17,6 +17,8 @@ const useStyles = makeStyles(({palette}) => ({
         minWidth: 256,
         textAlign: 'center',
     },
+    backgroundColor:{backgroundColor: 'transparent'},
+
     avatar: {
         width: 60,
         height: 60,
@@ -69,7 +71,7 @@ export const Follow = React.memo(function ProfileCard() {
     });
     return (
         <Card className={cx(styles.card, shadowStyles.root)}>
-            <CardContent>
+            <CardContent className={styles.backgroundColor} >
                 <Avatar className={styles.avatar} src={infor.image}/>
                 <h3 className={styles.heading}>{infor.user_name}</h3>
                 <span className={styles.subheader}>{infor.email}</span>
@@ -89,4 +91,4 @@ export const Follow = React.memo(function ProfileCard() {
     );
 });
 
-export default InformationUser
+export default Follow

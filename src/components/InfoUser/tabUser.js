@@ -18,7 +18,7 @@ import {useLightTopShadowStyles} from '@mui-treasury/styles/shadow/lightTop';
 import TextInfoContent from '@mui-treasury/components/content/textInfo';
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
-
+import Follow from "./Follow"
 const PER_PAGE = 10;
 const useStyles = makeStyles(() => ({
     root: {

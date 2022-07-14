@@ -36,19 +36,12 @@ const Forum = () => {
 
     }
     useEffect(() => {
-        axiosInstance.get(`blog?page=${page}`).then((res) => {
+        axiosInstance.get(`forum/list-blog?page=${page}`).then((res) => {
             const allPosts = res.data.data;
             setBlogs(allPosts);
             setPagi(res.data.pagination)
         });
     }, [page]);
-
-    // toUpperCase text
-    const capitalizeFirstLetter = (word) => {
-        if (word)
-            return word.charAt(0).toUpperCase() + word.slice(1);
-        return '';
-    }
     const category = () => {
         let result = [];
         const list = categories && categories.length > 0 && categories.map((categorys) => {
@@ -220,10 +213,11 @@ const Forum = () => {
                                 {getBlogs()}
                             </div>
                             <div className='body-pagination'>
-                                <Stack spacing={2}>
-                                    <Pagination count={Math.ceil(pagi?.total_row / PER_PAGE) || 0} page={page}
-                                                onChange={handleChangePage} variant="outlined"/>
-                                </Stack>
+                               <div style={{padding: ' 35px 0px 41px 400px'}}><Stack spacing={2}>
+                                <Pagination color="primary" count={Math.ceil(pagi?.total_row / PER_PAGE) || 0}
+                                            page={page}
+                                            onChange={handleChangePage} variant="outlined"/>
+                            </Stack></div>
                             </div>
                         </div>
                         <div className='col col-3'>

@@ -36,6 +36,7 @@ const BlogDetail = (props) => {
         })
         ;
     }
+
     const decrementVote = (e) => {
         axiosInstance.post(`blog/downvote/${idUpvote}`).then((res) => {
             const allPosts = res.data;
@@ -63,7 +64,7 @@ const BlogDetail = (props) => {
         });
     }, []);
 
-        console.log(blog)
+    console.log(blog)
 
     // display the data returned from the server
     const createBlog = () => {
@@ -224,11 +225,26 @@ const BlogDetail = (props) => {
                                 <AlertTitle>Nguồn :</AlertTitle>
                                 Tài liệu tham khảo tại : — <strong><a href={blog.source}>{blog.source}</a></strong>
                             </Alert>
+                            <div className="fb-comments" data-href="http://localhost:3000/blog/data-grid-components"
+                                 data-width="700" data-numposts="2"></div>
                         </div>
 
                     </div>
                     <div className='col col-3'>
-                        <Comment></Comment>
+                        <div className='artice-show'>
+                            <div className='artice-show_card'>
+                                <a className='artice-show_card_flex' href="">
+                                    <img className='artice-show_card_flex_avatar' src={blog.avatar_author} alt=""/>
+                                    <span className='artice-show_card_flex_link'>
+                                    <Link to={`/info/${blog.author_id}`}>{blog.author_name}</Link>
+
+                                    </span>
+                                </a>
+                                <button value="Button" className='artice-show_card_follow'>Follow</button>
+                                <div className='artice-show_card_about'>{blog.author_about}</div>
+                                <ul className='artice-show_card_user'></ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
