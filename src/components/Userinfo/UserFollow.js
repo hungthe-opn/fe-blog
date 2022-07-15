@@ -53,6 +53,7 @@ export const InformationUser = React.memo(function ProfileCard() {
     const styles = useStyles();
     const shadowStyles = useFadedShadowStyles();
     const [infor, setInfor] = useState([]);
+    const [follow, setFollow] = useState([]);
 
     useEffect(() => {
         axiosInstance.get('user-blog/info/').then((res) => {
@@ -60,7 +61,12 @@ export const InformationUser = React.memo(function ProfileCard() {
             setInfor(allPosts);
         });
     }, []);
-
+useEffect(() => {
+        axiosInstance.get('user-blog/get-follow/').then((res) => {
+            const allPosts = res.data.data;
+            setFollow(allPosts);
+        });
+    }, []);
     const borderedGridStyles = useGutterBorderedGridStyles({
         borderColor: 'rgba(0, 0, 0, 0.08)',
         height: '50%',
@@ -76,11 +82,11 @@ export const InformationUser = React.memo(function ProfileCard() {
             <Box display={'flex'}>
                 <Box p={2} flex={'auto'} className={borderedGridStyles.item}>
                     <p className={styles.statLabel}>Followers</p>
-                    <p className={styles.statValue}>6941</p>
+                    <p className={styles.statValue}>{infor.follower_counter}</p>
                 </Box>
                 <Box p={2} flex={'auto'} className={borderedGridStyles.item}>
                     <p className={styles.statLabel}>Following</p>
-                    <p className={styles.statValue}>12</p>
+                    <p className={styles.statValue}>{infor.following_counter}</p>
                 </Box>
             </Box>
         </Card>

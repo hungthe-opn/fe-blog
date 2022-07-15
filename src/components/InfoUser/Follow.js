@@ -10,6 +10,7 @@ import {useFadedShadowStyles} from '@mui-treasury/styles/shadow/faded';
 import {useGutterBorderedGridStyles} from '@mui-treasury/styles/grid/gutterBordered';
 import axiosInstance from "../../axios";
 import {useParams} from "react-router-dom";
+import Button from "@mui/material/Button";
 
 const useStyles = makeStyles(({palette}) => ({
     card: {
@@ -58,20 +59,50 @@ export const Follow = React.memo(function ProfileCard() {
     const [infor, setInfor] = useState([]);
     const param = useParams()
     const IdUser = param.id
-    useEffect(() => {
+
+    function fetchData() {
         axiosInstance.get(`user-blog/get-user/${IdUser}`).then((res) => {
             const allPosts = res.data.data;
             setInfor(allPosts);
         });
+    }
+
+    useEffect(() => {
+        fetchData()
     }, []);
 
+    const FollowUser = (e) => {
+        axiosInstance
+            .post(`user-blog/follow/${IdUser}`)
+            .then((res) => {
+                const allPosts = res.data
+                if (allPosts.response_msg === 'SUCCESS') {
+                    fetchData()
+                }
+            }).catch((err) => {
+            alert('errrrrr')
+        });
+    }
+
+    const Unfollow = (e) => {
+        axiosInstance
+            .delete(`user-blog/follow/${IdUser}`)
+            .then((res) => {
+                const allPosts = res.data
+                if (allPosts.response_msg === 'SUCCESS') {
+                    fetchData()
+                }
+            }).catch((err) => {
+            alert('errrrrr')
+        });
+    }
     const borderedGridStyles = useGutterBorderedGridStyles({
         borderColor: 'rgba(0, 0, 0, 0.08)',
         height: '50%',
     });
     return (
         <Card className={cx(styles.card, shadowStyles.root)}>
-            <CardContent className={styles.backgroundColor} >
+            <CardContent className={styles.backgroundColor}>
                 <Avatar className={styles.avatar} src={infor.image}/>
                 <h3 className={styles.heading}>{infor.user_name}</h3>
                 <span className={styles.subheader}>{infor.email}</span>
@@ -80,13 +111,17 @@ export const Follow = React.memo(function ProfileCard() {
             <Box display={'flex'}>
                 <Box p={2} flex={'auto'} className={borderedGridStyles.item}>
                     <p className={styles.statLabel}>Followers</p>
-                    <p className={styles.statValue}>6941</p>
+                    <p className={styles.statValue}>{infor?.follower_counter}</p>
                 </Box>
                 <Box p={2} flex={'auto'} className={borderedGridStyles.item}>
                     <p className={styles.statLabel}>Following</p>
-                    <p className={styles.statValue}>12</p>
+                    <p className={styles.statValue}>{infor.following_counter}</p>
                 </Box>
             </Box>
+            {
+                infor.is_following ? <Button onClick={Unfollow}>Unfollow</Button>
+                    : <Button onClick={FollowUser}>Follow</Button>
+            }
         </Card>
     );
 });

@@ -18,13 +18,11 @@ import {Alert, AlertTitle} from "@mui/material";
 
 const BlogDetail = (props) => {
     const [blog, setBlog] = useState([])
-    const [infor, setInfor] = useState([]);
     const [upvote, setUpvote] = useState(blog.upvote);
     const content = blog.content
     const param = useParams()
     const up = param.slug
     const idUpvote = blog.id
-    const userID = blog.author_id
     const shareUrl = +process.env.REACT_APP_IS_LOCALHOST === 1 ? "https://peing.net/ja/" : window.location.href;
     const incrementVote = (e) => {
         axiosInstance.post(`blog/upvote/${idUpvote}`).then((res) => {
@@ -41,43 +39,10 @@ const BlogDetail = (props) => {
         ;
     }
 
-    function fetchData() {
-        axiosInstance.get(`user-blog/get-user/${userID}`).then((res) => {
-            const allPosts = res.data.data;
-            setInfor(allPosts);
-        });
-    }
-
-    useEffect(() => {
-        fetchData()
-    }, []);
-    const FollowUser = (e) => {
-        axiosInstance
-            .post(`user-blog/follow/${userID}`)
-            .then((res) => {
-                const allPosts = res.data
-                if (allPosts.response_msg === 'SUCCESS') {
-                    fetchData()
-                }
-            }).catch((err) => {
-            alert('errrrrr')
-        });
-    }
-    const Unfollow = (e) => {
-        axiosInstance
-            .delete(`user-blog/follow/${userID}`)
-            .then((res) => {
-                const allPosts = res.data
-                if (allPosts.response_msg === 'SUCCESS') {
-                    fetchData()
-                }
-            }).catch((err) => {
-            alert('errrrrr')
-        });
-    }
     const decrementVote = (e) => {
         axiosInstance.post(`blog/downvote/${idUpvote}`).then((res) => {
             const allPosts = res.data;
+            console.log(allPosts)
             if (allPosts.response_msg === 'SUCCESS') {
                 setUpvote((prev) => prev - 1);
 
@@ -88,7 +53,14 @@ const BlogDetail = (props) => {
             alert('vui long nhap lai')
         })
     }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        axiosInstance
+            .post(`user-blog/follow/${e}`)
+            .then((res) => {
 
+            });
+    };
     useEffect(() => {
         axiosInstance.get(`blog/slug/${up}`).then((res) => {
             const allPosts = res.data.data;
@@ -269,13 +241,9 @@ const BlogDetail = (props) => {
 
                                     </span>
                                 </a>
-                                {
-                                    infor.is_following ? <button value="Button" onClick={Unfollow}
-                                                                 className='artice-show_card_follow'>Follow
-                                    </button> : <button value="Button" onClick={FollowUser}
-                                                        className='artice-show_card_follow'>Unfollow
-                                    </button>
-                                }
+                                <button value="Button" onClick={handleSubmit.bind(this,blog.author_id)}
+                                        className='artice-show_card_follow'>Follow
+                                </button>
                                 <div className='artice-show_card_about'>{blog.author_about}</div>
                                 <ul className='artice-show_card_user'></ul>
                             </div>

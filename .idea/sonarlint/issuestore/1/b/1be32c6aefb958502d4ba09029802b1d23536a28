@@ -1,0 +1,6 @@
+
+zjavascript:S11725"YRemove the unused function parameter "e" or rename it to "_e" to make intention explicit.(á©Æöıÿÿÿÿ
+Ojavascript:S11175".'page' is already declared in the upper scope.(á©Æöıÿÿÿÿ
+bjavascript:S1481B"FRemove the declaration of the unused 'capitalizeFirstLetter' variable.(šÃ«ÿ
+_javascript:S1854B"CRemove this useless assignment to variable "capitalizeFirstLetter".(šÃ«ÿ
+Ijavascript:S1472ª",Make those call arguments start on line 169.(ö³
