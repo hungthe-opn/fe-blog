@@ -9,6 +9,7 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import BannerForum from '../../Banner/BannerForum'
 
+
 const PER_PAGE = 10;
 const Forum = () => {
     const [blogs, setBlogs] = useState([]);
@@ -150,7 +151,7 @@ const Forum = () => {
                             <h3 className='body-post_feed_title_word'>
                                 <div className='body-post_feed_title_word_title'>
                                     <a href="" className='body-post_feed_title_word_a'>
-                                        <Link to={`/blog/${blogPost.id}`}>
+                                        <Link to={`/forum/${blogPost.id}`}>
                                             {blogPost.title}
                                         </Link></a></div>
                                 <div className='body-post_feed_title_word_tags'>

@@ -1,10 +1,14 @@
 import React, {useEffect, useState} from "react";
-import './BlogDetail.scss'
-import {Link, useParams} from "react-router-dom";
+import '../BlogIT/BlogDetail.scss'
+import './ForumDetail.scss'
+import {useParams} from "react-router-dom";
 import axiosInstance from "../../axios";
-import {faCaretDown, faCaretUp, faCheck, faEye, faShare, faUser,} from "@fortawesome/free-solid-svg-icons";
+import {faCaretDown, faCaretUp, faCheck, faEye, faGrinStars, faShare, faUser,} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import mainLogo from "../../img/1.png"
+import mainLogo from "../../img/QA.png"
+import SunEditor from 'suneditor-react';
+import 'suneditor/dist/css/suneditor.min.css';
+import Comments from '../Comment/Comment'
 import {
     EmailIcon,
     EmailShareButton,
@@ -14,18 +18,43 @@ import {
     TwitterShareButton
 } from 'react-share';
 import Button from '@material-ui/core/Button';
-import {Alert, AlertTitle} from "@mui/material";
+import {makeStyles} from "@material-ui/core/styles";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+const useStyles = makeStyles((theme) => ({
+    paper: {
+        marginTop: theme.spacing(8), display: 'flex', flexDirection: 'column', alignItems: 'center',
+    }, avatar: {
+        margin: theme.spacing(1), backgroundColor: theme.palette.secondary.main,
+    }, form: {
+        width: '100%', // Fix IE 11 issue.
+        marginTop: theme.spacing(3),
+    }, submit: {
+        margin: theme.spacing(3, 0, 2),
+    },
+}));
 
-const BlogDetail = (props) => {
-    const [blog, setBlog] = useState([])
+const ForumDetail = () => {
+    const initialFormData = Object.freeze({
+        body: ''
+    });
+    const [blog, setBlog] = useState({})
+    const [idUser, setidUser] = useState(blog.author_id)
     const [upvote, setUpvote] = useState(blog.upvote);
+    const [contects, setContects] = useState(initialFormData);
+    const [comment, setComment] = useState([])
     const content = blog.content
     const param = useParams()
-    const up = param.slug
+    const [page, setPages] = useState(1);
+    const [pagi, setPagi] = useState()
+    const idDetail = param.id
     const idUpvote = blog.id
+    const [infor, setInfor] = useState([]);
+    const userID = blog.author_id
+    const follow = infor.follower_counter
     const shareUrl = +process.env.REACT_APP_IS_LOCALHOST === 1 ? "https://peing.net/ja/" : window.location.href;
     const incrementVote = (e) => {
-        axiosInstance.post(`blog/upvote/${idUpvote}`).then((res) => {
+        axiosInstance.post(`forum/upvote-forum/${idUpvote}`).then((res) => {
             const allPosts = res.data;
             if (allPosts.response_msg === 'SUCCESS') {
                 setUpvote((prev) => prev + 1);
@@ -39,8 +68,56 @@ const BlogDetail = (props) => {
         ;
     }
 
+    const FollowUser = (e) => {
+        axiosInstance
+            .post(`user-blog/follow/${userID}`)
+            .then((res) => {
+                const allPosts = res.data
+                if (allPosts.response_msg === 'SUCCESS') {
+                    fetchFollow()
+                }
+            }).catch((err) => {
+            alert('errrrrr')
+        });
+    }
+    const Unfollow = (e) => {
+        axiosInstance
+            .delete(`user-blog/follow/${userID}`)
+            .then((res) => {
+                const allPosts = res.data
+                if (allPosts.response_msg === 'SUCCESS') {
+                    fetchFollow()
+                }
+            }).catch((err) => {
+            alert('errrrrr')
+        });
+    }
+
+    function fetchData() {
+        axiosInstance.get(`comment/${idDetail}?page=${page}`).then((res) => {
+            const allPosts = res.data.data;
+            setComment(allPosts);
+            setPagi(res.data.pagination)
+        });
+    }
+
+    function fetchFollow() {
+        axiosInstance.get(`user-blog/get-user/${userID}`).then((res) => {
+            const allPosts = res.data.data;
+            setInfor(allPosts);
+            console.log(allPosts)
+
+        });
+    }
+
+
+    useEffect(() => {
+        fetchData()
+        fetchFollow()
+    }, [page]);
+
     const decrementVote = (e) => {
-        axiosInstance.post(`blog/downvote/${idUpvote}`).then((res) => {
+        axiosInstance.post(`forum/downvote-forum/${idUpvote}`).then((res) => {
             const allPosts = res.data;
             console.log(allPosts)
             if (allPosts.response_msg === 'SUCCESS') {
@@ -53,17 +130,10 @@ const BlogDetail = (props) => {
             alert('vui long nhap lai')
         })
     }
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        axiosInstance
-            .post(`user-blog/follow/${e}`)
-            .then((res) => {
-
-            });
-    };
     useEffect(() => {
-        axiosInstance.get(`blog/slug/${up}`).then((res) => {
+        axiosInstance.get(`forum/detail-forum/${idDetail}`).then((res) => {
             const allPosts = res.data.data;
+            console.log(allPosts)
             setBlog(allPosts);
             setUpvote(res.data.data.upvote)
         });
@@ -79,6 +149,109 @@ const BlogDetail = (props) => {
         if (word) return word.charAt(0).toUpperCase() + word.slice(1);
         return '';
     }
+    const classes = useStyles();
+    const getBlogs = () => {
+        let result = [];
+        const list = comment && comment.length > 0 && comment.map((commentPost) => {
+            return (
+                <div className='forum-post' style={{width: '695px'}}>
+                    <img className='forum-post_img' style={{width: '45px', height: '45px'}}
+                         src={commentPost.avatar_author} alt=""/>
+
+                    <div className='forum-post_feed'>
+                        <div className='forum-post_feed_meta'>
+                            <a href="" className='forum-post_feed_meta_user'>
+                                {commentPost.rank == 'Quản trị viên' ? (
+                                    <span>
+                                            <FontAwesomeIcon icon={faUser}
+                                                             className="fa"/>{commentPost.author_name}
+                                                </span>
+                                ) : (<div>{commentPost.author_name}
+                                </div>)
+                                }
+                                <div className='forum-post_feed_meta_user_info'>
+                                    <div className='forum-post_feed_meta_user_info_user'>
+
+                                        <a href="" className='forum-post_feed_meta_user_info_user_a'>
+                                            <img src={commentPost.avatar_author}
+                                                 className='forum-post_feed_meta_user_info_user_a_img' alt=""/>
+                                        </a>
+                                        <div className='forum-post_feed_meta_user_info_user_name'>
+                                            <a href="" className='forum-post_feed_meta_user_info_user_name_a'>
+                                                {commentPost.rank == 'Quản trị viên' ? (
+
+                                                    <span>
+                                            <FontAwesomeIcon icon={faCheck}
+                                                             className="fa"/>{commentPost.author_name}
+                                                </span>
+                                                ) : (<div>{commentPost.author_name}
+                                                </div>)
+                                                }
+
+                                            </a>
+                                            <div>
+                                                <div>
+                                                    {commentPost.rank == 'Quản trị viên' ? (
+                                                        <span
+                                                            className="badge rounded-pill bg-primary">{commentPost.rank}</span>
+                                                    ) : (<span
+                                                            className="badge rounded-pill bg-success">{commentPost.rank}</span>
+                                                    )}
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div className='forum-post_feed_meta_user_info_user_follow'>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                            <span className='body-post_feed_meta_link'
+                                  style={{margin: '0px 8px 13px 0px'}}> Thời gian : {commentPost.created_at}</span>
+                        </div>
+                        <div className='forum-post_feed_title'>
+                            <h3 className='forum-post_feed_title_word'>
+                                <div className='forum-post_feed_title_word_title'>
+                                    <Box width='100%' maxWidth='600' mt={2}>
+                                        <Typography variant="body1" gutterBottom
+                                                    dangerouslySetInnerHTML={{__html: commentPost.body}}></Typography>
+                                    </Box>
+
+                                </div>
+                            </h3>
+                        </div>
+                        <div className='forum-post_feed_starts'>
+
+                            <span className='forum-post_feed_starts_item'>
+                            </span>
+
+                        </div>
+                    </div>
+
+                </div>
+            )
+                ;
+
+        })
+        for (let i = 0; i < list.length; i += 2) {
+            result.push
+            (
+                <div>
+                    <div className=''>
+                        {list[i]}
+                    </div>
+                    <div className=''>{list[i + 1] ? list[i + 1] : null}
+                    </div>
+                </div>
+            )
+        }
+        return result
+
+    }
+
 
     return (<div>
         <div className="body_image">
@@ -128,31 +301,31 @@ const BlogDetail = (props) => {
                             <EmailIcon size={32} round={true}/>
                         </EmailShareButton>
                     </div>
-                    <div className='col col-8'>
+                    <div className='col col-11'>
                         <header className='mb-05'>
-                            <div className='body-post' style={{width: '760px', height: '73px'}}>
-                                <img className='body-post_img' style={{width: '45px', height: '45px'}}
+                            <div className='forum-post'>
+                                <img className='forum-post_img' style={{width: '45px', height: '45px'}}
                                      src={blog.avatar_author} alt=""/>
 
-                                <div className='body-post_feed' style={{width: '700px', height: '73px'}}>
-                                    <div className='body-post_feed_meta'>
-                                        <a href="" className='body-post_feed_meta_user'>
+                                <div className='forum-post_feed' style={{width: '700px', height: '73px'}}>
+                                    <div className='forum-post_feed_meta'>
+                                        <a href="" className='forum-post_feed_meta_user'>
                                             {blog.rank == 'Quản trị viên' ? (<span>
                                             <FontAwesomeIcon icon={faUser}
                                                              className="fa"/>{blog.author_name}
                                                 </span>) : (<div>{blog.author_name}
                                             </div>)}
-                                            <div className='body-post_feed_meta_user_info'>
-                                                <div className='body-post_feed_meta_user_info_user'>
+                                            <div className='forum-post_feed_meta_user_info'>
+                                                <div className='forum-post_feed_meta_user_info_user'>
 
-                                                    <a href="" className='body-post_feed_meta_user_info_user_a'>
+                                                    <a href="" className='forum-post_feed_meta_user_info_user_a'>
                                                         <img src={blog.avatar_author}
-                                                             className='body-post_feed_meta_user_info_user_a_img'
+                                                             className='forum-post_feed_meta_user_info_user_a_img'
                                                              alt=""/>
                                                     </a>
-                                                    <div className='body-post_feed_meta_user_info_user_name'>
+                                                    <div className='forum-post_feed_meta_user_info_user_name'>
                                                         <a href=""
-                                                           className='body-post_feed_meta_user_info_user_name_a'>
+                                                           className='forum-post_feed_meta_user_info_user_name_a'>
                                                             {blog.rank == 'Quản trị viên' ? (
 
                                                                 <span>
@@ -163,7 +336,7 @@ const BlogDetail = (props) => {
 
                                                         </a>
                                                         <div><span
-                                                            className='body-post_feed_meta_user_info_user_name_span'>
+                                                            className='forum-post_feed_meta_user_info_user_name_span'>
                                                 @{blog.author_email}
                                         </span>
                                                             <div>
@@ -174,15 +347,15 @@ const BlogDetail = (props) => {
 
                                                             </div>
                                                             <div
-                                                                className='body-post_feed_meta_user_info_user_name_div'>
-                                                                <FontAwesomeIcon icon={faEye}
+                                                                className='forum-post_feed_meta_user_info_user_name_div'>
+                                                                <FontAwesomeIcon icon={faGrinStars}
                                                                                  className="fa"/>
-                                                                {blog.view_count}
+                                                                {infor?.follower_counter}
                                                             </div>
                                                         </div>
 
                                                     </div>
-                                                    <div className='body-post_feed_meta_user_info_user_follow'>
+                                                    <div className='forum-post_feed_meta_user_info_user_follow'>
 
 
                                                     </div>
@@ -191,63 +364,52 @@ const BlogDetail = (props) => {
                                         </a>
 
                                         <span
-                                            className='body-post_feed_meta_link'> Thời gian tạo: {blog.time_post}</span>
-                                        <span
-                                            className='body-post_feed_meta_link'> Thời gian đọc: 9 phút</span>
+                                            className='forum-post_feed_meta_link'> Thời gian tạo: {blog.time_post} </span>
+                                        {
+                                            blog.author_id !== infor.id ? (
+                                                    infor.is_following ? <Button onClick={Unfollow}>Unfollow</Button>
+                                                        : <Button onClick={FollowUser}>Follow</Button>
+                                                ) :
+
+                                                <FontAwesomeIcon icon={faUser}
+                                                                 className="fa"/>
+                                        }
+
                                     </div>
-                                    <div className='body-post_feed_starts'>
-                                        <span className='body-post_feed_starts_item'>
+
+                                    <div className='forum-post_feed_starts'>
+                                        <span className='forum-post_feed_starts_item'>
                                         <FontAwesomeIcon icon={faEye}
                                                          className="fa"/>
                                             {blog.view_count}
                                     </span>
-                                        <span className='body-post_feed_starts_item'>
+                                        <span className='forum-post_feed_starts_item'>
                                         </span>
-                                        <span className='body-post_feed_starts_item'>
+                                        <span className='forum-post_feed_starts_item'>
                                         <FontAwesomeIcon icon={faShare}
                                                          className="fa"/>
                                             7
                                     </span>
-                                        <span className='body-post_feed_starts_item'>
+                                        <span className='forum-post_feed_starts_item'>
                                         </span>
                                     </div>
                                 </div>
-
-
                             </div>
                         </header>
                         <div className='d-md-flex'></div>
                         <div>
-                            <div dangerouslySetInnerHTML={{__html: content}}/>
+                            <Box mt={2} sx={{width: '100%', maxWidth: 900}}>
+                                <Typography variant="h3" gutterBottom component="div">
+                                    {blog.title}
+                                </Typography>
+                                <Typography variant="subtitle1" gutterBottom component="div"
+                                            dangerouslySetInnerHTML={{__html: content}}>
 
-                        </div>
-                        <div className=''>
-                            <Alert severity="info">
-                                <AlertTitle>Nguồn :</AlertTitle>
-                                Tài liệu tham khảo tại : — <strong><a href={blog.source}>{blog.source}</a></strong>
-                            </Alert>
-                            <div className="fb-comments" data-href="http://localhost:3000/blog/data-grid-components"
-                                 data-width="700" data-numposts="2"></div>
+                                </Typography>
+                            </Box>
                         </div>
 
-                    </div>
-                    <div className='col col-3'>
-                        <div className='artice-show'>
-                            <div className='artice-show_card'>
-                                <a className='artice-show_card_flex' href="">
-                                    <img className='artice-show_card_flex_avatar' src={blog.avatar_author} alt=""/>
-                                    <span className='artice-show_card_flex_link'>
-                                    <Link to={`/info/${blog.author_id}`}>{blog.author_name}</Link>
-
-                                    </span>
-                                </a>
-                                <button value="Button" onClick={handleSubmit.bind(this,blog.author_id)}
-                                        className='artice-show_card_follow'>Follow
-                                </button>
-                                <div className='artice-show_card_about'>{blog.author_about}</div>
-                                <ul className='artice-show_card_user'></ul>
-                            </div>
-                        </div>
+                            <Comments currentBlogID={idDetail} currentUserID={userID} followUser={follow} />
                     </div>
                 </div>
             </div>
@@ -255,4 +417,4 @@ const BlogDetail = (props) => {
     </div>);
 };
 
-export default BlogDetail;
+export default ForumDetail;

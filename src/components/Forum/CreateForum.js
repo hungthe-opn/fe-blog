@@ -29,72 +29,44 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function CreateBlog() {
+export default function CreatePostForum() {
+
     const history = useNavigate();
     const initialFormData = Object.freeze({
-        title: '', slug: '', excerpt: '', content: '', description: '', category: '', source: '', tag: '[]'
+        title: '', content: '', description: '', tag: '[]', slug: ''
     });
     const [formData, updateFormData] = useState(initialFormData);
     const [contects, setContects] = useState(initialFormData);
-    const [formtag, setFormTag] = useState(initialFormData);
-
-
+    const [formTag, setFormTag] = useState(initialFormData);
     const [tag, setTag] = useState();
-    const [category, setCategory] = useState();
-    useEffect(() => {
-        axiosInstance.get('category/').then((res) => {
-            const allPosts = res.data.data;
-            setCategory(allPosts);
-        });
-    }, []);
-
     useEffect(() => {
         axiosInstance.get('blog/tag/').then((res) => {
             const allPosts = res.data.data;
             setTag(allPosts);
+            console.log(allPosts)
         });
     }, [])
 
-    const onChangeCategory = (e) => {
-        console.log(formData)
-
-        const newFormValue = {...formData, category: e.target.value}
-        updateFormData(newFormValue)
-    }
     const handleChangeContent = (content) => {
 
         const newFormValue = {...contects, content: content}
         setContects(newFormValue)
     };
-    console.log(contects)
     const handleChangeDes = (e) => {
         const newFormValue = {...formData, description: e.target.value}
         updateFormData(newFormValue)
     };
     const onChangeTitle = (e) => {
-
         const newFormValue = {...formData, title: e.target.value}
         console.log(newFormValue)
         updateFormData(newFormValue)
     };
 
-    const handleChangeSource = (e) => {
-        const newFormValue = {...formData, source: e.target.value}
-        updateFormData(newFormValue)
-    };
 
     const handleChangeTag = (id) => {
-
-        console.log(id);
-
-        const newFormValue = {...formtag, tag: id}
+        const newFormValue = {...formTag, tag: id}
         console.log(newFormValue)
         setFormTag(newFormValue)
-    };
-    console.log(tag)
-    const handleChangeExcerpt = (e) => {
-        const newFormValue = {...formData, excerpt: e.target.value}
-        updateFormData(newFormValue)
     };
 
     const handleChangeSlug = (e) => {
@@ -102,19 +74,16 @@ export default function CreateBlog() {
         updateFormData(newFormValue)
     };
 
-    console.log(formData)
-
     const handleSubmit = (e) => {
         e.preventDefault();
         axiosInstance
-            .post(`post-empl/`, {
+            .post(`forum/`, {
                 title: formData.title,
                 content: contects.content,
-                slug: formData.slug,
-                category: formData.category,
-                source: formData.source,
                 description: formData.description,
-                tags: formtag.tag,
+                tags: formTag.tag,
+                slug: formData.slug,
+
 
             })
             .then((res) => {
@@ -147,68 +116,6 @@ export default function CreateBlog() {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="excerpt"
-                            label="Nhập trích dẫn"
-                            name="excerpt"
-                            autoComplete="excerpt"
-                            onChange={handleChangeExcerpt}
-                            multiline
-                            rows={4}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="description"
-                            label="Nhập lý do"
-                            name="description"
-                            autoComplete="description"
-                            onChange={handleChangeDes}
-                            multiline
-                            rows={4}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="source"
-                            label="Nhập nguồn của bài viết!"
-                            name="source"
-                            autoComplete="source"
-                            onChange={handleChangeSource}
-                            multiline
-                            rows={4}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Select
-                            variant="outlined"
-                            required
-                            fullWidth
-                            id="category"
-                            label="Category"
-                            name="category"
-                            autoComplete="category"
-                            onChange={onChangeCategory}
-                            multiline
-                            rows={4}
-                        >
-                            {category?.length > 0 && category.map((item) => {
-
-                                return (<MenuItem value={item.id}>{item.name}</MenuItem>)
-                            })}
-                        </Select>
-                    </Grid>
-
-                    <Grid item xs={12}>
                         <SelectRE
                             isMulti
                             name="colors"
@@ -225,15 +132,29 @@ export default function CreateBlog() {
                             variant="outlined"
                             required
                             fullWidth
-                            id="slug"
-                            label="slug"
-                            name="slug"
-                            autoComplete="slug"
-                            onChange={handleChangeSlug}
+                            id="description"
+                            label="Nhập lý do"
+                            name="description"
+                            autoComplete="description"
+                            onChange={handleChangeDes}
+                            multiline
+                            rows={4}
                         />
                     </Grid>
-                </Grid>
 
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        id="slug"
+                        label="slug"
+                        name="slug"
+                        autoComplete="slug"
+                        onChange={handleChangeSlug}
+                    />
+                </Grid>
                 <SunEditor
                     name="content"
                     width="100%"

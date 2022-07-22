@@ -1,5 +1,10 @@
-.banner-blogs{
-&_link{
+.banner-blogs {
+  &_link {
 
+  }
 }
+
+.logo-banner {
+  object-fit: cover;
+  height: 64px;
 }

@@ -53,7 +53,7 @@ const UserEdit = () => {
         console.log(image)
 
     }
-const handleUser = () => {
+    const handleUser = () => {
         history('/user');
     };
     const handleSubmit = (e) => {

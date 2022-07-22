@@ -11,7 +11,7 @@ import {axiosInstance} from '../../axios'
 import SearchBar from 'material-ui-search-bar';
 import './Header.css'
 import './header.scss'
-import image from "../../img/logofabbi.png"
+import image from "../../img/LogoBLog.png"
 import {faSignOut, faUser, faUserEdit} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import IconButton from '@mui/material/IconButton';
@@ -105,7 +105,7 @@ function Header({login, user, isLogin}) {
 
     }
     const goSearch = (e) => {
-        navigate('/search/?search=' + data.search, {replace: true});
+        history('/search/?search=' + data.search, {replace: true});
         window.location.reload();
     }
     return (<React.Fragment>
@@ -134,7 +134,7 @@ function Header({login, user, isLogin}) {
                         color="textPrimary"
                         className={classes.banner}
                     >
-                        <img className="logo" src={image} width="6%" height="30px;" alt="sssss"/>
+                        <img className="logo logo-banner"  src={image} width="6%" height="30px;" alt="sssss"/>
 
                     </Link>
 

@@ -3,13 +3,15 @@ import './index.css';
 import {Route, BrowserRouter as Router, Routes} from 'react-router-dom'
 import App from "./App";
 import Header from './components/Header/Header'
-import {Footer} from './components/Footer/Footer'
+// import {Footer} from './components/Footer/Footer'
 import Register from './components/Register/Register'
 import SignIn from './components/Login/login'
 import SignUp from './components/Logout/logout'
 import Blog from './components/BlogIT/blogit'
 import CreateBlog from './components/BlogIT/CreateBlog'
+import CreatePostForum from './components/Forum/CreateForum'
 import Forum from './components/Forum/Forum'
+import ForumDetail from './components/Forum/ForumDetail'
 import BlogDetail from "./components/BlogIT/blogdetail";
 import Loading from "./Loading/Loading"
 import Category from "./components/BlogIT/category";
@@ -27,7 +29,7 @@ import UserEdit from './components/UserEdit/UserEdit'
 import Store from './components/Context/Context'
 import CustomizedTables from './components/BlogIT/AdminBlog'
 import Account from './components/InfoUser/infoUser'
-
+import Search from './components/Search/Search'
 const Application = () => {
     const [loading, setLoading] = useState(true)
     const [login, setLogin] = useState(false)
@@ -114,7 +116,9 @@ const Application = () => {
                         <Routes>
                             <Route path='/Fix' element={<App loading={login} dataBlog={blogs}/>}/>
                             <Route path='/' element={<Forum/>}/>
-
+                            <Route path='/forum/:id' element={<ForumDetail/>}/>
+                            <Route path='/forum/create' element={<CreatePostForum/>}/>
+<Route path="/search" element={<Search/>} />
                             <Route path='/register' element={<Register/>}/>
                             <Route path='/login' element={<SignIn login={handleLogin}/>}/>
                             <Route path='/logout' element={<SignUp/>}/>

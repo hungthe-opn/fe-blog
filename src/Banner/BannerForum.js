@@ -15,14 +15,14 @@ const BannerForum = () => {
                     <a href="/blog" className='profile-tab_item_link'>Bài viết </a>
                     <a href="/series" className='profile-tab_item_link'>Series</a>
                     <a href="/" className='profile-tab_item_link'>Câu hỏi</a>
-                    {myData == 'admin' ? (
+                    {myData === 'admin' ? (
                         <a href="/admin" className='profile-tab_item_link'>Quản lý</a>
 
                     ) : null}
                     <a href="/follow" className='profile-tab_item_link'>Đang theo dõi</a>
                     <a href="/contacts" className='profile-tab_item_link'>Cá nhân</a>
                     <div style={{padding: '11px', marginLeft: '257px'}}>
-                        <a href="/create" className='profile-tab_post'>
+                        <a href="/forum/create" className='profile-tab_post'>
                             <FontAwesomeIcon icon={faPen} className="fa profile-tab_post_pen"/>
                             Viết bài
                         </a>
