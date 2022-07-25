@@ -20,7 +20,8 @@ const Comments = ({currentBlogID, currentUserID, followUser}) => {
         backendComment.reply_of === null))
 
     const getReplies = (commendID) => {
-        return backendComments.filter(backendComment => backendComment.reply_of === commendID)
+        return backendComments
+            .filter(backendComment => backendComment.reply_of === commendID)
             .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
 
     }

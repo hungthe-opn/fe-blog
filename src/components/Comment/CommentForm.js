@@ -23,7 +23,7 @@ const Comment = ({
                      replyComment,
                      addComment,
                      reply_of = null,
-    updateComment
+                     updateComment
                  }) => {
     const fiveMinutes = 300000
     const timePassed = new Date() - new Date(comment.created_at) > fiveMinutes;

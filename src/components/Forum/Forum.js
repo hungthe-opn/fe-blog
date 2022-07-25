@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import axiosInstance from "../../axios";
 import "./Forum.scss"
 import mainLogo from "../../img/QA.png"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCheck, faEye, faUser} from "@fortawesome/free-solid-svg-icons";
+import {faCheck, faComments, faEye, faHandHoldingHeart, faUser} from "@fortawesome/free-solid-svg-icons";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import BannerForum from '../../Banner/BannerForum'
@@ -17,32 +17,41 @@ const Forum = () => {
     const [categories, setCategory] = useState([]);
     const [page, setPages] = useState(1);
     const [pagi, setPagi] = useState()
-    // get featured data
+
     useEffect(() => {
         axiosInstance.get('blog/featured/').then((res) => {
             const allPosts = res.data.data;
             setFeaturedBlog(allPosts[0]);
         });
-
     }, []);
+
     useEffect(() => {
         axiosInstance.get('category/').then((res) => {
             const allPosts = res.data.data;
             setCategory(allPosts);
         });
-
     }, []);
+
     const handleChangePage = (e, page) => {
         setPages(page)
-
     }
+
+    function changeTimePost(){
+        return blogs
+            .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+    }
+
     useEffect(() => {
         axiosInstance.get(`forum/list-blog?page=${page}`).then((res) => {
             const allPosts = res.data.data;
             setBlogs(allPosts);
             setPagi(res.data.pagination)
+            changeTimePost()
         });
     }, [page]);
+
+    const createdAt = new Date(blogs.created_at).toLocaleDateString();
+    console.log(createdAt)
     const category = () => {
         let result = [];
         const list = categories && categories.length > 0 && categories.map((categorys) => {
@@ -104,7 +113,7 @@ const Forum = () => {
                                         </a>
                                         <div className='body-post_feed_meta_user_info_user_name'>
                                             <a href="" className='body-post_feed_meta_user_info_user_name_a'>
-                                                {blogPost.rank == 'Quản trị viên' ? (
+                                                {blogPost.rank === 'Quản trị viên' ? (
 
                                                     <span>
                                             <FontAwesomeIcon icon={faCheck}
@@ -144,8 +153,7 @@ const Forum = () => {
                                     </div>
                                 </div>
                             </a>
-                            <span className='body-post_feed_meta_link'> Thời gian tạo {blogPost.time_post}</span>
-                            <span className='body-post_feed_meta_link'> Ngày cập nhật {blogPost.time_update}</span>
+                            <span className='body-post_feed_meta_link'> Thời gian tạo : {blogPost.time_post}</span>
                         </div>
                         <div className='body-post_feed_title'>
                             <h3 className='body-post_feed_title_word'>
@@ -171,15 +179,21 @@ const Forum = () => {
                                 {blogPost.view_count}
                         </span>
                             <span className='body-post_feed_starts_item'>
+                                <FontAwesomeIcon icon={faHandHoldingHeart}
+                                                 className="fa"/>
+                                {blogPost.upvote}
                             </span>
-
+                             <span className='body-post_feed_starts_item'>
+                                <FontAwesomeIcon icon={faComments}
+                                                 className="fa"/>
+                                {blogPost.comment}
+                            </span>
                         </div>
                     </div>
 
                 </div>
             )
                 ;
-
         })
         for (let i = 0; i < list.length; i += 2) {
             result.push
@@ -201,7 +215,6 @@ const Forum = () => {
                 <div className="body_image">
                     <img src={mainLogo} alt="" className='body_image_banner'/>
                 </div>
-                <BannerForum></BannerForum>
                 <div className="text-center">
                     <a href="" className="text-center_body"> >> Tham gia Facebook group "Vì một tương lai lập trình viên
                         hàng đâu" để cùng nhau học tập và kết nối </a>
@@ -211,14 +224,8 @@ const Forum = () => {
                     <div className='row'>
                         <div className='col col-9'>
                             <div>
-                                {getBlogs()}
-                            </div>
-                            <div className='body-pagination'>
-                               <div style={{padding: ' 35px 0px 41px 400px'}}><Stack spacing={2}>
-                                <Pagination color="primary" count={Math.ceil(pagi?.total_row / PER_PAGE) || 0}
-                                            page={page}
-                                            onChange={handleChangePage} variant="outlined"/>
-                            </Stack></div>
+                             <BannerForum></BannerForum>
+
                             </div>
                         </div>
                         <div className='col col-3'>

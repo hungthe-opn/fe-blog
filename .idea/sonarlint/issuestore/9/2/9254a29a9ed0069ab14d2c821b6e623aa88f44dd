@@ -1,0 +1,13 @@
+
+Gjavascript:S1128"&Remove this unused import of 'Avatar'.(ÎÁ°ùÿÿÿÿ
+Yjavascript:S1481"8Remove the declaration of the unused 'imageID' variable.(ïöÕ˜ùÿÿÿÿ
+Vjavascript:S1854"5Remove this useless assignment to variable "imageID".(ïöÕ˜ùÿÿÿÿ
+Wjavascript:S1481";Remove the declaration of the unused 'usernameID' variable.( ¬ĞŞ
+Tjavascript:S1854"8Remove this useless assignment to variable "usernameID".( ¬ĞŞ
+Yjavascript:S1481"8Remove the declaration of the unused 'aboutID' variable.(”… çüÿÿÿÿ
+Vjavascript:S1854"5Remove this useless assignment to variable "aboutID".(”… çüÿÿÿÿ
+Sjavascript:S1481"7Remove the declaration of the unused 'nameID' variable.(ï•ïÙ
+Pjavascript:S1854"4Remove this useless assignment to variable "nameID".(ï•ïÙ
+Sjavascript:S1481"7Remove the declaration of the unused 'errors' variable.(¾ËœÜ
+Pjavascript:S1854"4Remove this useless assignment to variable "errors".(¾ËœÜ
+Sjavascript:S1117D"2'formData' is already declared in the upper scope.(›‰Æ”ùÿÿÿÿ
