@@ -1,6 +1,6 @@
-import React, {useState, useEffect, useRef, createContext,} from "react";
+import React, {useEffect, useRef, useState,} from "react";
 import './index.css';
-import {Route, BrowserRouter as Router, Routes} from 'react-router-dom'
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 import App from "./App";
 import Header from './components/Header/Header'
 // import {Footer} from './components/Footer/Footer'
@@ -30,95 +30,48 @@ import Store from './components/Context/Context'
 import CustomizedTables from './components/BlogIT/AdminBlog'
 import Account from './components/InfoUser/infoUser'
 import Search from './components/Search/Search'
+
 const Application = () => {
-    const [loading, setLoading] = useState(true)
     const [login, setLogin] = useState(false)
     const [userName, setUser] = useState("")
-    const [userEmail, setUserEmail] = useState("")
 
     const [blogs, setBlogs] = useState([]);
-    const scrollRef = useRef();
-
-
     const [infor, setInfor] = useState([]);
-    useEffect(() => {
-        axiosInstance.get('user-blog/info/').then((res) => {
-            const allPosts = res.data.data;
-            console.log(allPosts)
-            setInfor(allPosts);
-        });
-    }, []);
-
+    const IdUserLogin = infor.id
     useEffect(() => {
         const token = localStorage.getItem('access_token')
-        axiosInstance.get('blog/').then((res) => {
-            const allPosts = res.data;
-            setBlogs(allPosts)
-        })
         if (token === null) {
             setLogin(false)
         } else {
             setLogin(true)
         }
-
     }, [])
-
-    useEffect(() => {
-        const fetch = async () => {
-            // const res = await axios.get("http://127.0.0.1:8000/api/blog/")
-            setLoading(false)
-        }
-        setTimeout(() => {
-            fetch()
-        }, 1500)
-
+     useEffect(() => {
+        axiosInstance.get('user-blog/info/').then((res) => {
+            const allPosts = res.data.data;
+            setInfor(allPosts);
+        });
     }, []);
-
     const handleLogin = (userName) => {
         setLogin(true)
         setUser(userName)
     }
-    const handleLogin_email = (userName) => {
-        setLogin(true)
-        setUserEmail(userName)
-    }
+
     const handleLogout = () => {
         setLogin(false)
     }
 
-    // useEffect(() => {
-    //     const fixedHeader = () => {
-    //         if (
-    //             document.documentElement.scrollTop > 120
-    //         ) {
-    //             scrollRef.current.classList.add('show');
-    //         } else {
-    //             scrollRef.current.classList.remove('show');
-    //         }
-    //     };
-    //     window.addEventListener('scroll', fixedHeader);
-    //     return () => {
-    //         window.removeEventListener('scroll', fixedHeader);
-    //     };
-    // }, []);
-
     return (
-
         <Router>
-
             <Store>
                 <div className="scroll-container" style={{marginTop: '64px'}}>
-                    <div ref={scrollRef} className="scroll-top" onClick={() => window.scrollTo(0, 0)}/>
-                    {loading ? <Loading/> : <div>
-
-                        <Header login={login} isLogin={handleLogout} user={userName} email={userEmail}/>
-
+                        <Header login={login} isLogin={handleLogout}/>
                         <Routes>
                             <Route path='/Fix' element={<App loading={login} dataBlog={blogs}/>}/>
                             <Route path='/' element={<Forum/>}/>
-                            <Route path='/forum/:id' element={<ForumDetail/>}/>
+                            <Route path='/forum/:id' element={<ForumDetail  IdUserLogin={IdUserLogin}/>}/>
                             <Route path='/forum/create' element={<CreatePostForum/>}/>
-<Route path="/search" element={<Search/>} />
+                            <Route path="/search" element={<Search/>} />
                             <Route path='/register' element={<Register/>}/>
                             <Route path='/login' element={<SignIn login={handleLogin}/>}/>
                             <Route path='/logout' element={<SignUp/>}/>
@@ -127,7 +80,6 @@ const Application = () => {
                             <Route path='/admin-blog' element={<CustomizedTables/>}/>
                             <Route path='/info/:id' element={<Account/>}/>
                             <Route path='/test' element={<Follow/>}/>
-
                             <Route path='/blog/category/:id' element={<Category/>}/>
                             <Route path='/blog/:slug' element={<BlogDetail/>}/>
                             <Route path='/user' element={<UserInfo/>}/>
@@ -141,7 +93,6 @@ const Application = () => {
                             <Route path='/contacts/' element={<Contact/>}/>
                         </Routes>
                         {/*<Footer/>*/}
-                    </div>}
                 </div>
             </Store>
         </Router>

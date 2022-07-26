@@ -9,7 +9,7 @@ import TabList from "@material-ui/lab/TabList";
 import TabPanel from "@material-ui/lab/TabPanel";
 import PostFollow from '../components/Forum/Post-Follow'
 import PostNew from '../components/Forum/Post-New'
-
+import PostViewCount from '../components/Forum/Post-View-Count'
 const BannerForum = () => {
     const [value, setValue] = React.useState('one');
 
@@ -61,7 +61,7 @@ const BannerForum = () => {
                     </TabList>
 
                 </Box>
-                <TabPanel value="1"></TabPanel>
+                <TabPanel value="1"><PostViewCount/></TabPanel>
                 <TabPanel value="2">
 
                     <PostNew/>

@@ -4,7 +4,14 @@ import axiosInstance from "../../axios";
 import "./Forum.scss"
 import mainLogo from "../../img/QA.png"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCheck, faComments, faEye, faHandHoldingHeart, faUser} from "@fortawesome/free-solid-svg-icons";
+import {
+    faCheck,
+    faComments,
+    faEye,
+    faHandHoldingHeart,
+    faUser,
+    faUserPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import BannerForum from '../../Banner/BannerForum'
@@ -114,7 +121,6 @@ const Forum = () => {
                                         <div className='body-post_feed_meta_user_info_user_name'>
                                             <a href="" className='body-post_feed_meta_user_info_user_name_a'>
                                                 {blogPost.rank === 'Quản trị viên' ? (
-
                                                     <span>
                                             <FontAwesomeIcon icon={faCheck}
                                                              className="fa"/>{blogPost.author_name}
@@ -130,7 +136,7 @@ const Forum = () => {
 
                                         </span>
                                                 <div>
-                                                    {blogPost.rank == 'Quản trị viên' ? (
+                                                    {blogPost.rank === 'Quản trị viên' ? (
                                                         <span
                                                             className="badge rounded-pill bg-primary">{blogPost.rank}</span>
                                                     ) : (<span
@@ -219,13 +225,11 @@ const Forum = () => {
                     <a href="" className="text-center_body"> >> Tham gia Facebook group "Vì một tương lai lập trình viên
                         hàng đâu" để cùng nhau học tập và kết nối </a>
                 </div>
-                <div className="container"></div>
                 <div className="container  mt-3">
                     <div className='row'>
                         <div className='col col-9'>
                             <div>
                              <BannerForum></BannerForum>
-
                             </div>
                         </div>
                         <div className='col col-3'>
@@ -243,11 +247,12 @@ const Forum = () => {
                                             {featuredBlog.title}
                                         </Link>
                                     </h4>
-                                    <div className="sticky_featured_sidebar">
-                                        {featuredBlog.view_count}
+                                    <div style={{paddingBottom:'30px'}} className="sticky_featured_sidebar">
+                                     <FontAwesomeIcon icon={faEye}
+                                                 className="fa"/>{featuredBlog.view_count}
                                     </div>
                                     <div className="sticky_featured_feed">
-                                        <a href="">{featuredBlog.author_name} - {featuredBlog.time_post} </a>
+                                       <FontAwesomeIcon icon={faUserPlus}/><a href="">  {featuredBlog.author_name} - {featuredBlog.time_post} </a>
                                     </div>
                                 </div>
                                 <div className="sticky_section">
@@ -267,14 +272,9 @@ const Forum = () => {
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
-            <div className="footer"><h2 className="footer-item"></h2></div>
-
         </>
     )
-
 };
 export default Forum;

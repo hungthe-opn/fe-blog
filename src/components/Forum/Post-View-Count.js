@@ -8,7 +8,7 @@ import Pagination from "@mui/material/Pagination";
 import ErrorValue from "../Error/Error-Value";
 
 const PER_PAGE = 10;
-const PostNew = () => {
+const PostViewCount = () => {
     const [postNews, setPostNews] = useState([]);
     const [page, setPages] = useState(1);
     const [pagination, setPagination] = useState()
@@ -16,13 +16,14 @@ const PostNew = () => {
         setPages(page)
     }
     useEffect(() => {
-        axiosInstance.get(`forum/list-blog?page=${page}`).then((res) => {
+        axiosInstance.get(`forum/list-view-count?page=${page}`).then((res) => {
             const allPosts = res.data.data;
             setPostNews(allPosts);
             setPagination(res.data.pagination)
 
         });
     }, [page]);
+
     const getBlogs = () => {
         let result = [];
         const list = postNews && postNews.length > 0 && postNews.map((postNew) => {
@@ -32,8 +33,8 @@ const PostNew = () => {
 
                     <div className='body-post_feed'>
                         <div className='body-post_feed_meta'>
-                             <a href="" className='body-post_feed_meta_user'>
-                                {postNew.rank === 'Quản trị viên' ? (
+                            <a href="" className='body-post_feed_meta_user'>
+                                 {postNew.rank === 'Quản trị viên' ? (
                                     <span>
                         <FontAwesomeIcon icon={faUser}
                                          className="fa"/> <Link to={`/info/${postNew.author_id}`}>{postNew.author_name}</Link>
@@ -164,4 +165,4 @@ const PostNew = () => {
         </div>
     )
 }
-export default PostNew
+export default PostViewCount

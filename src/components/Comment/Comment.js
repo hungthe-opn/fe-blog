@@ -15,7 +15,7 @@ const Comments = ({currentBlogID, currentUserID, followUser}) => {
     const [backendComments, setBackendComments] = useState([])
     const [activeComment, setActiveComment] = useState(null)
     const [page, setPages] = useState(1);
-    const [paginationComments, setPaginationsComments] = useState()
+    const [paginationComments, setPaginationComments] = useState()
     const rootComments = backendComments.filter((backendComment =>
         backendComment.reply_of === null))
 
@@ -35,7 +35,7 @@ const Comments = ({currentBlogID, currentUserID, followUser}) => {
         axiosInstance.get(`comment/${currentBlogID}?page=${page}`).then((res) => {
             const allPosts = res.data.data;
             setBackendComments(allPosts);
-            setPaginationsComments(res.data.pagination)
+            setPaginationComments(res.data.pagination)
 
         });
     }
@@ -44,11 +44,10 @@ const Comments = ({currentBlogID, currentUserID, followUser}) => {
         if (window.confirm('Are you sure you want to delete this comment')) {
             axiosInstance.delete(`comment/${commentID}`).then(() => {
                 const updatedBackendComments = backendComments.filter((backendComment) => backendComment.id !== commentID)
-                setPaginationsComments(updatedBackendComments)
+                setPaginationComments(updatedBackendComments)
 
             })
         }
-
     }
     const addComment = (e) => {
         const data = axiosInstance
@@ -65,7 +64,6 @@ const Comments = ({currentBlogID, currentUserID, followUser}) => {
 
     useEffect(() => {
         fetchData()
-
     }, [page]);
 
     const replyComment = (e, reply_of) => {
@@ -102,7 +100,6 @@ const Comments = ({currentBlogID, currentUserID, followUser}) => {
                 setBackendComments(updateBackendComments)
                 setActiveComment(null)
             })
-
 
             .catch(error => {
                 console.error(error)

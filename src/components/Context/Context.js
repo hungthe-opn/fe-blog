@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, createContext,} from "react";
+import React, {useState, createContext,} from "react";
 
 export const UserContext = createContext()
 
@@ -10,18 +10,19 @@ const Store = (props) => {
     const [about, setAbout] = useState();
     const [sex, setSex] = useState();
     const [name, setName] = useState();
+    const [id, setID] = useState();
 
 
-    const setData = (userId, imageId, emailId, aboutId, sexID, nameID) => {
+    const setData = (userId, imageId, emailId, aboutId, sexID, nameID,ID) => {
         setUser(userId)
         setImage(imageId)
         setEmail(emailId)
         setAbout(aboutId)
         setSex(sexID)
         setName(nameID)
-
+        setID(ID)
     }
-
+console.log(id)
     return (
         <UserContext.Provider value={{
             user,
@@ -30,8 +31,8 @@ const Store = (props) => {
             setData,
             about,
             sex,
-            name
-
+            name,
+            id
         }}>{props.children}</UserContext.Provider>
     )
 }

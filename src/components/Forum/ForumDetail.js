@@ -3,10 +3,9 @@ import '../BlogIT/BlogDetail.scss'
 import './ForumDetail.scss'
 import {useParams} from "react-router-dom";
 import axiosInstance from "../../axios";
-import {faCaretDown, faCaretUp, faCheck, faEye, faGrinStars, faShare, faUser,} from "@fortawesome/free-solid-svg-icons";
+import {faCaretDown, faCaretUp, faCheck, faUser,} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import mainLogo from "../../img/QA.png"
-import SunEditor from 'suneditor-react';
 import 'suneditor/dist/css/suneditor.min.css';
 import Comments from '../Comment/Comment'
 import {
@@ -21,6 +20,8 @@ import Button from '@material-ui/core/Button';
 import {makeStyles} from "@material-ui/core/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+// import {UserContext} from "../Context/Context";
+
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8), display: 'flex', flexDirection: 'column', alignItems: 'center',
@@ -34,24 +35,19 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const ForumDetail = () => {
+const ForumDetail = ({IdUserLogin}) => {
     const initialFormData = Object.freeze({
         body: ''
     });
     const [blog, setBlog] = useState({})
-    const [idUser, setidUser] = useState(blog.author_id)
     const [upvote, setUpvote] = useState(blog.upvote);
-    const [contects, setContects] = useState(initialFormData);
     const [comment, setComment] = useState([])
     const content = blog.content
+    const [follow, setFollow] = useState(1)
     const param = useParams()
-    const [page, setPages] = useState(1);
-    const [pagi, setPagi] = useState()
     const idDetail = param.id
     const idUpvote = blog.id
-    const [infor, setInfor] = useState([]);
-    const userID = blog.author_id
-    const follow = infor.follower_counter
+    const userID = IdUserLogin
     const shareUrl = +process.env.REACT_APP_IS_LOCALHOST === 1 ? "https://peing.net/ja/" : window.location.href;
     const incrementVote = (e) => {
         axiosInstance.post(`forum/upvote-forum/${idUpvote}`).then((res) => {
@@ -68,53 +64,16 @@ const ForumDetail = () => {
         ;
     }
 
-    const FollowUser = (e) => {
-        axiosInstance
-            .post(`user-blog/follow/${userID}`)
-            .then((res) => {
-                const allPosts = res.data
-                if (allPosts.response_msg === 'SUCCESS') {
-                    fetchFollow()
-                }
-            }).catch((err) => {
-            alert('errrrrr')
-        });
-    }
-    const Unfollow = (e) => {
-        axiosInstance
-            .delete(`user-blog/follow/${userID}`)
-            .then((res) => {
-                const allPosts = res.data
-                if (allPosts.response_msg === 'SUCCESS') {
-                    fetchFollow()
-                }
-            }).catch((err) => {
-            alert('errrrrr')
-        });
-    }
-
-    function fetchData() {
-        axiosInstance.get(`comment/${idDetail}?page=${page}`).then((res) => {
-            const allPosts = res.data.data;
-            setComment(allPosts);
-            setPagi(res.data.pagination)
-        });
-    }
-
-    function fetchFollow() {
-        axiosInstance.get(`user-blog/get-user/${userID}`).then((res) => {
-            const allPosts = res.data.data;
-            setInfor(allPosts);
-            console.log(allPosts)
-
-        });
-    }
-
+    // function fetchData() {
+    //     axiosInstance.get(`comment/${idDetail}`).then((res) => {
+    //         const allPosts = res.data.data;
+    //         setComment(allPosts);
+    //     });
+    // }
 
     useEffect(() => {
-        fetchData()
-        fetchFollow()
-    }, [page]);
+        // fetchData()
+    },);
 
     const decrementVote = (e) => {
         axiosInstance.post(`forum/downvote-forum/${idUpvote}`).then((res) => {
@@ -178,7 +137,7 @@ const ForumDetail = () => {
                                         </a>
                                         <div className='forum-post_feed_meta_user_info_user_name'>
                                             <a href="" className='forum-post_feed_meta_user_info_user_name_a'>
-                                                {commentPost.rank == 'Quản trị viên' ? (
+                                                {commentPost.rank === 'Quản trị viên' ? (
 
                                                     <span>
                                             <FontAwesomeIcon icon={faCheck}
@@ -191,7 +150,7 @@ const ForumDetail = () => {
                                             </a>
                                             <div>
                                                 <div>
-                                                    {commentPost.rank == 'Quản trị viên' ? (
+                                                    {commentPost.rank === 'Quản trị viên' ? (
                                                         <span
                                                             className="badge rounded-pill bg-primary">{commentPost.rank}</span>
                                                     ) : (<span
@@ -264,15 +223,15 @@ const ForumDetail = () => {
                 <div className='row'>
                     <div className='col col-1 screen-default_upvote'>
                         <Button onClick={incrementVote}><FontAwesomeIcon icon={faCaretUp} style={{paddingLeft: '16px'}}
-                                                                         className="fa"/>
+                                                                         className="fa fa-3x"/>
                         </Button>
 
-                        <div className='screen-default_upvote_count' style={{paddingLeft: '9px'}}>
+                        <div className='screen-default_upvote_count'>
                             {upvote}
                         </div>
                         <Button onClick={decrementVote}><FontAwesomeIcon icon={faCaretDown}
                                                                          style={{paddingLeft: '16px'}}
-                                                                         className="fa"/></Button>
+                                                                         className="fa fa-3x"/></Button>
 
 
                         <FacebookShareButton
@@ -304,105 +263,29 @@ const ForumDetail = () => {
                     <div className='col col-11'>
                         <header className='mb-05'>
                             <div className='forum-post'>
-                                <img className='forum-post_img' style={{width: '45px', height: '45px'}}
-                                     src={blog.avatar_author} alt=""/>
 
-                                <div className='forum-post_feed' style={{width: '700px', height: '73px'}}>
-                                    <div className='forum-post_feed_meta'>
-                                        <a href="" className='forum-post_feed_meta_user'>
-                                            {blog.rank == 'Quản trị viên' ? (<span>
-                                            <FontAwesomeIcon icon={faUser}
-                                                             className="fa"/>{blog.author_name}
-                                                </span>) : (<div>{blog.author_name}
-                                            </div>)}
-                                            <div className='forum-post_feed_meta_user_info'>
-                                                <div className='forum-post_feed_meta_user_info_user'>
+                                <Box mt={2} sx={{width: '100%', maxWidth: 900}}>
+                                    <Typography variant="h4" gutterBottom component="div">
+                                        {blog.title}
+                                    </Typography>
+                                    <Typography style={{display: 'flex',}}>
+                                        <Typography gutterBottom component="div">
+                                        Thời gian đăng : {blog.time_post}
+                                    </Typography>
+                                        <Typography gutterBottom component="div" ml={2}>
+                                        Chỉnh sửa : {blog.updated_at}
+                                    </Typography>
+                                    <Typography gutterBottom component="div" ml={2}>
+                                        Lượt xem : {blog.view_count}
+                                    </Typography></Typography>
 
-                                                    <a href="" className='forum-post_feed_meta_user_info_user_a'>
-                                                        <img src={blog.avatar_author}
-                                                             className='forum-post_feed_meta_user_info_user_a_img'
-                                                             alt=""/>
-                                                    </a>
-                                                    <div className='forum-post_feed_meta_user_info_user_name'>
-                                                        <a href=""
-                                                           className='forum-post_feed_meta_user_info_user_name_a'>
-                                                            {blog.rank == 'Quản trị viên' ? (
-
-                                                                <span>
-                                            <FontAwesomeIcon icon={faCheck}
-                                                             className="fa"/>{blog.author_name}
-                                                </span>) : (<div>{blog.author_name}
-                                                            </div>)}
-
-                                                        </a>
-                                                        <div><span
-                                                            className='forum-post_feed_meta_user_info_user_name_span'>
-                                                @{blog.author_email}
-                                        </span>
-                                                            <div>
-                                                                {blog.rank == 'Quản trị viên' ? (<span
-                                                                    className="badge rounded-pill bg-primary">{blog.rank}</span>) : (
-                                                                    <span
-                                                                        className="badge rounded-pill bg-success">{blog.rank}</span>)}
-
-                                                            </div>
-                                                            <div
-                                                                className='forum-post_feed_meta_user_info_user_name_div'>
-                                                                <FontAwesomeIcon icon={faGrinStars}
-                                                                                 className="fa"/>
-                                                                {infor?.follower_counter}
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                    <div className='forum-post_feed_meta_user_info_user_follow'>
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-
-                                        <span
-                                            className='forum-post_feed_meta_link'> Thời gian tạo: {blog.time_post} </span>
-                                        {
-                                            blog.author_id !== infor.id ? (
-                                                    infor.is_following ? <Button onClick={Unfollow}>Unfollow</Button>
-                                                        : <Button onClick={FollowUser}>Follow</Button>
-                                                ) :
-
-                                                <FontAwesomeIcon icon={faUser}
-                                                                 className="fa"/>
-                                        }
-
-                                    </div>
-
-                                    <div className='forum-post_feed_starts'>
-                                        <span className='forum-post_feed_starts_item'>
-                                        <FontAwesomeIcon icon={faEye}
-                                                         className="fa"/>
-                                            {blog.view_count}
-                                    </span>
-                                        <span className='forum-post_feed_starts_item'>
-                                        </span>
-                                        <span className='forum-post_feed_starts_item'>
-                                        <FontAwesomeIcon icon={faShare}
-                                                         className="fa"/>
-                                            7
-                                    </span>
-                                        <span className='forum-post_feed_starts_item'>
-                                        </span>
-                                    </div>
-                                </div>
+                                </Box>
                             </div>
                         </header>
                         <div className='d-md-flex'></div>
                         <div>
                             <Box mt={2} sx={{width: '100%', maxWidth: 900}}>
-                                <Typography variant="h3" gutterBottom component="div">
-                                    {blog.title}
-                                </Typography>
-                                <Typography variant="subtitle1" gutterBottom component="div"
+                                <Typography variant="h5" gutterBottom component="div"
                                             dangerouslySetInnerHTML={{__html: content}}>
 
                                 </Typography>

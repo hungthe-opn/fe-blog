@@ -18,14 +18,12 @@ const FormPost = ({
     });
     const [text, setText] = useState(body);
     const isTextareaDisabled = text.length === 0;
-    console.log(text)
     const handleChangeContent = (body) => {
         const newFormValue = {...text, body: body}
         setText(newFormValue)
     };
 
     const onSummit = (e) => {
-        console.log(e)
         e.preventDefault();
         handleSubmit(text)
         setText("");

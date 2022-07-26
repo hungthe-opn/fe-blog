@@ -33,11 +33,14 @@ const PostFollow = () => {
                 <div className='body-post_feed'>
                     <div className='body-post_feed_meta'>
                         <a href="" className='body-post_feed_meta_user'>
-                            {userPostFollow.rank === 'Quản trị viên' ? (<span>
-                                            <FontAwesomeIcon icon={faUser}
-                                                             className="fa"/>{userPostFollow.author_name}
-                                                </span>) : (<div>{userPostFollow.author_name}
-                            </div>)}
+                             {userPostFollow.rank === 'Quản trị viên' ? (
+                                    <span>
+                        <FontAwesomeIcon icon={faUser}
+                                         className="fa"/> <Link to={`/info/${userPostFollow.author_id}`}>{userPostFollow.author_name}</Link>
+                        </span>
+                                ) : (
+                                    <span><Link to={`/info/${userPostFollow.author_id}`}>{userPostFollow.author_name}</Link></span>)
+                                }
                             <div className='body-post_feed_meta_user_info'>
                                 <div className='body-post_feed_meta_user_info_user'>
 
@@ -47,7 +50,7 @@ const PostFollow = () => {
                                     </a>
                                     <div className='body-post_feed_meta_user_info_user_name'>
                                         <a href="" className='body-post_feed_meta_user_info_user_name_a'>
-                                            {userPostFollow.rank == 'Quản trị viên' ? (
+                                            {userPostFollow.rank === 'Quản trị viên' ? (
 
                                                 <span>
                                             <FontAwesomeIcon icon={faCheck}

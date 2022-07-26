@@ -103,7 +103,7 @@
   font-size: 18.288px;
   font-weight: 700;
   line-height: 21.9456px;
-  margin: 0px 0px 8px;
+  margin: 0px 0px -10px;
   padding: 16px 0px;
   text-align: center;
 
@@ -117,7 +117,7 @@
 
 .body-post {
   height: 118px;
-  width: 840px;
+  width: 752px;
   align-items: flex-start;
   color: #1b1b1b;
   display: flex;
@@ -171,21 +171,21 @@ padding-left:12px;
         color:#606266;
         font-size:14px;
         line-height:19.4px;
-        margin:12px 0px 0px;
+        margin:-3px 0px 0px;
         text-align:justify;
         position: absolute;
-        //display: none;
+        display: none;
         z-index: 1000;
         &_user{
           width:343px;
           height: 75px;
           justify-content:space-around;
+          display: flex;
           &_a{
 
             width:86px;
             height: 67px;
             color:#33629c;
-            display:flex;
             flex-basis:25%;
             margin: 0px 8px 0px 0px;
             padding: 0px 15px;
@@ -203,7 +203,7 @@ padding-left:12px;
             height: 67px;
             color: #606266;
             flex-basis:75%;
-            padding:0px 15px;
+            padding:0px 24px;
             &_a{
               width:73px;
               height: 16px;
@@ -240,7 +240,7 @@ padding-left:12px;
       }
        &_user:hover div{
 
-            //display: block;
+            display: block;
 
         }
       &_link {
@@ -267,7 +267,10 @@ padding-left:12px;
         &_a{
           color: #1b1b1b;
           display: inline;
-          text-decoration: none
+          text-decoration: none;
+          a{
+            font-size: 17px;
+          }
 
         }
         &_a:hover {
@@ -316,7 +319,7 @@ padding-left:12px;
   color: #1b1b1b;
   font-size: 14px;
   line-height: 22.4px;
-  padding: 0px 8px 0px 0px;
+  padding: 46px 8px 0px 0px;
   text-align: left;
     //border-style: solid;
     //  border-width: 1px;
@@ -377,7 +380,7 @@ padding-left:12px;
 }
 
 .sticky-section_a_h4 {
-  font-size: 14px;
+  font-size: 22px;
 }
 
 .body-pagination {
