@@ -1,5 +1,4 @@
-import React from 'react';
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from 'react';
 import axiosInstance from "../../axios";
 import Comment from "./CommentForm";
 import Box from '@mui/material/Box';
@@ -10,15 +9,46 @@ import Pagination from "@mui/material/Pagination";
 
 const PER_PAGE = 10;
 
-const Comments = ({currentBlogID, currentUserID, followUser}) => {
+const Comments = ({currentBlogID, currentUserID, followUser, answer}) => {
 
     const [backendComments, setBackendComments] = useState([])
     const [activeComment, setActiveComment] = useState(null)
     const [page, setPages] = useState(1);
+    const [upvote, setUpvote] = useState(backendComments.quantity_upvote);
+    console.log(backendComments)
     const [paginationComments, setPaginationComments] = useState()
     const rootComments = backendComments.filter((backendComment =>
         backendComment.reply_of === null))
+    const incrementVote = (commentID) => {
+        axiosInstance.post(`forum/upvote-forum/${commentID}`).then((res) => {
+            const allPosts = res.data;
+            console.log(allPosts)
+            if (allPosts.response_msg === 'SUCCESS') {
+                setUpvote((prev) => prev + 1);
 
+            } else if (allPosts.message === 'downvote to upvote') {
+                setUpvote((prev) => prev + 2);
+            } else alert('errrrrr')
+        }).catch((err) => {
+            alert('errrrrr')
+        })
+        ;
+    }
+    const decrementVote = (commentID) => {
+        console.log(commentID)
+        axiosInstance.post(`forum/downvote-forum/${commentID}`).then((res) => {
+            const allPosts = res.data;
+            console.log(allPosts)
+            if (allPosts.response_msg === 'SUCCESS') {
+                setUpvote((prev) => prev - 1);
+
+            } else if (allPosts.message === 'upvote to downvote') {
+                setUpvote((prev) => prev - 2);
+            }
+        }).catch((err) => {
+            alert('vui long nhap lai')
+        })
+    }
     const getReplies = (commendID) => {
         return backendComments
             .filter(backendComment => backendComment.reply_of === commendID)
@@ -79,7 +109,6 @@ const Comments = ({currentBlogID, currentUserID, followUser}) => {
             .then(comment => {
                 setBackendComments([comment, ...backendComments])
                 setActiveComment(null)
-
             })
             .catch(error => {
                 console.error(error)
@@ -108,15 +137,14 @@ const Comments = ({currentBlogID, currentUserID, followUser}) => {
     }
     return (
         <div style={{boxShadow: '#a17d7d 0 0.5px 0px 0px'}}>
-            <Box mt={20} sx={{width: '100%', maxWidth: 698}}>
-                <Typography variant="h4" gutterBottom component="div">
-                    Bình luận
+            <Box mt={2} sx={{width: '100%', maxWidth: 1000}}>
+
+                <Typography style={{display: 'flex', paddingTop: "19px"}}>
+                    <Typography variant="h5" gutterBottom component="div">
+                        {answer} Answers
+                    </Typography>
                 </Typography>
-                <FormPost handleSubmit={addComment} summitLabel="Write"/>
-                <Typography variant="h4" gutterBottom component="div">
-                    Câu trả lời
-                </Typography>
-                <div style={{paddingTop: '10px'}}>
+                <div>
                     {rootComments.map((rootComment) => (
                         <Comment key={rootComment.id}
                                  comment={rootComment}
@@ -129,6 +157,9 @@ const Comments = ({currentBlogID, currentUserID, followUser}) => {
                                  addComment={addComment}
                                  replyComment={replyComment}
                                  updateComment={updateComment}
+                                 incrementVote={incrementVote}
+                                 decrementVote={decrementVote}
+                                 upvote={(rootComment.quantity_upvote)}
                         />
                     ))}
                 </div>
@@ -137,6 +168,11 @@ const Comments = ({currentBlogID, currentUserID, followUser}) => {
                                 page={page}
                                 onChange={handleChangePage} variant="outlined"/>
                 </Stack></div>
+                <Typography variant="h4" gutterBottom component="div">
+                    Your Answer
+                </Typography>
+                <FormPost handleSubmit={addComment} summitLabel="Write"/>
+
             </Box>
         </div>
     )

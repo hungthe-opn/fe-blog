@@ -103,7 +103,7 @@ const Forum = () => {
                     <div className='body-post_feed'>
                         <div className='body-post_feed_meta'>
                             <a href="" className='body-post_feed_meta_user'>
-                                {blogPost.rank == 'Quản trị viên' ? (
+                                {blogPost.rank === 'Quản trị viên' ? (
                                     <span>
                                             <FontAwesomeIcon icon={faUser}
                                                              className="fa"/>{blogPost.author_name}

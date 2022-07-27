@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import '../BlogIT/BlogDetail.scss'
 import './ForumDetail.scss'
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import axiosInstance from "../../axios";
-import {faCaretDown, faCaretUp, faCheck, faUser,} from "@fortawesome/free-solid-svg-icons";
+import {faCaretDown, faCaretUp, faComments,} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import mainLogo from "../../img/QA.png"
 import 'suneditor/dist/css/suneditor.min.css';
@@ -20,6 +20,7 @@ import Button from '@material-ui/core/Button';
 import {makeStyles} from "@material-ui/core/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import {Comment as Form} from "semantic-ui-react";
 // import {UserContext} from "../Context/Context";
 
 const useStyles = makeStyles((theme) => ({
@@ -64,17 +65,6 @@ const ForumDetail = ({IdUserLogin}) => {
         ;
     }
 
-    // function fetchData() {
-    //     axiosInstance.get(`comment/${idDetail}`).then((res) => {
-    //         const allPosts = res.data.data;
-    //         setComment(allPosts);
-    //     });
-    // }
-
-    useEffect(() => {
-        // fetchData()
-    },);
-
     const decrementVote = (e) => {
         axiosInstance.post(`forum/downvote-forum/${idUpvote}`).then((res) => {
             const allPosts = res.data;
@@ -98,120 +88,6 @@ const ForumDetail = ({IdUserLogin}) => {
         });
     }, []);
 
-    // display the data returned from the server
-    const createBlog = () => {
-        return {__html: blog.content}
-    }
-
-    //auto-capitalize
-    const capitalizeFirstLetter = (word) => {
-        if (word) return word.charAt(0).toUpperCase() + word.slice(1);
-        return '';
-    }
-    const classes = useStyles();
-    const getBlogs = () => {
-        let result = [];
-        const list = comment && comment.length > 0 && comment.map((commentPost) => {
-            return (
-                <div className='forum-post' style={{width: '695px'}}>
-                    <img className='forum-post_img' style={{width: '45px', height: '45px'}}
-                         src={commentPost.avatar_author} alt=""/>
-
-                    <div className='forum-post_feed'>
-                        <div className='forum-post_feed_meta'>
-                            <a href="" className='forum-post_feed_meta_user'>
-                                {commentPost.rank == 'Quản trị viên' ? (
-                                    <span>
-                                            <FontAwesomeIcon icon={faUser}
-                                                             className="fa"/>{commentPost.author_name}
-                                                </span>
-                                ) : (<div>{commentPost.author_name}
-                                </div>)
-                                }
-                                <div className='forum-post_feed_meta_user_info'>
-                                    <div className='forum-post_feed_meta_user_info_user'>
-
-                                        <a href="" className='forum-post_feed_meta_user_info_user_a'>
-                                            <img src={commentPost.avatar_author}
-                                                 className='forum-post_feed_meta_user_info_user_a_img' alt=""/>
-                                        </a>
-                                        <div className='forum-post_feed_meta_user_info_user_name'>
-                                            <a href="" className='forum-post_feed_meta_user_info_user_name_a'>
-                                                {commentPost.rank === 'Quản trị viên' ? (
-
-                                                    <span>
-                                            <FontAwesomeIcon icon={faCheck}
-                                                             className="fa"/>{commentPost.author_name}
-                                                </span>
-                                                ) : (<div>{commentPost.author_name}
-                                                </div>)
-                                                }
-
-                                            </a>
-                                            <div>
-                                                <div>
-                                                    {commentPost.rank === 'Quản trị viên' ? (
-                                                        <span
-                                                            className="badge rounded-pill bg-primary">{commentPost.rank}</span>
-                                                    ) : (<span
-                                                            className="badge rounded-pill bg-success">{commentPost.rank}</span>
-                                                    )}
-
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        <div className='forum-post_feed_meta_user_info_user_follow'>
-
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                            <span className='body-post_feed_meta_link'
-                                  style={{margin: '0px 8px 13px 0px'}}> Thời gian : {commentPost.created_at}</span>
-                        </div>
-                        <div className='forum-post_feed_title'>
-                            <h3 className='forum-post_feed_title_word'>
-                                <div className='forum-post_feed_title_word_title'>
-                                    <Box width='100%' maxWidth='600' mt={2}>
-                                        <Typography variant="body1" gutterBottom
-                                                    dangerouslySetInnerHTML={{__html: commentPost.body}}></Typography>
-                                    </Box>
-
-                                </div>
-                            </h3>
-                        </div>
-                        <div className='forum-post_feed_starts'>
-
-                            <span className='forum-post_feed_starts_item'>
-                            </span>
-
-                        </div>
-                    </div>
-
-                </div>
-            )
-                ;
-
-        })
-        for (let i = 0; i < list.length; i += 2) {
-            result.push
-            (
-                <div>
-                    <div className=''>
-                        {list[i]}
-                    </div>
-                    <div className=''>{list[i + 1] ? list[i + 1] : null}
-                    </div>
-                </div>
-            )
-        }
-        return result
-
-    }
-
-
     return (<div>
         <div className="body_image">
 
@@ -222,16 +98,6 @@ const ForumDetail = ({IdUserLogin}) => {
             <div className='screen-default'>
                 <div className='row'>
                     <div className='col col-1 screen-default_upvote'>
-                        <Button onClick={incrementVote}><FontAwesomeIcon icon={faCaretUp} style={{paddingLeft: '16px'}}
-                                                                         className="fa fa-3x"/>
-                        </Button>
-
-                        <div className='screen-default_upvote_count'>
-                            {upvote}
-                        </div>
-                        <Button onClick={decrementVote}><FontAwesomeIcon icon={faCaretDown}
-                                                                         style={{paddingLeft: '16px'}}
-                                                                         className="fa fa-3x"/></Button>
 
 
                         <FacebookShareButton
@@ -261,38 +127,96 @@ const ForumDetail = ({IdUserLogin}) => {
                         </EmailShareButton>
                     </div>
                     <div className='col col-11'>
-                        <header className='mb-05'>
-                            <div className='forum-post'>
-
-                                <Box mt={2} sx={{width: '100%', maxWidth: 900}}>
-                                    <Typography variant="h4" gutterBottom component="div">
-                                        {blog.title}
-                                    </Typography>
-                                    <Typography style={{display: 'flex',}}>
-                                        <Typography gutterBottom component="div">
-                                        Thời gian đăng : {blog.time_post}
-                                    </Typography>
-                                        <Typography gutterBottom component="div" ml={2}>
-                                        Chỉnh sửa : {blog.updated_at}
-                                    </Typography>
-                                    <Typography gutterBottom component="div" ml={2}>
-                                        Lượt xem : {blog.view_count}
-                                    </Typography></Typography>
-
-                                </Box>
-                            </div>
-                        </header>
-                        <div className='d-md-flex'></div>
                         <div>
-                            <Box mt={2} sx={{width: '100%', maxWidth: 900}}>
-                                <Typography variant="h5" gutterBottom component="div"
-                                            dangerouslySetInnerHTML={{__html: content}}>
+                            <div>
+                                <header className='mb-05'>
+                                    <div className='forum-post'>
 
-                                </Typography>
-                            </Box>
+                                        <Box mt={2} sx={{width: '100%', maxWidth: 900}}>
+                                            <Typography variant="h4" gutterBottom component="div">
+                                                {blog.title}
+                                            </Typography>
+                                            <Typography style={{display: 'flex',}}>
+                                                <Typography gutterBottom component="div">
+                                                    Thời gian đăng : {blog.time_post}
+                                                </Typography>
+                                                <Typography gutterBottom component="div" ml={2}>
+                                                    Chỉnh sửa : {blog.updated_at}
+                                                </Typography>
+                                                <Typography gutterBottom component="div" ml={2}>
+                                                    Lượt xem : {blog.view_count}
+                                                </Typography></Typography>
+
+                                        </Box>
+                                    </div>
+                                </header>
+                                <div style={{display: 'flex'}}>
+                                    <div>
+                                        <Button onClick={incrementVote}><FontAwesomeIcon icon={faCaretUp}
+                                                                                         style={{padding: '9.5px 0px 0px 16px'}}
+                                                                                         className="fa fa-3x"/>
+                                        </Button>
+
+                                        <div className='screen-default_upvote_count'>
+                                            {upvote}
+                                        </div>
+                                        <Button onClick={decrementVote}><FontAwesomeIcon icon={faCaretDown}
+                                                                                         style={{padding: '0px 0px 0px 16px'}}
+
+                                                                                         className="fa fa-3x"/></Button>
+                                    </div>
+
+                                    <div>
+                                        <Box mt={2} sx={{width: '100%', maxWidth: 900}}>
+                                            <Typography variant="h5" gutterBottom component="div"
+                                                        dangerouslySetInnerHTML={{__html: content}}>
+                                            </Typography>
+                                            <Typography>
+                                                {blog?.length > 0 && blog.tags.map(item =>
+                                                        <span className="post-tag_detail"
+                                                              style={{fontSize: '60%%'}}>
+                                        {item.title}
+                                    </span>
+                                                )}
+                                            </Typography>
+                                            <Typography className='fw-wrap'>
+                                                <Typography className='fw-wrap_options'>
+                                                    <Form.Actions>
+                                                        <Form.Action>Share</Form.Action>
+                                                        <Form.Action>Edit</Form.Action>
+                                                        <Form.Action>Follow</Form.Action>
+                                                    </Form.Actions>
+                                                </Typography>
+
+                                                <Typography className='fw-wrap_user_info'>
+                                                    <img className='fw-wrap_user_info_bar' src={blog.avatar_author}
+                                                         alt=""/>
+                                                    <Typography className='fw-wrap_user_info_detail'>
+                                                        <a href=""> <Link to={`/info/${blog.author_id}`}>{blog.author_name}</Link>
+                                                        </a>
+                                                        <Typography className='fw-wrap_user_info_detail_flair'>
+                                                <span><FontAwesomeIcon icon={faComments}
+                                                                       className="fa"/>
+                                                    {blog.view_count}</span>
+                                                            <span><FontAwesomeIcon icon={faComments}
+                                                                                   className="fa"/>
+                                                                {blog.view_count}</span>
+                                                        </Typography>
+                                                    </Typography>
+                                                </Typography>
+                                            </Typography>
+
+                                        </Box>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
                         </div>
 
-                            <Comments currentBlogID={idDetail} currentUserID={userID} followUser={follow} />
+                        <Comments currentBlogID={idDetail} currentUserID={userID} followUser={follow}
+                                  answer={blog.quantity_comments}/>
                     </div>
                 </div>
             </div>

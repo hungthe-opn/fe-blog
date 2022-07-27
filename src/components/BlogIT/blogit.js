@@ -213,7 +213,7 @@ const Blog = () => {
                             <img className='body-post_img' style={{margin: '20px', height: '50px', width: '50px'}}
                                  src={blogPost.avatar_author} alt=""/>
                             <a href="" className='body-post_feed_meta_user'>
-                                {blogPost.rank == 'Quản trị viên' ? (
+                                {blogPost.rank === 'Quản trị viên' ? (
                                     <span>
                         <FontAwesomeIcon icon={faUser}
                                          className="fa"/> <Link to={`/info/${blogPost.author_id}`}>{blogPost.author_name}</Link>

@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCaretDown, faCaretUp} from "@fortawesome/free-solid-svg-icons";
 import './Comment.scss'
+
 const Comment = ({
                      comment,
                      replies,
@@ -17,7 +18,10 @@ const Comment = ({
                      replyComment,
                      addComment,
                      reply_of = null,
-                     updateComment
+                     updateComment,
+                     incrementVote,
+                     upvote,
+                     decrementVote
                  }) => {
     const fiveMinutes = 26000000
     const timePassed = new Date() - new Date(comment.created_at) > fiveMinutes;
@@ -31,25 +35,26 @@ const Comment = ({
     const createdAt = new Date(comment.created_at).toLocaleDateString();
     const isReplying = activeComment && activeComment.type === 'replying' &&
         activeComment.id === comment.id
-
+    console.log(upvote)
     const isEditing = activeComment && activeComment.type === 'editing' &&
         activeComment.id === comment.id
     const replyID = reply_of ? reply_of : comment.id
     return (
-        <div style={{paddingTop: '70px'}}>
-            <div className='body-comment'>
+        <div>
+            <div style={{display: 'flex'}}>
                 <div>
-                    <Button>
-                        <FontAwesomeIcon icon={faCaretUp} style={{paddingLeft: '16px'}}
-                                         className="fa"/>
+                    <Button onClick={() => incrementVote(comment.id)}><FontAwesomeIcon icon={faCaretUp}
+                                                                     style={{padding: '9.5px 0px 0px 16px'}}
+                                                                     className="fa fa-3x"/>
                     </Button>
-                    <div className='screen-default_upvote_count' style={{paddingLeft: '9px'}}>
+
+                    <div className='screen-default_upvote_count'>
+                        {upvote}
                     </div>
-                    <Button>
-                        <FontAwesomeIcon icon={faCaretDown}
-                                         style={{paddingLeft: '16px'}}
-                                         className="fa"/>
-                    </Button>
+                    <Button onClick={() => decrementVote(comment.id)}><FontAwesomeIcon icon={faCaretDown}
+                                                                     style={{padding: '0px 0px 0px 16px'}}
+
+                                                                     className="fa fa-3x"/></Button>
                 </div>
 
                 <div>
@@ -58,9 +63,12 @@ const Comment = ({
                             {/*<Form.Avatar as='a' className='body-image_comment' src={comment.avatar_author}/>*/}
                             <Form.Content>
 
-                                <Form.Text>
+                                <Form.Text style={{maxWidth: 1000}
+                                }>
                                     {!isEditing &&
-                                        <Typography dangerouslySetInnerHTML={{__html: comment.body}}></Typography>}
+
+                                        <Typography variant="body1" gutterBottom
+                                                    dangerouslySetInnerHTML={{__html: comment.body}}></Typography>}
                                     {isEditing && (
                                         <FormPost summitLabel='Update' hasCancelButton
                                                   body={comment.body}
@@ -116,6 +124,9 @@ const Comment = ({
                                                      activeComment={activeComment}
                                                      setActiveComment={setActiveComment}
                                                      updateComment={updateComment}
+                                                     incrementVote={incrementVote}
+                                                     decrementVote={decrementVote}
+                                                     upvote={upvote}
                                             />
                                         ))}
 
