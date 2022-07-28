@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState,} from "react";
+import React, {useEffect, useState,} from "react";
 import './index.css';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 import App from "./App";
@@ -13,7 +13,8 @@ import CreatePostForum from './components/Forum/CreateForum'
 import Forum from './components/Forum/Forum'
 import ForumDetail from './components/Forum/ForumDetail'
 import BlogDetail from "./components/BlogIT/blogdetail";
-import Loading from "./Loading/Loading"
+import {ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Category from "./components/BlogIT/category";
 import PostDetail from "./components/Post/postdetail";
 import Fabbi from "./components/Fabbi/Fabbi";
@@ -65,32 +66,33 @@ const Application = () => {
         <Router>
             <Store>
                 <div className="scroll-container" style={{marginTop: '64px'}}>
-                        <Header login={login} isLogin={handleLogout}/>
-                        <Routes>
-                            <Route path='/Fix' element={<App loading={login} dataBlog={blogs}/>}/>
-                            <Route path='/' element={<Forum/>}/>
-                            <Route path='/forum/:id' element={<ForumDetail  IdUserLogin={IdUserLogin}/>}/>
-                            <Route path='/forum/create' element={<CreatePostForum/>}/>
-                            <Route path="/search" element={<Search/>} />
-                            <Route path='/register' element={<Register/>}/>
-                            <Route path='/login' element={<SignIn login={handleLogin}/>}/>
-                            <Route path='/logout' element={<SignUp/>}/>
-                            <Route path='/blog' element={<Blog/>}/>
-                            <Route path='/create' element={<CreateBlog/>}/>
-                            <Route path='/admin-blog' element={<CustomizedTables/>}/>
-                            <Route path='/info/:id' element={<Account/>}/>
-                            <Route path='/test' element={<Follow/>}/>
-                            <Route path='/blog/category/:id' element={<Category/>}/>
-                            <Route path='/blog/:slug' element={<BlogDetail/>}/>
-                            <Route path='/user' element={<UserInfo/>}/>
-                            <Route path='/user-edit' element={<UserEdit/>}/>
-                            <Route path='/posts/:slug' element={<PostDetail/>}/>
-                            <Route path='/fabbi' element={<Fabbi/>}/>
-                            <Route path='/fabbi/:slug' element={<FabbiDetail/>}/>
-                            <Route path='/admin' element={<Admin/>}/>
-                            <Route path='/admin/create/' element={<Create/>}/>
-                            <Route path='/admin/edit/:id' element={<Edit/>}/>
-                            <Route path='/contacts/' element={<Contact/>}/>
+                    <Header login={login} isLogin={handleLogout}/>
+                    <ToastContainer/>
+                    <Routes>
+                        <Route path='/Fix' element={<App loading={login} dataBlog={blogs}/>}/>
+                        <Route path='/' element={<Forum/>}/>
+                        <Route path='/forum/:id' element={<ForumDetail IdUserLogin={IdUserLogin}/>}/>
+                        <Route path='/forum/create' element={<CreatePostForum/>}/>
+                        <Route path="/search" element={<Search/>}/>
+                        <Route path='/register' element={<Register/>}/>
+                        <Route path='/login' element={<SignIn login={handleLogin}/>}/>
+                        <Route path='/logout' element={<SignUp/>}/>
+                        <Route path='/blog' element={<Blog/>}/>
+                        <Route path='/create' element={<CreateBlog/>}/>
+                        <Route path='/admin-blog' element={<CustomizedTables/>}/>
+                        <Route path='/info/:id' element={<Account/>}/>
+                        <Route path='/test' element={<Follow/>}/>
+                        <Route path='/blog/category/:id' element={<Category/>}/>
+                        <Route path='/blog/:slug' element={<BlogDetail/>}/>
+                        <Route path='/user' element={<UserInfo/>}/>
+                        <Route path='/user-edit' element={<UserEdit/>}/>
+                        <Route path='/posts/:slug' element={<PostDetail/>}/>
+                        <Route path='/fabbi' element={<Fabbi/>}/>
+                        <Route path='/fabbi/:slug' element={<FabbiDetail/>}/>
+                        <Route path='/admin' element={<Admin/>}/>
+                        <Route path='/admin/create/' element={<Create/>}/>
+                        <Route path='/admin/edit/:id' element={<Edit/>}/>
+                        <Route path='/contacts/' element={<Contact/>}/>
                         </Routes>
                         {/*<Footer/>*/}
                 </div>

@@ -319,12 +319,14 @@ padding-top: 9px;
   }
 
   &_user_info {
-    background-color: aliceblue;
+    background-color: #f5deb3;
     color: #6a737c;
     font-size: 13px;
     line-height: 17px;
     padding: 5px 6px 7px 7px;
     display: flex;
+    height:65px;
+    border-radius:11px;
     &_action {
       height: 16px;
       font-size: 12px;
@@ -342,6 +344,7 @@ padding-top: 9px;
       font-size: 13px;
       line-height: 17px;
       text-align: left;
+      margin-top: 8px;
     }
 
     &_detail {
@@ -350,9 +353,8 @@ padding-top: 9px;
       color: #6a737c;
       font-size: 13px;
       line-height: 17px;
-      margin: 0px 0px 0px 8px;
       text-align: left;
-
+      padding:4px 0px 0px 16px;
       a {
         height: 15px;
         color: #0074cc;

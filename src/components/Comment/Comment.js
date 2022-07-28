@@ -6,68 +6,66 @@ import Typography from '@mui/material/Typography';
 import FormPost from './FormPost'
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
+import {toast} from "react-toastify";
 
 const PER_PAGE = 10;
 
-const Comments = ({currentBlogID, currentUserID, followUser, answer}) => {
-
+const Comments = ({currentBlogID, currentUserID, followUser, answer, data}) => {
     const [backendComments, setBackendComments] = useState([])
     const [activeComment, setActiveComment] = useState(null)
     const [page, setPages] = useState(1);
     const [upvote, setUpvote] = useState(backendComments.quantity_upvote);
-    console.log(backendComments)
     const [paginationComments, setPaginationComments] = useState()
+    const [list, setList] = useState(data)
     const rootComments = backendComments.filter((backendComment =>
         backendComment.reply_of === null))
     const incrementVote = (commentID) => {
-        axiosInstance.post(`forum/upvote-forum/${commentID}`).then((res) => {
+        axiosInstance.post(`comment/upvote-comment/${commentID}/`).then((res) => {
             const allPosts = res.data;
-            console.log(allPosts)
             if (allPosts.response_msg === 'SUCCESS') {
                 setUpvote((prev) => prev + 1);
-
+                toast.success("Upvote thành công!");
             } else if (allPosts.message === 'downvote to upvote') {
                 setUpvote((prev) => prev + 2);
-            } else alert('errrrrr')
+                toast.success("Upvote lại bài viết thành công!");
+            } else toast.error("Bạn đã đánh giá bài viết này rồi!");
         }).catch((err) => {
-            alert('errrrrr')
+            toast.error("Bạn đã đánh giá bài viết này rồi!");
         })
         ;
     }
     const decrementVote = (commentID) => {
-        console.log(commentID)
-        axiosInstance.post(`forum/downvote-forum/${commentID}`).then((res) => {
+        axiosInstance.post(`comment/downvote-comment/${commentID}/`).then((res) => {
             const allPosts = res.data;
-            console.log(allPosts)
             if (allPosts.response_msg === 'SUCCESS') {
                 setUpvote((prev) => prev - 1);
-
+                toast.success("Downvote thành công!");
             } else if (allPosts.message === 'upvote to downvote') {
                 setUpvote((prev) => prev - 2);
-            }
+                toast.success("Downvote bài viết thành công!");
+            } else toast.error("Bạn đã đánh giá bài viết này rồi!");
         }).catch((err) => {
-            alert('vui long nhap lai')
+            toast.error("Bạn đã đánh giá bài viết này rồi!");
         })
     }
+
     const getReplies = (commendID) => {
         return backendComments
             .filter(backendComment => backendComment.reply_of === commendID)
             .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
-
     }
 
     const handleChangePage = (e, page) => {
         setPages(page)
-
     }
 
     function fetchData() {
         axiosInstance.get(`comment/${currentBlogID}?page=${page}`).then((res) => {
-            const allPosts = res.data.data;
-            setBackendComments(allPosts);
-            setPaginationComments(res.data.pagination)
-
-        });
+                const allPosts = res.data.data;
+                setBackendComments(allPosts);
+                setPaginationComments(res.data.pagination)
+            }
+        )
     }
 
     const deleteComment = (commentID) => {
@@ -75,19 +73,25 @@ const Comments = ({currentBlogID, currentUserID, followUser, answer}) => {
             axiosInstance.delete(`comment/${commentID}`).then(() => {
                 const updatedBackendComments = backendComments.filter((backendComment) => backendComment.id !== commentID)
                 setPaginationComments(updatedBackendComments)
+                toast.success("Xóa bình luận thành công thành công!");
 
-            })
+            }).catch((err) => {
+                toast.error("Xóa bình luận thuất bại, vui lòng thử lại!");
+            });
         }
     }
+
     const addComment = (e) => {
         const data = axiosInstance
             .post(`comment/${currentBlogID}/`, e)
             .then(comment => {
                 setBackendComments([comment, ...backendComments])
                 setActiveComment(null)
+                toast.success("Thêm bài viết thành công!");
+
             })
             .catch(err => {
-                console.log(err)
+                toast.error("Xóa bình luận thuất bại, vui lòng thử lại!");
             });
         return data.data
     }
@@ -105,33 +109,37 @@ const Comments = ({currentBlogID, currentUserID, followUser, answer}) => {
             ...reply
         }
         const data = axiosInstance
-            .post(`comment/${currentBlogID}/`, reply_of_comment)
+            .post(`comment/reply/${currentBlogID}/`, reply_of_comment)
             .then(comment => {
                 setBackendComments([comment, ...backendComments])
                 setActiveComment(null)
+                toast.success("Thêm bài viết thành công!");
+
             })
-            .catch(error => {
-                console.error(error)
+            .catch((error) => {
+                toast.error("Quá trình đăng thuất bại, vui lòng thử lại!");
             });
         return data.data
     }
     const updateComment = (text, commentID) => {
         const data = axiosInstance
             .patch(`comment/${commentID}/`, text)
-            .then(()=>{
-                const updateBackendComments = backendComments.map((backendComment)=>{
-                 if (backendComment.id === commentID) {
-                     return {...backendComment, body:text}
+            .then(()=> {
+                const updateBackendComments = backendComments.map((backendComment) => {
+                    if (backendComment.id === commentID) {
+                        return {...backendComment, body: text}
 
-                 }
-                 return backendComment
+                    }
+                    return backendComment
                 })
                 setBackendComments(updateBackendComments)
                 setActiveComment(null)
+                toast.success("Chỉnh sửa bài viết thành công!");
+
             })
 
-            .catch(error => {
-                console.error(error)
+            .catch((error) => {
+                toast.error("Quá trình chỉnh sửa thuất bại, vui lòng thử lại!");
             });
         return data.data
     }
@@ -144,6 +152,11 @@ const Comments = ({currentBlogID, currentUserID, followUser, answer}) => {
                         {answer} Answers
                     </Typography>
                 </Typography>
+                <div style={{padding: ' 6px 0px 25px 0px'}}><Stack spacing={2}>
+                    <Pagination color="secondary" count={Math.ceil(paginationComments?.total_row / PER_PAGE) || 0}
+                                page={page} variant="outlined" shape="rounded"
+                                onChange={handleChangePage}/>
+                </Stack></div>
                 <div>
                     {rootComments.map((rootComment) => (
                         <Comment key={rootComment.id}
@@ -159,15 +172,11 @@ const Comments = ({currentBlogID, currentUserID, followUser, answer}) => {
                                  updateComment={updateComment}
                                  incrementVote={incrementVote}
                                  decrementVote={decrementVote}
-                                 upvote={(rootComment.quantity_upvote)}
+                                 upvote={upvote}
                         />
                     ))}
                 </div>
-                <div style={{padding: ' 35px 0px 41px 296px'}}><Stack spacing={2}>
-                    <Pagination color="primary" count={Math.ceil(paginationComments?.total_row / PER_PAGE) || 0}
-                                page={page}
-                                onChange={handleChangePage} variant="outlined"/>
-                </Stack></div>
+
                 <Typography variant="h4" gutterBottom component="div">
                     Your Answer
                 </Typography>

@@ -1,11 +1,6 @@
 import React, {useEffect, useState} from "react";
-import '../BlogIT/BlogDetail.scss'
-import './ForumDetail.scss'
 import {Link, useParams} from "react-router-dom";
 import axiosInstance from "../../axios";
-import {faCaretDown, faCaretUp, faComments,} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import mainLogo from "../../img/QA.png"
 import 'suneditor/dist/css/suneditor.min.css';
 import Comments from '../Comment/Comment'
 import {
@@ -17,32 +12,19 @@ import {
     TwitterShareButton
 } from 'react-share';
 import Button from '@material-ui/core/Button';
-import {makeStyles} from "@material-ui/core/styles";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import {Comment as Form} from "semantic-ui-react";
-// import {UserContext} from "../Context/Context";
-
-const useStyles = makeStyles((theme) => ({
-    paper: {
-        marginTop: theme.spacing(8), display: 'flex', flexDirection: 'column', alignItems: 'center',
-    }, avatar: {
-        margin: theme.spacing(1), backgroundColor: theme.palette.secondary.main,
-    }, form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(3),
-    }, submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-}));
+import {Comment as Form, Icon} from "semantic-ui-react";
+import {faCaretDown, faCaretUp, faComments,} from "@fortawesome/free-solid-svg-icons";
+import {toast} from "react-toastify";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import './ForumDetail.scss'
+import mainLogo from "../../img/QA.png"
 
 const ForumDetail = ({IdUserLogin}) => {
-    const initialFormData = Object.freeze({
-        body: ''
-    });
     const [blog, setBlog] = useState({})
     const [upvote, setUpvote] = useState(blog.upvote);
-    const [comment, setComment] = useState([])
+    const [data, setData] = useState([])
     const content = blog.content
     const [follow, setFollow] = useState(1)
     const param = useParams()
@@ -50,17 +32,34 @@ const ForumDetail = ({IdUserLogin}) => {
     const idUpvote = blog.id
     const userID = IdUserLogin
     const shareUrl = +process.env.REACT_APP_IS_LOCALHOST === 1 ? "https://peing.net/ja/" : window.location.href;
+
+    function fetchData() {
+        axiosInstance.get(`forum/detail-forum/${idDetail}`).then((res) => {
+            const allPosts = res.data.data;
+            setBlog(allPosts);
+            setUpvote(res.data.data.upvote)
+        });
+    }
+
     const incrementVote = (e) => {
         axiosInstance.post(`forum/upvote-forum/${idUpvote}`).then((res) => {
             const allPosts = res.data;
+            console.log(allPosts)
             if (allPosts.response_msg === 'SUCCESS') {
                 setUpvote((prev) => prev + 1);
-
-            } else if (allPosts.message === 'downvote to upvote') {
+                toast.success("Upvote thành công!");
+                                    fetchData()
+            } else
+                if (allPosts.message === 'downvote to upvote') {
+                      toast.success("Upvote lại bài viết thành công!");
+                      fetchData()
                 setUpvote((prev) => prev + 2);
-            } else alert('errrrrr')
-        }).catch((err) => {
-            alert('errrrrr')
+
+            }
+            else toast.error("Bạn đã đánh giá bài viết này rồi!");
+
+        }).catch((error) => {
+            toast.error("Bạn đã đánh giá bài viết này rồi!");
         })
         ;
     }
@@ -68,38 +67,59 @@ const ForumDetail = ({IdUserLogin}) => {
     const decrementVote = (e) => {
         axiosInstance.post(`forum/downvote-forum/${idUpvote}`).then((res) => {
             const allPosts = res.data;
-            console.log(allPosts)
             if (allPosts.response_msg === 'SUCCESS') {
+                toast.success("Downvote thành công!");
+
                 setUpvote((prev) => prev - 1);
 
             } else if (allPosts.message === 'upvote to downvote') {
                 setUpvote((prev) => prev - 2);
-            }
-        }).catch((err) => {
-            alert('vui long nhap lai')
+                toast.success("Downvote bài viết thành công!");
+            } else toast.error("Bạn đã đánh giá bài viết này rồi!");
+        }).catch((error) => {
+            toast.error("Bạn đã đánh giá bài viết này rồi!");
         })
     }
-    useEffect(() => {
-        axiosInstance.get(`forum/detail-forum/${idDetail}`).then((res) => {
-            const allPosts = res.data.data;
-            console.log(allPosts)
-            setBlog(allPosts);
-            setUpvote(res.data.data.upvote)
+    const addBookmark = (e) => {
+        axiosInstance
+            .post(`forum/post-bookmark/${idUpvote}`)
+            .then((res) => {
+                const allPosts = res.data
+                if (allPosts.response_msg === 'SUCCESS') {
+                    toast.success("Thêm vào Bookmark thành công!");
+                    fetchData()
+                }
+            }).catch((err) => {
+            toast.error("Bạn đã thêm vào bookmark viết này rồi!");
         });
-    }, []);
+    }
+    const unAddBookmark = (e) => {
+        axiosInstance
+            .delete(`forum/post-bookmark/${idUpvote}`)
+            .then((res) => {
+                const allPosts = res.data
+                if (allPosts.response_msg === 'SUCCESS') {
+                    toast.success("Hủy vào Bookmark thành công!");
+                    fetchData()
 
+                }
+            }).catch((err) => {
+            toast.error("Bạn đã hủy vào bookmark viết này rồi!");
+        });
+    }
+
+
+    useEffect(() => {
+        fetchData()
+    }, []);
     return (<div>
         <div className="body_image">
-
             <img src={mainLogo} alt="" className='body_image_banner'/>
-
         </div>
         <div className='container py-2'>
             <div className='screen-default'>
                 <div className='row'>
                     <div className='col col-1 screen-default_upvote'>
-
-
                         <FacebookShareButton
                             url={shareUrl}
                             quote={blog.title}
@@ -151,7 +171,7 @@ const ForumDetail = ({IdUserLogin}) => {
                                     </div>
                                 </header>
                                 <div style={{display: 'flex'}}>
-                                    <div>
+                                    <div style={{width: '67px'}}>
                                         <Button onClick={incrementVote}><FontAwesomeIcon icon={faCaretUp}
                                                                                          style={{padding: '9.5px 0px 0px 16px'}}
                                                                                          className="fa fa-3x"/>
@@ -160,10 +180,24 @@ const ForumDetail = ({IdUserLogin}) => {
                                         <div className='screen-default_upvote_count'>
                                             {upvote}
                                         </div>
+
                                         <Button onClick={decrementVote}><FontAwesomeIcon icon={faCaretDown}
                                                                                          style={{padding: '0px 0px 0px 16px'}}
 
                                                                                          className="fa fa-3x"/></Button>
+                                        {blog.is_bookmarks ? <Button onClick={unAddBookmark}>
+                                            <Form.Actions style={{textAlign: 'center', marginLeft: '12px'}}>
+                                                <Icon name='bookmark ' size='big'/>
+                                            </Form.Actions>
+                                        </Button> : <Button onClick={addBookmark}>
+                                            <Form.Actions style={{textAlign: 'center', marginLeft: '12px'}}>
+                                                <Icon name='bookmark outline' size='big'/>
+                                            </Form.Actions>
+                                        </Button>
+
+                                        }
+
+
                                     </div>
 
                                     <div>
@@ -172,11 +206,11 @@ const ForumDetail = ({IdUserLogin}) => {
                                                         dangerouslySetInnerHTML={{__html: content}}>
                                             </Typography>
                                             <Typography>
-                                                {blog?.length > 0 && blog.tags.map(item =>
-                                                        <span className="post-tag_detail"
-                                                              style={{fontSize: '60%%'}}>
-                                        {item.title}
-                                    </span>
+                                                {blog.tags && blog.tags.map((item) =>
+                                                    <span className="post-tag_detail"
+                                                          style={{fontSize: '60%%'}}>
+                                                              {item.title}
+                                                        </span>
                                                 )}
                                             </Typography>
                                             <Typography className='fw-wrap'>
@@ -216,7 +250,7 @@ const ForumDetail = ({IdUserLogin}) => {
                         </div>
 
                         <Comments currentBlogID={idDetail} currentUserID={userID} followUser={follow}
-                                  answer={blog.quantity_comments}/>
+                                  answer={blog.quantity_comments} data={data}/>
                     </div>
                 </div>
             </div>
