@@ -64,17 +64,17 @@ const Comments = ({currentBlogID, currentUserID, followUser, answer, data}) => {
                 const allPosts = res.data.data;
                 setBackendComments(allPosts);
                 setPaginationComments(res.data.pagination)
+            setUpvote(allPosts.quantity_upvote)
             }
         )
     }
-
     const deleteComment = (commentID) => {
         if (window.confirm('Are you sure you want to delete this comment')) {
             axiosInstance.delete(`comment/${commentID}`).then(() => {
                 const updatedBackendComments = backendComments.filter((backendComment) => backendComment.id !== commentID)
                 setPaginationComments(updatedBackendComments)
                 toast.success("Xóa bình luận thành công thành công!");
-
+                fetchData()
             }).catch((err) => {
                 toast.error("Xóa bình luận thuất bại, vui lòng thử lại!");
             });
@@ -88,10 +88,11 @@ const Comments = ({currentBlogID, currentUserID, followUser, answer, data}) => {
                 setBackendComments([comment, ...backendComments])
                 setActiveComment(null)
                 toast.success("Thêm bài viết thành công!");
+                fetchData()
 
             })
             .catch(err => {
-                toast.error("Xóa bình luận thuất bại, vui lòng thử lại!");
+                toast.dark("Này 👋, bình luận của bạn đã được thêm!");
             });
         return data.data
     }
@@ -114,6 +115,7 @@ const Comments = ({currentBlogID, currentUserID, followUser, answer, data}) => {
                 setBackendComments([comment, ...backendComments])
                 setActiveComment(null)
                 toast.success("Thêm bài viết thành công!");
+                fetchData()
 
             })
             .catch((error) => {
@@ -135,6 +137,7 @@ const Comments = ({currentBlogID, currentUserID, followUser, answer, data}) => {
                 setBackendComments(updateBackendComments)
                 setActiveComment(null)
                 toast.success("Chỉnh sửa bài viết thành công!");
+                fetchData()
 
             })
 
@@ -172,7 +175,7 @@ const Comments = ({currentBlogID, currentUserID, followUser, answer, data}) => {
                                  updateComment={updateComment}
                                  incrementVote={incrementVote}
                                  decrementVote={decrementVote}
-                                 upvote={upvote}
+                                 upvote={rootComment.quantity_upvote}
                         />
                     ))}
                 </div>
