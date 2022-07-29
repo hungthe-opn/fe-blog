@@ -11,7 +11,6 @@ const Upvote = () => {
         axiosInstance.get('blog/upvote').then((res) => {
             const allPosts = res.data;
             setUpvote(allPosts);
-            console.log(allPosts);
         });
     }, []);
     const increment = () => {

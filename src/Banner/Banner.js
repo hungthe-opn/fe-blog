@@ -6,7 +6,6 @@ import {faCheck, faEdit, faPen} from "@fortawesome/free-solid-svg-icons";
 const Banner = () => {
 
     var myData = localStorage.getItem('role');
-    console.log(myData);
 
     return (
         <div className="">

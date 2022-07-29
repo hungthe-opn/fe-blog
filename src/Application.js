@@ -39,6 +39,7 @@ const Application = () => {
     const [blogs, setBlogs] = useState([]);
     const [infor, setInfor] = useState([]);
     const IdUserLogin = infor.id
+    console.log(infor)
     useEffect(() => {
         const token = localStorage.getItem('access_token')
         if (token === null) {
@@ -71,7 +72,7 @@ const Application = () => {
                     <Routes>
                         <Route path='/Fix' element={<App loading={login} dataBlog={blogs}/>}/>
                         <Route path='/' element={<Forum/>}/>
-                        <Route path='/forum/:id' element={<ForumDetail IdUserLogin={IdUserLogin}/>}/>
+                        <Route path='/forum/:id' element={<ForumDetail infor={infor} IdUserLogin={IdUserLogin}/>}/>
                         <Route path='/forum/create' element={<CreatePostForum/>}/>
                         <Route path="/search" element={<Search/>}/>
                         <Route path='/register' element={<Register/>}/>

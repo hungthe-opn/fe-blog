@@ -56,7 +56,6 @@ export default function CreateBlog() {
     }, [])
 
     const onChangeCategory = (e) => {
-        console.log(formData)
 
         const newFormValue = {...formData, category: e.target.value}
         updateFormData(newFormValue)
@@ -66,7 +65,6 @@ export default function CreateBlog() {
         const newFormValue = {...contects, content: content}
         setContects(newFormValue)
     };
-    console.log(contects)
     const handleChangeDes = (e) => {
         const newFormValue = {...formData, description: e.target.value}
         updateFormData(newFormValue)
@@ -74,7 +72,6 @@ export default function CreateBlog() {
     const onChangeTitle = (e) => {
 
         const newFormValue = {...formData, title: e.target.value}
-        console.log(newFormValue)
         updateFormData(newFormValue)
     };
 
@@ -84,14 +81,9 @@ export default function CreateBlog() {
     };
 
     const handleChangeTag = (id) => {
-
-        console.log(id);
-
         const newFormValue = {...formtag, tag: id}
-        console.log(newFormValue)
         setFormTag(newFormValue)
     };
-    console.log(tag)
     const handleChangeExcerpt = (e) => {
         const newFormValue = {...formData, excerpt: e.target.value}
         updateFormData(newFormValue)
@@ -101,8 +93,6 @@ export default function CreateBlog() {
         const newFormValue = {...formData, slug: e.target.value}
         updateFormData(newFormValue)
     };
-
-    console.log(formData)
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -118,7 +108,6 @@ export default function CreateBlog() {
 
             })
             .then((res) => {
-                console.log(res)
                 history('/');
             });
     };

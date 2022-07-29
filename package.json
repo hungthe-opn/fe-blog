@@ -23,6 +23,7 @@
     "bootstrap-icons": "^1.7.2",
     "dotenv": "^16.0.1",
     "material-ui-search-bar": "^1.0.0",
+    "moment": "^2.29.4",
     "npm": "^8.13.2",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",

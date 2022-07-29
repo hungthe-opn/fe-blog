@@ -354,7 +354,7 @@ padding-top: 9px;
       font-size: 13px;
       line-height: 17px;
       text-align: left;
-      padding:4px 0px 0px 16px;
+      padding:3px 0px 0px 5px;
       a {
         height: 15px;
         color: #0074cc;
@@ -365,7 +365,7 @@ padding-top: 9px;
       &_flair {
         width: 147px;
         color: #6a737c;
-
+        display: flex;
         span {
           height: 14px;
           width: 30px;
@@ -374,6 +374,9 @@ padding-top: 9px;
           font-weight: 700;
           margin: 0px 2px 0px 0px;
           text-align: left;
+        }
+        &_icon{
+          margin:0px 2px 0px 1px;
         }
       }
     }

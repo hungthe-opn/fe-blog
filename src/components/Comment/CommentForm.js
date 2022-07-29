@@ -6,6 +6,7 @@ import FormPost from "./FormPost";
 import Button from "@material-ui/core/Button";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faCaretDown, faCaretUp, faComments} from "@fortawesome/free-solid-svg-icons";
+import moment from "moment";
 import './Comment.scss'
 import './CommentForm.scss'
 
@@ -27,13 +28,12 @@ const Comment = ({
                  }) => {
     const fiveMinutes = 26000000
     const timePassed = new Date() - new Date(comment.created_at) > fiveMinutes;
-    const checkTime = new Date() - new Date(comment.created_at)
     const canReply = Boolean(currentUserID)
     const adminPermission = localStorage.getItem('role');
-    const canEdit = currentUserID === (comment.author_id || adminPermission.role === 'admin') && !timePassed
-    const canDelete = currentUserID === (comment.author_id || adminPermission.role === 'admin') && !timePassed
-    const createdAt = new Date(comment.created_at).toLocaleDateString();
-    const updatedAt = new Date(comment.updated_at).toLocaleDateString();
+    const canEdit = currentUserID === (comment.author_id && !timePassed) || adminPermission.role === 'admin'
+    const canDelete = currentUserID === (comment.author_id && !timePassed) || adminPermission.role === 'admin'
+    const createdAt = moment.utc(comment.created_at).local().startOf('seconds').fromNow()
+    const updatedAt = moment.utc(comment.time_edit).local().startOf('seconds').fromNow()
 
     const isReplying = activeComment && activeComment.type === 'replying' &&
         activeComment.id === comment.id
@@ -58,7 +58,7 @@ const Comment = ({
                                                                      className="fa fa-3x"/></Button>
                 </div>
 
-                <div>
+                <div style={{width:'100%'}}>
                     <Form.Group>
                         <Form>
                             {/*<Form.Avatar as='a' className='body-image_comment' src={comment.avatar_author}/>*/}

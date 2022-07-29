@@ -15,16 +15,18 @@ import Button from '@material-ui/core/Button';
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import {Comment as Form, Icon} from "semantic-ui-react";
-import {faCaretDown, faCaretUp, faComments,} from "@fortawesome/free-solid-svg-icons";
+import {faCaretDown, faCaretUp,} from "@fortawesome/free-solid-svg-icons";
 import {toast} from "react-toastify";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import './ForumDetail.scss'
 import mainLogo from "../../img/QA.png"
+import moment from "moment";
 
-const ForumDetail = ({IdUserLogin}) => {
+const ForumDetail = ({IdUserLogin, infor}) => {
     const [blog, setBlog] = useState({})
     const [upvote, setUpvote] = useState(blog.upvote);
     const [data, setData] = useState([])
+    const [activateUpvote, setActivateUpvote] = useState(blog.is_upvote)
     const content = blog.content
     const [follow, setFollow] = useState(1)
     const param = useParams()
@@ -32,54 +34,116 @@ const ForumDetail = ({IdUserLogin}) => {
     const idUpvote = blog.id
     const userID = IdUserLogin
     const shareUrl = +process.env.REACT_APP_IS_LOCALHOST === 1 ? "https://peing.net/ja/" : window.location.href;
+    const createAt = moment.utc(blog.created_at).local().startOf('seconds').fromNow()
+    const updateAt = moment.utc(blog.updated_at).local().startOf('seconds').fromNow()
 
     function fetchData() {
         axiosInstance.get(`forum/detail-forum/${idDetail}`).then((res) => {
             const allPosts = res.data.data;
             setBlog(allPosts);
             setUpvote(res.data.data.upvote)
+            setActivateUpvote(allPosts.is_upvote);
         });
     }
 
-    const incrementVote = (e) => {
-        axiosInstance.post(`forum/upvote-forum/${idUpvote}`).then((res) => {
-            const allPosts = res.data;
-            console.log(allPosts)
-            if (allPosts.response_msg === 'SUCCESS') {
-                setUpvote((prev) => prev + 1);
-                toast.success("Upvote thành công!");
-                                    fetchData()
-            } else
-                if (allPosts.message === 'downvote to upvote') {
-                      toast.success("Upvote lại bài viết thành công!");
-                      fetchData()
-                setUpvote((prev) => prev + 2);
+    const disableOtherButtons = (currentButton) => {
+        if (activateUpvote === currentButton) {
+            setActivateUpvote()
+        } else {
+            setActivateUpvote(currentButton)
+        }
+    }
+    const doStuff1 = () => {
+        disableOtherButtons('upvote')
+    }
+    const doStuff2 = () => {
+        disableOtherButtons('downvote')
+    }
 
-            }
-            else toast.error("Bạn đã đánh giá bài viết này rồi!");
-
-        }).catch((error) => {
+    function deleteIncrementVote() {
+        axiosInstance
+            .delete(`forum/upvote-forum/${idUpvote}`)
+            .then((res) => {
+                const allPosts = res.data;
+                if (allPosts.response_msg === 'SUCCESS') {
+                    setUpvote((prev) => prev - 1);
+                    toast.success("Hủy thành công!");
+                    fetchData()
+                } else toast.error("Err");
+            }).catch((error) => {
             toast.error("Bạn đã đánh giá bài viết này rồi!");
         })
         ;
     }
 
+    const incrementVote = (e) => {
+        axiosInstance
+            .post(`forum/upvote-forum/${idUpvote}`)
+            .then((res) => {
+                const allPosts = res.data;
+                if (allPosts.response_msg === 'SUCCESS') {
+                    setUpvote((prev) => prev + 1);
+                    toast.success("Upvote thành công!");
+                    disableOtherButtons('upvote')
+                    fetchData()
+
+                } else if (allPosts.message === 'downvote to upvote') {
+                    toast.success("Upvote lại bài viết thành công!");
+                    setUpvote((prev) => prev + 2);
+                    disableOtherButtons('upvote')
+                    fetchData()
+
+                }
+            }).catch(() => {
+                deleteIncrementVote()
+                disableOtherButtons(null)
+            }
+        )
+        ;
+    }
+
+
     const decrementVote = (e) => {
-        axiosInstance.post(`forum/downvote-forum/${idUpvote}`).then((res) => {
-            const allPosts = res.data;
-            if (allPosts.response_msg === 'SUCCESS') {
-                toast.success("Downvote thành công!");
+        axiosInstance
+            .post(`forum/downvote-forum/${idUpvote}`)
+            .then((res) => {
+                const allPosts = res.data;
+                if (allPosts.response_msg === 'SUCCESS') {
+                    setUpvote((prev) => prev - 1);
+                    toast.success("Downvote thành công!");
+                    fetchData()
+                    disableOtherButtons('downvote')
 
-                setUpvote((prev) => prev - 1);
+                } else if (allPosts.message === 'upvote to downvote') {
+                    setUpvote((prev) => prev - 2);
+                    toast.success("Downvote bài viết thành công!");
+                    fetchData()
+                    disableOtherButtons('downvote')
 
-            } else if (allPosts.message === 'upvote to downvote') {
-                setUpvote((prev) => prev - 2);
-                toast.success("Downvote bài viết thành công!");
-            } else toast.error("Bạn đã đánh giá bài viết này rồi!");
-        }).catch((error) => {
+                } else {
+                    deleteDecrementVote()
+                    disableOtherButtons(null)
+
+                }
+            })
+    }
+
+    function deleteDecrementVote() {
+        axiosInstance
+            .delete(`forum/downvote-forum/${idUpvote}`)
+            .then((res) => {
+                const allPosts = res.data;
+                if (allPosts.response_msg === 'SUCCESS') {
+                    setUpvote((prev) => prev + 1);
+                    toast.success("Hủy thành công!");
+                    fetchData()
+                } else toast.error("Err");
+            }).catch((error) => {
             toast.error("Bạn đã đánh giá bài viết này rồi!");
         })
+        ;
     }
+
     const addBookmark = (e) => {
         axiosInstance
             .post(`forum/post-bookmark/${idUpvote}`)
@@ -108,10 +172,10 @@ const ForumDetail = ({IdUserLogin}) => {
         });
     }
 
-
     useEffect(() => {
         fetchData()
     }, []);
+
     return (<div>
         <div className="body_image">
             <img src={mainLogo} alt="" className='body_image_banner'/>
@@ -158,10 +222,10 @@ const ForumDetail = ({IdUserLogin}) => {
                                             </Typography>
                                             <Typography style={{display: 'flex',}}>
                                                 <Typography gutterBottom component="div">
-                                                    Thời gian đăng : {blog.time_post}
+                                                    Thời gian đăng : {createAt}
                                                 </Typography>
                                                 <Typography gutterBottom component="div" ml={2}>
-                                                    Chỉnh sửa : {blog.updated_at}
+                                                    Chỉnh sửa : {updateAt}
                                                 </Typography>
                                                 <Typography gutterBottom component="div" ml={2}>
                                                     Lượt xem : {blog.view_count}
@@ -172,19 +236,23 @@ const ForumDetail = ({IdUserLogin}) => {
                                 </header>
                                 <div style={{display: 'flex'}}>
                                     <div style={{width: '67px'}}>
-                                        <Button onClick={incrementVote}><FontAwesomeIcon icon={faCaretUp}
-                                                                                         style={{padding: '9.5px 0px 0px 16px'}}
-                                                                                         className="fa fa-3x"/>
+                                        <Button onClick={incrementVote}
+                                                disabled={activateUpvote && activateUpvote !== 'upvote'}><FontAwesomeIcon
+                                            icon={faCaretUp}
+                                            style={{padding: '9.5px 0px 0px 16px'}}
+                                            className="fa fa-3x"/>
                                         </Button>
 
                                         <div className='screen-default_upvote_count'>
                                             {upvote}
                                         </div>
 
-                                        <Button onClick={decrementVote}><FontAwesomeIcon icon={faCaretDown}
-                                                                                         style={{padding: '0px 0px 0px 16px'}}
+                                        <Button onClick={decrementVote}
+                                                disabled={activateUpvote && activateUpvote !== 'downvote'}><FontAwesomeIcon
+                                            icon={faCaretDown}
+                                            style={{padding: '0px 0px 0px 16px'}}
 
-                                                                                         className="fa fa-3x"/></Button>
+                                            className="fa fa-3x"/></Button>
                                         {blog.is_bookmarks ? <Button onClick={unAddBookmark}>
                                             <Form.Actions style={{textAlign: 'center', marginLeft: '12px'}}>
                                                 <Icon name='bookmark ' size='big'/>
@@ -196,10 +264,7 @@ const ForumDetail = ({IdUserLogin}) => {
                                         </Button>
 
                                         }
-
-
                                     </div>
-
                                     <div>
                                         <Box mt={2} sx={{width: '100%', maxWidth: 900}}>
                                             <Typography variant="h5" gutterBottom component="div"
@@ -215,26 +280,35 @@ const ForumDetail = ({IdUserLogin}) => {
                                             </Typography>
                                             <Typography className='fw-wrap'>
                                                 <Typography className='fw-wrap_options'>
-                                                    <Form.Actions>
-                                                        <Form.Action>Share</Form.Action>
-                                                        <Form.Action>Edit</Form.Action>
-                                                        <Form.Action>Follow</Form.Action>
-                                                    </Form.Actions>
+
                                                 </Typography>
 
                                                 <Typography className='fw-wrap_user_info'>
                                                     <img className='fw-wrap_user_info_bar' src={blog.avatar_author}
                                                          alt=""/>
                                                     <Typography className='fw-wrap_user_info_detail'>
-                                                        <a href=""> <Link to={`/info/${blog.author_id}`}>{blog.author_name}</Link>
+                                                        <a href=""> <Link
+                                                            to={`/info/${blog.author_id}`}>{blog.author_name}</Link>
                                                         </a>
+                                                        {/*<marquee>{blog.rank}</marquee>*/}
+
                                                         <Typography className='fw-wrap_user_info_detail_flair'>
-                                                <span><FontAwesomeIcon icon={faComments}
-                                                                       className="fa"/>
-                                                    {blog.view_count}</span>
-                                                            <span><FontAwesomeIcon icon={faComments}
-                                                                                   className="fa"/>
-                                                                {blog.view_count}</span>
+                                                            <Form.Actions
+                                                                className='fw-wrap_user_info_detail_flair_icon'>
+                                                                <Icon name='heart outline'/>{infor.follower_counter}
+                                                            </Form.Actions>
+                                                            <Form.Actions
+                                                                className='fw-wrap_user_info_detail_flair_icon'>
+                                                                <Icon name='thumbs up outline'/>{infor.points}
+                                                            </Form.Actions>
+                                                            <Form.Actions
+                                                                className='fw-wrap_user_info_detail_flair_icon'>
+                                                                <Icon name='star outline'/>{infor.reputation}
+                                                            </Form.Actions>
+                                                            <Form.Actions
+                                                                className='fw-wrap_user_info_detail_flair_icon'>
+                                                                <Icon name='comments outline'/>{infor.quantity_comments}
+                                                            </Form.Actions>
                                                         </Typography>
                                                     </Typography>
                                                 </Typography>

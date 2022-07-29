@@ -17,6 +17,7 @@ const Comments = ({currentBlogID, currentUserID, followUser, answer, data}) => {
     const [upvote, setUpvote] = useState(backendComments.quantity_upvote);
     const [paginationComments, setPaginationComments] = useState()
     const [list, setList] = useState(data)
+
     const rootComments = backendComments.filter((backendComment =>
         backendComment.reply_of === null))
     const incrementVote = (commentID) => {
@@ -64,7 +65,6 @@ const Comments = ({currentBlogID, currentUserID, followUser, answer, data}) => {
                 const allPosts = res.data.data;
                 setBackendComments(allPosts);
                 setPaginationComments(res.data.pagination)
-            setUpvote(allPosts.quantity_upvote)
             }
         )
     }

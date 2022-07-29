@@ -56,8 +56,6 @@ const Blog = () => {
     const [categories, setCategory] = useState([]);
     const [page, setPages] = useState(1);
     const [pagi, setPagi] = useState()
-    console.log(categories)
-    // get featured data
     useEffect(() => {
         axiosInstance.get('blog/featured/').then((res) => {
             const allPosts = res.data.data;
@@ -83,13 +81,6 @@ const Blog = () => {
             setPagi(res.data.pagination)
         });
     }, [page]);
-
-    // toUpperCase text
-    const capitalizeFirstLetter = (word) => {
-        if (word)
-            return word.charAt(0).toUpperCase() + word.slice(1);
-        return '';
-    }
     const category = () => {
         let result = [];
         const list = categories && categories.length > 0 && categories.map((categorys) => {
