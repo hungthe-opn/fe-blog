@@ -237,7 +237,7 @@ const ForumDetail = ({IdUserLogin, infor}) => {
                                 <div style={{display: 'flex'}}>
                                     <div style={{width: '67px'}}>
                                         <Button onClick={incrementVote}
-                                                disabled={activateUpvote && activateUpvote !== 'upvote'}><FontAwesomeIcon
+                                                ><FontAwesomeIcon
                                             icon={faCaretUp}
                                             style={{padding: '9.5px 0px 0px 16px'}}
                                             className="fa fa-3x"/>
@@ -248,7 +248,7 @@ const ForumDetail = ({IdUserLogin, infor}) => {
                                         </div>
 
                                         <Button onClick={decrementVote}
-                                                disabled={activateUpvote && activateUpvote !== 'downvote'}><FontAwesomeIcon
+                                                ><FontAwesomeIcon
                                             icon={faCaretDown}
                                             style={{padding: '0px 0px 0px 16px'}}
 

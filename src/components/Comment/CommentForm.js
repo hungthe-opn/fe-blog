@@ -23,8 +23,9 @@ const Comment = ({
                      reply_of = null,
                      updateComment,
                      incrementVote,
-                     upvote,
-                     decrementVote
+
+                     decrementVote,
+    index
                  }) => {
     const fiveMinutes = 26000000
     const timePassed = new Date() - new Date(comment.created_at) > fiveMinutes;
@@ -44,13 +45,13 @@ const Comment = ({
         <div>
             <div style={{display: 'flex', boxShadow: '#a17d7d 0 0.5px 0px 0px', margin: '42px 0px 42px 0px'}}>
                 <div>
-                    <Button onClick={() => incrementVote(comment.id)}><FontAwesomeIcon icon={faCaretUp}
+                    <Button onClick={() => incrementVote(comment.id, index)}><FontAwesomeIcon icon={faCaretUp}
                                                                                        style={{padding: '0.5px 0px 0px 16px'}}
                                                                                        className="fa fa-3x"/>
                     </Button>
 
                     <div className='screen-default_upvote_count'>
-                        {upvote}
+                        {comment.quantity_upvote}
                     </div>
                     <Button onClick={() => decrementVote(comment.id)}><FontAwesomeIcon icon={faCaretDown}
                                                                      style={{padding: '0px 0px 0px 16px'}}
@@ -140,8 +141,8 @@ const Comment = ({
                                 )}
                                 {replies.length > 0 && (
                                     <Typography>
-                                        {replies.map((reply) => (
-                                            <Comment comment={reply} key={reply.id} replies={[]}
+                                        {replies.map((reply,index) => (
+                                            <Comment comment={reply} key={index} replies={[]}
                                                      currentUserID={currentUserID}
                                                      replyComment={replyComment}
                                                      deleteComment={deleteComment}
@@ -152,7 +153,7 @@ const Comment = ({
                                                      updateComment={updateComment}
                                                      incrementVote={incrementVote}
                                                      decrementVote={decrementVote}
-                                                     upvote={upvote}
+
                                             />
                                         ))}
 

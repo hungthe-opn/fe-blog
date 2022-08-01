@@ -18,16 +18,43 @@ const Comments = ({currentBlogID, currentUserID, followUser, answer, data}) => {
     const [paginationComments, setPaginationComments] = useState()
     const [list, setList] = useState(data)
 
-    const rootComments = backendComments.filter((backendComment =>
-        backendComment.reply_of === null))
-    const incrementVote = (commentID) => {
+    const [rootComments, setRootComment]  = useState([])
+    useEffect(() => {
+        if (backendComments.length > 0 && backendComments) {
+              const newRootComments = backendComments.filter((backendComment =>
+                backendComment.reply_of === null))
+            setRootComment(newRootComments)
+
+        }
+    }, [backendComments])
+    console.log(rootComments)
+    const incrementVote = (commentID, index) => {
+
+
+
         axiosInstance.post(`comment/upvote-comment/${commentID}/`).then((res) => {
             const allPosts = res.data;
+            // console.log()
             if (allPosts.response_msg === 'SUCCESS') {
-                setUpvote((prev) => prev + 1);
+                // setUpvote((prev) => prev + 1);
+                console.log(backendComments[index])
+                 const newValueUpvote = rootComments[index]
+        console.log(newValueUpvote)
+        const upvoteValue = {...newValueUpvote, quantity_upvote: newValueUpvote.quantity_upvote + 1}
+        console.log(upvoteValue)
+        const newDataIncrement = [...rootComments]
+        newDataIncrement[index] = upvoteValue
+        setRootComment(newDataIncrement)
                 toast.success("Upvote thành công!");
+
             } else if (allPosts.message === 'downvote to upvote') {
-                setUpvote((prev) => prev + 2);
+                 const newValueUpvote = rootComments[index]
+        console.log(newValueUpvote)
+        const upvoteValue = {...newValueUpvote, quantity_upvote: newValueUpvote.quantity_upvote + 2}
+        console.log(upvoteValue)
+        const newDataIncrement = [...rootComments]
+        newDataIncrement[index] = upvoteValue
+        setRootComment(newDataIncrement)
                 toast.success("Upvote lại bài viết thành công!");
             } else toast.error("Bạn đã đánh giá bài viết này rồi!");
         }).catch((err) => {
@@ -63,8 +90,10 @@ const Comments = ({currentBlogID, currentUserID, followUser, answer, data}) => {
     function fetchData() {
         axiosInstance.get(`comment/${currentBlogID}?page=${page}`).then((res) => {
                 const allPosts = res.data.data;
-                setBackendComments(allPosts);
+            console.log(allPosts)
+            setBackendComments(allPosts);
                 setPaginationComments(res.data.pagination)
+            // setUpvote(res.data.data[0].quantity_upvote)
             }
         )
     }
@@ -159,25 +188,29 @@ const Comments = ({currentBlogID, currentUserID, followUser, answer, data}) => {
                     <Pagination color="secondary" count={Math.ceil(paginationComments?.total_row / PER_PAGE) || 0}
                                 page={page} variant="outlined" shape="rounded"
                                 onChange={handleChangePage}/>
-                </Stack></div>
+                </Stack>
+                </div>
                 <div>
-                    {rootComments.map((rootComment) => (
-                        <Comment key={rootComment.id}
-                                 comment={rootComment}
-                                 replies={getReplies(rootComment.id)}
-                                 currentUserID={currentUserID}
-                                 deleteComment={deleteComment}
-                                 activeComment={activeComment}
-                                 setActiveComment={setActiveComment}
-                                 followUser={followUser}
-                                 addComment={addComment}
-                                 replyComment={replyComment}
-                                 updateComment={updateComment}
-                                 incrementVote={incrementVote}
-                                 decrementVote={decrementVote}
-                                 upvote={rootComment.quantity_upvote}
-                        />
-                    ))}
+                    {
+
+                        rootComments.map((rootComment, index) => (
+                            <Comment key={index}
+                                     comment={rootComment}
+                                     replies={getReplies(rootComment.id)}
+                                     currentUserID={currentUserID}
+                                     deleteComment={deleteComment}
+                                     activeComment={activeComment}
+                                     setActiveComment={setActiveComment}
+                                     followUser={followUser}
+                                     addComment={addComment}
+                                     replyComment={replyComment}
+                                     updateComment={updateComment}
+                                     incrementVote={incrementVote}
+                                     decrementVote={decrementVote}
+                                     index={index}
+
+                            />
+                        ))}
                 </div>
 
                 <Typography variant="h4" gutterBottom component="div">
