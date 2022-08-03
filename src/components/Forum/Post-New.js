@@ -6,6 +6,7 @@ import axiosInstance from "../../axios";
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
 import ErrorValue from "../Error/Error-Value";
+import moment from "moment";
 
 const PER_PAGE = 10;
 const PostNew = () => {
@@ -90,7 +91,7 @@ const PostNew = () => {
                                     </div>
                                 </div>
                             </a>
-                            <span className='body-post_feed_meta_link'> Thời gian tạo : {postNew.time_post}</span>
+                            <span className='body-post_feed_meta_link'> Thời gian tạo : {moment.utc(postNew.created_at).local().startOf('seconds').fromNow()}</span>
                         </div>
                         <div className='body-post_feed_title'>
                             <h3 className='body-post_feed_title_word'>

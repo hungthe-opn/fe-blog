@@ -1,0 +1,12 @@
+
+.javascript:S3317"Rename this file to "Blog"
+Tjavascript:S1128"3Remove this unused import of 'faAnchorCircleCheck'.(¾Üß¨úÿÿÿÿ
+Rjavascript:S1128"1Remove this unused import of 'faUsersViewfinder'.(¾Üß¨úÿÿÿÿ
+Kjavascript:S1128"/Remove this unused import of 'BrandCardHeader'.(½ÚÈ°
+zjavascript:S1172I"YRemove the unused function parameter "e" or rename it to "_e" to make intention explicit.(á©Æöıÿÿÿÿ
+Ojavascript:S1117I".'page' is already declared in the upper scope.(á©Æöıÿÿÿÿ
+Hjavascript:S1472o",Make those call arguments start on line 110.(ö³
+Ijavascript:S1472“",Make those call arguments start on line 146.(ö³
+Ijavascript:S1472¬",Make those call arguments start on line 299.(ö³
+@javascript:S125Ë"Remove this commented out code.(ŞÆíùÿÿÿÿ
+;javascript:S125æ"Remove this commented out code.(‰÷çÚ

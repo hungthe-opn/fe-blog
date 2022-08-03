@@ -6,15 +6,19 @@ import axiosInstance from "../../axios";
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
 import ErrorValue from "../Error/Error-Value";
+import moment from "moment";
 
 const PER_PAGE = 10;
 const PostViewCount = () => {
     const [postNews, setPostNews] = useState([]);
     const [page, setPages] = useState(1);
     const [pagination, setPagination] = useState()
+    const createdAt = moment.utc(postNews.created_at).local().startOf('seconds').fromNow()
+
     const handleChangePage = (e, page) => {
         setPages(page)
     }
+
     useEffect(() => {
         axiosInstance.get(`forum/list-view-count?page=${page}`).then((res) => {
             const allPosts = res.data.data;
@@ -91,7 +95,7 @@ const PostViewCount = () => {
                                     </div>
                                 </div>
                             </a>
-                            <span className='body-post_feed_meta_link'> Thời gian tạo : {postNew.time_post}</span>
+                            <span className='body-post_feed_meta_link'> Thời gian tạo : {moment.utc(postNew.created_at).local().startOf('seconds').fromNow()}</span>
                         </div>
                         <div className='body-post_feed_title'>
                             <h3 className='body-post_feed_title_word'>
@@ -146,10 +150,8 @@ const PostViewCount = () => {
             )
         }
         return result
-
     }
         if (!postNews || postNews.length===0) return <ErrorValue/>
-
     return (
         <div>
             <div className='container'>

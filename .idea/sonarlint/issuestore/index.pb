@@ -11,11 +11,27 @@ R
 "src/components/adminblog/create.js,d/0/d0bad9fe87822860b290193ae21877bb6f673036
 R
 "src/components/adminblog/delete.js,d/a/da70a5a80c7fab5c3dd44490c24c5718c6137bf1
-S
-#src/components/Forum/CreateForum.js,b/6/b69b4fbacc3d029ba15192d1b9ed066795571212
-S
-#src/components/Comment/Comment.scss,2/c/2c479ef3e2f059c02ab90e0c0d634ae03fc72204
-W
-'src/components/Comment/CommentForm.scss,f/6/f606180f31b69fe3dd7b68ede2528c5710eca33e
 <
 package.json,7/0/7030d0b2f71b999ff89a343de08c414af32fc93a
+<
+src/Admin.js,7/e/7e2f3aed658de2fb4337a074948c42e63743ab38
+Q
+!src/components/comment/comment.js,f/2/f262bab88751afdca29342d4b44ebc7c5d02dcb7
+O
+src/components/Search/Search.js,3/6/36ea16a31d5d58058eafd02b6653d20255aded40
+O
+src/components/BlogIT/blogit.js,e/d/ed684f8b173ee28659be2c47f0ba3589dfbcd28c
+S
+#src/components/BlogIT/blogdetail.js,f/a/fa66ddea254b840fabf891fb5e6d6e14bc88f525
+O
+src/components/Userinfo/User.js,b/b/bb6718ceea6c0aed5b2eb9637b6a731fab6fecd9
+P
+ src/components/adminblog/edit.js,6/8/68fda37ebe311b7a662e0a5e0f184a54edb74b4e
+U
+%src/components/Userinfo/UserFollow.js,0/b/0b22ce70d1cb3f63a8f1ef88650ec201b555df78
+S
+#src/components/Userinfo/TabsUser.js,e/5/e5ee50288f080514d712e720135601cc79210859
+S
+#src/components/BlogIT/CreateBlog.js,6/9/691dde06b322ae6f123b44c1c6ad0c56bcc204c0
+S
+#src/components/Forum/CreateForum.js,b/6/b69b4fbacc3d029ba15192d1b9ed066795571212

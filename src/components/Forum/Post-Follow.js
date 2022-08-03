@@ -7,6 +7,7 @@ import {Link} from "react-router-dom";
 import Stack from "@mui/material/Stack";
 import Pagination from "@mui/material/Pagination";
 import ErrorValue from '../Error/Error-Value'
+import moment from "moment";
 const PER_PAGE = 10;
 
 const PostFollow = () => {
@@ -87,7 +88,7 @@ const PostFollow = () => {
                             </div>
                         </a>
                         <span
-                            className='body-post_feed_meta_link'> Thời gian tạo : {userPostFollow.time_post}</span>
+                            className='body-post_feed_meta_link'> Thời gian tạo : {moment.utc(userPostFollow.created_at).local().startOf('seconds').fromNow()}</span>
                     </div>
                     <div className='body-post_feed_title'>
                         <h3 className='body-post_feed_title_word'>

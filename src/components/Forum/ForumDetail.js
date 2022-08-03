@@ -35,8 +35,8 @@ const ForumDetail = ({IdUserLogin, infor}) => {
     const userID = IdUserLogin
     const shareUrl = +process.env.REACT_APP_IS_LOCALHOST === 1 ? "https://peing.net/ja/" : window.location.href;
     const createAt = moment.utc(blog.created_at).local().startOf('seconds').fromNow()
-    const updateAt = moment.utc(blog.updated_at).local().startOf('seconds').fromNow()
-
+    const updateAt = moment.utc(blog.time_edit).local().startOf('seconds').fromNow()
+    console.log(activateUpvote)
     function fetchData() {
         axiosInstance.get(`forum/detail-forum/${idDetail}`).then((res) => {
             const allPosts = res.data.data;
@@ -52,12 +52,6 @@ const ForumDetail = ({IdUserLogin, infor}) => {
         } else {
             setActivateUpvote(currentButton)
         }
-    }
-    const doStuff1 = () => {
-        disableOtherButtons('upvote')
-    }
-    const doStuff2 = () => {
-        disableOtherButtons('downvote')
     }
 
     function deleteIncrementVote() {
@@ -236,23 +230,33 @@ const ForumDetail = ({IdUserLogin, infor}) => {
                                 </header>
                                 <div style={{display: 'flex'}}>
                                     <div style={{width: '67px'}}>
-                                        <Button onClick={incrementVote}
+                                        {
+                                            activateUpvote && activateUpvote ==='upvote'?<Button style={{color:'#5488c7'}} onClick={incrementVote} className=''
+                                                ><FontAwesomeIcon
+                                            icon={faCaretUp}
+                                            style={{padding: '9.5px 0px 0px 16px'}}
+                                            className="fa fa-3x"/></Button> : <Button onClick={incrementVote} style={{color:'#5b5b5b'}}
                                                 ><FontAwesomeIcon
                                             icon={faCaretUp}
                                             style={{padding: '9.5px 0px 0px 16px'}}
                                             className="fa fa-3x"/>
                                         </Button>
-
+                                        }
                                         <div className='screen-default_upvote_count'>
                                             {upvote}
                                         </div>
-
-                                        <Button onClick={decrementVote}
+ {
+                                            activateUpvote && activateUpvote ==='downvote'?<Button style={{color:'#5488c7'}} onClick={decrementVote} className=''
                                                 ><FontAwesomeIcon
                                             icon={faCaretDown}
                                             style={{padding: '0px 0px 0px 16px'}}
-
-                                            className="fa fa-3x"/></Button>
+                                            className="fa fa-3x"/></Button> : <Button onClick={decrementVote} style={{color:'#5b5b5b'}}
+                                                ><FontAwesomeIcon
+                                            icon={faCaretDown}
+                                            style={{padding: '0px 0px 0px 16px'}}
+                                            className="fa fa-3x"/>
+                                        </Button>
+                                        }
                                         {blog.is_bookmarks ? <Button onClick={unAddBookmark}>
                                             <Form.Actions style={{textAlign: 'center', marginLeft: '12px'}}>
                                                 <Icon name='bookmark ' size='big'/>
@@ -264,8 +268,9 @@ const ForumDetail = ({IdUserLogin, infor}) => {
                                         </Button>
 
                                         }
+
                                     </div>
-                                    <div>
+                                    <div style={{width:'90%', maxWidth: 900}}>
                                         <Box mt={2} sx={{width: '100%', maxWidth: 900}}>
                                             <Typography variant="h5" gutterBottom component="div"
                                                         dangerouslySetInnerHTML={{__html: content}}>
@@ -283,7 +288,7 @@ const ForumDetail = ({IdUserLogin, infor}) => {
 
                                                 </Typography>
 
-                                                <Typography className='fw-wrap_user_info'>
+                                                <Typography className='fw-wrap_user_info' style={{marginBottom:'20px'}}>
                                                     <img className='fw-wrap_user_info_bar' src={blog.avatar_author}
                                                          alt=""/>
                                                     <Typography className='fw-wrap_user_info_detail'>
@@ -295,19 +300,19 @@ const ForumDetail = ({IdUserLogin, infor}) => {
                                                         <Typography className='fw-wrap_user_info_detail_flair'>
                                                             <Form.Actions
                                                                 className='fw-wrap_user_info_detail_flair_icon'>
-                                                                <Icon name='heart outline'/>{infor.follower_counter}
+                                                                <Icon name='heart outline'/>{blog.follower_counter}
                                                             </Form.Actions>
                                                             <Form.Actions
                                                                 className='fw-wrap_user_info_detail_flair_icon'>
-                                                                <Icon name='thumbs up outline'/>{infor.points}
+                                                                <Icon name='thumbs up outline'/>{blog.points}
                                                             </Form.Actions>
                                                             <Form.Actions
                                                                 className='fw-wrap_user_info_detail_flair_icon'>
-                                                                <Icon name='star outline'/>{infor.reputation}
+                                                                <Icon name='star outline'/>{blog.reputation}
                                                             </Form.Actions>
                                                             <Form.Actions
                                                                 className='fw-wrap_user_info_detail_flair_icon'>
-                                                                <Icon name='comments outline'/>{infor.quantity_comments}
+                                                                <Icon name='comments outline'/>{blog.quantity_comments}
                                                             </Form.Actions>
                                                         </Typography>
                                                     </Typography>

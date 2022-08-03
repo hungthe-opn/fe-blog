@@ -9,6 +9,11 @@ import {faCaretDown, faCaretUp, faComments} from "@fortawesome/free-solid-svg-ic
 import moment from "moment";
 import './Comment.scss'
 import './CommentForm.scss'
+import Box from "@mui/material/Box";
+const BUTTON_COMMENT_STATUS = {
+    show : 'Show',
+    hidden: 'Hidden',
+}
 
 const Comment = ({
                      comment,
@@ -17,15 +22,15 @@ const Comment = ({
                      deleteComment,
                      activeComment,
                      setActiveComment,
-                     followUser,
                      replyComment,
                      addComment,
                      reply_of = null,
                      updateComment,
                      incrementVote,
-
+                     showComment,
+                     setShowComment,
                      decrementVote,
-    index
+                     index
                  }) => {
     const fiveMinutes = 26000000
     const timePassed = new Date() - new Date(comment.created_at) > fiveMinutes;
@@ -35,7 +40,6 @@ const Comment = ({
     const canDelete = currentUserID === (comment.author_id && !timePassed) || adminPermission.role === 'admin'
     const createdAt = moment.utc(comment.created_at).local().startOf('seconds').fromNow()
     const updatedAt = moment.utc(comment.time_edit).local().startOf('seconds').fromNow()
-
     const isReplying = activeComment && activeComment.type === 'replying' &&
         activeComment.id === comment.id
     const isEditing = activeComment && activeComment.type === 'editing' &&
@@ -62,13 +66,10 @@ const Comment = ({
                 <div style={{width:'100%'}}>
                     <Form.Group>
                         <Form>
-                            {/*<Form.Avatar as='a' className='body-image_comment' src={comment.avatar_author}/>*/}
                             <Form.Content style={{maxWidth: 900}}>
-
                                 <Form.Text style={{width: '100%', maxWidth: 1000}
                                 }>
                                     {!isEditing &&
-
                                         <Typography variant="h5" gutterBottom component="div" style={{width: '130%'}}
                                                     dangerouslySetInnerHTML={{__html: comment.body}}></Typography>}
                                     {isEditing && (
@@ -83,11 +84,12 @@ const Comment = ({
                                     <Typography>
                                         <Form.Actions>
                                             {canReply && (
-
                                                 <Form.Action onClick={() => setActiveComment({
                                                     id: comment.id,
                                                     type: 'replying'
-                                                })}><Icon name='reply'/>
+                                                })
+
+                                                }><Icon name='reply'/>
                                                     Reply</Form.Action>
                                             )}
                                             {canEdit && (<Form.Action
@@ -139,26 +141,31 @@ const Comment = ({
                                 {isReplying && (
                                     <FormPost summitLabel='Reply' handleSubmit={(text) => replyComment(text, replyID)}/>
                                 )}
-                                {replies.length > 0 && (
-                                    <Typography>
-                                        {replies.map((reply,index) => (
-                                            <Comment comment={reply} key={index} replies={[]}
-                                                     currentUserID={currentUserID}
-                                                     replyComment={replyComment}
-                                                     deleteComment={deleteComment}
-                                                     addComment={addComment}
-                                                     reply_of={comment.id}
-                                                     activeComment={activeComment}
-                                                     setActiveComment={setActiveComment}
-                                                     updateComment={updateComment}
-                                                     incrementVote={incrementVote}
-                                                     decrementVote={decrementVote}
+                                {/*{!showComment && <Button> Show all</Button>}*/}
 
-                                            />
-                                        ))}
+                                {
+                                    replies.length > 0 && (
+                                        <Box>
+                                            <Button onClick={() => setShowComment(!showComment)}>{showComment? BUTTON_COMMENT_STATUS.hidden : BUTTON_COMMENT_STATUS.show}</Button>
+                                            {/*<Button onClick={() => setShowComment(true)}>Show all</Button>*/}
+                                            {showComment&&replies.map((reply, index) => (
+                                                <Comment comment={reply} key={index} replies={[]}
+                                                         currentUserID={currentUserID}
+                                                         replyComment={replyComment}
+                                                         deleteComment={deleteComment}
+                                                         addComment={addComment}
+                                                         reply_of={comment.id}
+                                                         activeComment={activeComment}
+                                                         setActiveComment={setActiveComment}
+                                                         updateComment={updateComment}
+                                                         incrementVote={incrementVote}
+                                                         decrementVote={decrementVote}
 
-                                    </Typography>
-                                )
+                                                />
+                                            ))}
+
+                                        </Box>
+                                    )
                                 }
                             </Form.Content>
                         </Form>

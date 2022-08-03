@@ -17,8 +17,8 @@ const Comments = ({currentBlogID, currentUserID, followUser, answer, data}) => {
     const [upvote, setUpvote] = useState(backendComments.quantity_upvote);
     const [paginationComments, setPaginationComments] = useState()
     const [list, setList] = useState(data)
-
-    const [rootComments, setRootComment]  = useState([])
+    const [showComment, setShowComment] = useState(false);
+    const [rootComments, setRootComment] = useState([])
     useEffect(() => {
         if (backendComments.length > 0 && backendComments) {
               const newRootComments = backendComments.filter((backendComment =>
@@ -86,6 +86,10 @@ const Comments = ({currentBlogID, currentUserID, followUser, answer, data}) => {
     const handleChangePage = (e, page) => {
         setPages(page)
     }
+
+ useEffect(() => {
+        setShowComment(showComment);
+    }, [showComment]);
 
     function fetchData() {
         axiosInstance.get(`comment/${currentBlogID}?page=${page}`).then((res) => {
@@ -175,6 +179,7 @@ const Comments = ({currentBlogID, currentUserID, followUser, answer, data}) => {
             });
         return data.data
     }
+    const commentCount = backendComments.length;
     return (
         <div style={{boxShadow: '#a17d7d 0 0.5px 0px 0px'}}>
             <Box mt={2} sx={{width: '100%', maxWidth: 1000}}>
@@ -208,6 +213,8 @@ const Comments = ({currentBlogID, currentUserID, followUser, answer, data}) => {
                                      incrementVote={incrementVote}
                                      decrementVote={decrementVote}
                                      index={index}
+                                     showComment={showComment}
+                                     setShowComment={setShowComment}
 
                             />
                         ))}
