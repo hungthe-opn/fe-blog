@@ -11,8 +11,8 @@ import './Comment.scss'
 import './CommentForm.scss'
 import Box from "@mui/material/Box";
 const BUTTON_COMMENT_STATUS = {
-    show : 'Show',
-    hidden: 'Hidden',
+    show : 'Hiển thị danh sách bình luận.',
+    hidden: 'Ẩn bình luận.',
 }
 
 const Comment = ({
@@ -32,12 +32,12 @@ const Comment = ({
                      decrementVote,
                      index
                  }) => {
-    const fiveMinutes = 26000000
+    const fiveMinutes = 25600000
     const timePassed = new Date() - new Date(comment.created_at) > fiveMinutes;
     const canReply = Boolean(currentUserID)
     const adminPermission = localStorage.getItem('role');
-    const canEdit = currentUserID === (comment.author_id && !timePassed) || adminPermission.role === 'admin'
-    const canDelete = currentUserID === (comment.author_id && !timePassed) || adminPermission.role === 'admin'
+    const canEdit = currentUserID === comment.author_id && !timePassed
+    const canDelete = currentUserID === comment.author_id && !timePassed
     const createdAt = moment.utc(comment.created_at).local().startOf('seconds').fromNow()
     const updatedAt = moment.utc(comment.time_edit).local().startOf('seconds').fromNow()
     const isReplying = activeComment && activeComment.type === 'replying' &&
@@ -141,13 +141,11 @@ const Comment = ({
                                 {isReplying && (
                                     <FormPost summitLabel='Reply' handleSubmit={(text) => replyComment(text, replyID)}/>
                                 )}
-                                {/*{!showComment && <Button> Show all</Button>}*/}
 
                                 {
                                     replies.length > 0 && (
                                         <Box>
                                             <Button onClick={() => setShowComment(!showComment)}>{showComment? BUTTON_COMMENT_STATUS.hidden : BUTTON_COMMENT_STATUS.show}</Button>
-                                            {/*<Button onClick={() => setShowComment(true)}>Show all</Button>*/}
                                             {showComment&&replies.map((reply, index) => (
                                                 <Comment comment={reply} key={index} replies={[]}
                                                          currentUserID={currentUserID}

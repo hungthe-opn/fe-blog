@@ -31,7 +31,3 @@ U
 %src/components/Userinfo/UserFollow.js,0/b/0b22ce70d1cb3f63a8f1ef88650ec201b555df78
 S
 #src/components/Userinfo/TabsUser.js,e/5/e5ee50288f080514d712e720135601cc79210859
-S
-#src/components/BlogIT/CreateBlog.js,6/9/691dde06b322ae6f123b44c1c6ad0c56bcc204c0
-S
-#src/components/Forum/CreateForum.js,b/6/b69b4fbacc3d029ba15192d1b9ed066795571212

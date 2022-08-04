@@ -27,11 +27,8 @@ const Comments = ({currentBlogID, currentUserID, followUser, answer, data}) => {
 
         }
     }, [backendComments])
-    console.log(rootComments)
+
     const incrementVote = (commentID, index) => {
-
-
-
         axiosInstance.post(`comment/upvote-comment/${commentID}/`).then((res) => {
             const allPosts = res.data;
             // console.log()

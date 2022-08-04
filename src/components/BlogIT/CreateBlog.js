@@ -56,26 +56,32 @@ export default function CreateBlog() {
     }, [])
 
     const onChangeCategory = (e) => {
-
+        console.log(e)
         const newFormValue = {...formData, category: e.target.value}
         updateFormData(newFormValue)
     }
     const handleChangeContent = (content) => {
+        console.log(content)
 
         const newFormValue = {...contects, content: content}
         setContects(newFormValue)
     };
     const handleChangeDes = (e) => {
+                console.log(e)
+
         const newFormValue = {...formData, description: e.target.value}
         updateFormData(newFormValue)
     };
     const onChangeTitle = (e) => {
+        console.log(e)
 
         const newFormValue = {...formData, title: e.target.value}
         updateFormData(newFormValue)
     };
 
     const handleChangeSource = (e) => {
+                console.log(e)
+
         const newFormValue = {...formData, source: e.target.value}
         updateFormData(newFormValue)
     };

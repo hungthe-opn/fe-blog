@@ -1,7 +1,6 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import axiosInstance from "../../axios";
 import {useNavigate} from 'react-router-dom';
-//MaterialUI
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,11 +9,10 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import SunEditor, {buttonList} from 'suneditor-react';
+import SunEditor from 'suneditor-react';
 import 'suneditor/dist/css/suneditor.min.css';
-import Select from '@material-ui/core/Select';
-import MenuItem from "@mui/material/MenuItem";
 import SelectRE from 'react-select';
+import {toast} from "react-toastify";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -39,16 +37,14 @@ export default function CreatePostForum() {
     const [contects, setContects] = useState(initialFormData);
     const [formTag, setFormTag] = useState(initialFormData);
     const [tag, setTag] = useState();
+    const isTextareaDisabled = formData.title.length === 0;
     useEffect(() => {
         axiosInstance.get('blog/tag/').then((res) => {
             const allPosts = res.data.data;
             setTag(allPosts);
-            console.log(allPosts)
         });
     }, [])
-
     const handleChangeContent = (content) => {
-
         const newFormValue = {...contects, content: content}
         setContects(newFormValue)
     };
@@ -61,7 +57,6 @@ export default function CreatePostForum() {
         console.log(newFormValue)
         updateFormData(newFormValue)
     };
-
 
     const handleChangeTag = (id) => {
         const newFormValue = {...formTag, tag: id}
@@ -83,12 +78,14 @@ export default function CreatePostForum() {
                 description: formData.description,
                 tags: formTag.tag,
                 slug: formData.slug,
-
-
             })
             .then((res) => {
-                console.log(res)
-                history('/');
+                  toast.success("Đăng bài thành công! Quản trị viên sẽ duyệt bài viết của bạn.");
+                  setFormTag("")
+                  history('/')
+            })
+            .catch((err) => {
+                 toast.error("Quá trình đăng bài đang xảy ra lỗi, vui lòng thử lại sau");
             });
     };
 
@@ -173,6 +170,7 @@ export default function CreatePostForum() {
                     color="primary"
                     className={classes.submit}
                     onClick={handleSubmit}
+                    disabled={isTextareaDisabled}
                 >
                     Đăng bài
                 </Button>

@@ -158,7 +158,6 @@ const CustomizedTables = () => {
         const newFormValue = {...contects, content: content}
         setContects(newFormValue)
     };
-    console.log(contects)
     const handleChangeDes = (e) => {
         const newFormValue = {...formData, description: e.target.value}
         updateFormData(newFormValue)
@@ -196,9 +195,6 @@ const CustomizedTables = () => {
 
 
     };
-    // console.log({owner})
-    //     const content = blogDetail.content
-
     useEffect(() => {
         axiosInstance.get(`blog?page=${page}`).then((res) => {
             const allPosts = res.data.data;

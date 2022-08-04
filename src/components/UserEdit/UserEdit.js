@@ -42,7 +42,6 @@ const UserEdit = () => {
     }, [updateFormData]);
 
     const handleChange = (e) => {
-
         updateFormData({
             ...formData,
             [e.target.name]: e.target.value,
@@ -50,8 +49,6 @@ const UserEdit = () => {
     };
     const handleChange1 = e => {
         setImage(URL.createObjectURL(e.target.files[0]));
-        console.log(image)
-
     }
     const handleUser = () => {
         history('/user');
