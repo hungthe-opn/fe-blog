@@ -58,9 +58,7 @@ const UserEdit = () => {
         const min = 1;
         const max = 100;
         const rand = min + Math.random() *(max - min)
-
         const fileName = rand+(e.target[0].files) +('.png')
-        console.log(fileName)
         const file = new File(e.target[0].files,fileName,)
         let formData = new FormData();
         formData.append('image', file)
@@ -69,10 +67,8 @@ const UserEdit = () => {
         formData.append('about', e.target[4].value)
         axiosInstance.patch('user/update/', formData)
             .then((res) => {
-                console.log(res)
                 window.location.reload()
             })
-
     }
     return (<>
             <div>

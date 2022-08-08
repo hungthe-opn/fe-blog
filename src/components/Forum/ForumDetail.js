@@ -94,7 +94,7 @@ const ForumDetail = ({IdUserLogin, infor}) => {
     const [formData, updateFormData] = useState(initialFormData);
     const [formtag, setFormTag] = useState(initialFormData);
     const [tag, setTag] = useState();
-
+    console.log(tag)
     function fetchData() {
         axiosInstance.get(`forum/detail-forum/${idDetail}`).then((res) => {
             const allPosts = res.data.data;
@@ -116,7 +116,6 @@ const ForumDetail = ({IdUserLogin, infor}) => {
         axiosInstance.get('blog/tag/').then((res) => {
             const allPosts = res.data.data;
             setTag(allPosts);
-            console.log(allPosts)
         });
     }, [])
     const classes = useStyles();
@@ -127,7 +126,6 @@ const ForumDetail = ({IdUserLogin, infor}) => {
             setActivateUpvote(currentButton)
         }
     }
-
     function deleteIncrementVote() {
         axiosInstance
             .delete(`forum/upvote-forum/${idUpvote}`)
@@ -143,12 +141,10 @@ const ForumDetail = ({IdUserLogin, infor}) => {
         })
         ;
     }
-
     const handleChangeContent = (content) => {
         const newFormValue = {...contects, content: content}
         setContects(newFormValue)
     };
-
     const handleChangeDes = (e) => {
         console.log(e)
         const newFormValue = {...formData, description: e.target.value}
@@ -206,10 +202,8 @@ const ForumDetail = ({IdUserLogin, infor}) => {
         ;
     }
     const handleOpen = (e) => {
-        console.log(e)
         axiosInstance.get(`forum/detail-forum/${e}`).then((res) => {
             setBlogDetail(res.data.data)
-            console.log(res.data.data)
         });
         setOpen(true)
     };
@@ -225,10 +219,16 @@ const ForumDetail = ({IdUserLogin, infor}) => {
         setOwner(null);
         setDelete(false)
     };
-    const handleSubmitEdit = (owner) => {
-        axiosInstance.patch(`edit-forum/${owner}`)
+    const handleSubmitEdit = (e) => {
+        e.preventDefault()
+        axiosInstance
+            .patch(`forum/edit-forum/${idUpvote}`, formData
+            )
             .then((res) => {
-                window.location.reload();
+                console.log(res)
+            })
+            .catch((err) => {
+                console.error(err)
             })
     };
     const decrementVote = (e) => {
@@ -528,7 +528,7 @@ const ForumDetail = ({IdUserLogin, infor}) => {
                                                 <SelectRE
                                                     isMulti
                                                     name="colors"
-                                                    options={tag}
+                                                    options={formData?.tags|| ''}
                                                     className="basic-multi-select"
                                                     classNamePrefix="Chọn thẻ cho bài viết"
                                                     getOptionValue={(option) => option.id}

@@ -12,8 +12,6 @@ R
 R
 "src/components/adminblog/delete.js,d/a/da70a5a80c7fab5c3dd44490c24c5718c6137bf1
 <
-package.json,7/0/7030d0b2f71b999ff89a343de08c414af32fc93a
-<
 src/Admin.js,7/e/7e2f3aed658de2fb4337a074948c42e63743ab38
 Q
 !src/components/comment/comment.js,f/2/f262bab88751afdca29342d4b44ebc7c5d02dcb7

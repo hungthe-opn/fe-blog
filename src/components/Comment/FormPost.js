@@ -1,7 +1,7 @@
 import React from 'react';
 import {useEffect, useState} from "react";
 import axiosInstance from "../../axios";
-import Comment from "./CommentForm";
+import Comment from "../Comment/CommentForm";
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import SunEditor from "suneditor-react";

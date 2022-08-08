@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axiosInstance from "../../axios";
-import Comment from "./CommentForm";
+import Comment from "./CommentForm"
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import FormPost from './FormPost'
@@ -31,14 +31,10 @@ const Comments = ({currentBlogID, currentUserID, followUser, answer, data}) => {
     const incrementVote = (commentID, index) => {
         axiosInstance.post(`comment/upvote-comment/${commentID}/`).then((res) => {
             const allPosts = res.data;
-            // console.log()
+
             if (allPosts.response_msg === 'SUCCESS') {
-                // setUpvote((prev) => prev + 1);
-                console.log(backendComments[index])
-                 const newValueUpvote = rootComments[index]
-        console.log(newValueUpvote)
+                const newValueUpvote = rootComments[index]
         const upvoteValue = {...newValueUpvote, quantity_upvote: newValueUpvote.quantity_upvote + 1}
-        console.log(upvoteValue)
         const newDataIncrement = [...rootComments]
         newDataIncrement[index] = upvoteValue
         setRootComment(newDataIncrement)
@@ -170,7 +166,6 @@ const Comments = ({currentBlogID, currentUserID, followUser, answer, data}) => {
                 fetchData()
 
             })
-
             .catch((error) => {
                 toast.error("Quá trình chỉnh sửa thuất bại, vui lòng thử lại!");
             });
@@ -203,7 +198,6 @@ const Comments = ({currentBlogID, currentUserID, followUser, answer, data}) => {
                                      deleteComment={deleteComment}
                                      activeComment={activeComment}
                                      setActiveComment={setActiveComment}
-                                     followUser={followUser}
                                      addComment={addComment}
                                      replyComment={replyComment}
                                      updateComment={updateComment}
