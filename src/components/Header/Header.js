@@ -19,7 +19,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import Avatar from '@mui/material/Avatar';
 import {UserContext} from "../Context/Context";
-import { useTranslation, Trans } from 'react-i18next';
 
 const useStyles = makeStyles((theme) => ({
         appBar: {
@@ -60,7 +59,6 @@ function Header({login, user, isLogin}) {
     const data1 = useContext(UserContext).setData(blogs.user_name, blogs.image, blogs.email);
     var myData = localStorage.getItem('role');
 
-    const { t, i18n } = useTranslation();
     useEffect(() => {
         axiosInstance.get('user-blog/info/').then((res) => {
             const allPosts = res.data.data;
@@ -148,7 +146,6 @@ function Header({login, user, isLogin}) {
                         className={classes.banner}
 
                     >
-                        {t("Welcome to React")}
                     </Link>
                     <Link
                         component={NavLink}

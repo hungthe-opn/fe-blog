@@ -31,36 +31,7 @@ import Store from './components/Context/Context'
 import CustomizedTables from './components/BlogIT/AdminBlog'
 import Account from './components/InfoUser/infoUser'
 import Search from './components/Search/Search'
-import { useTranslation, Trans } from 'react-i18next';
 
-function Page() {
-    const { t, i18n } = useTranslation();
-
-    const changeLanguage = (lng) => {
-        i18n.changeLanguage(lng);
-    };
-
-    return (
-        <div className="App">
-            <div className="App-header">
-                <h2>{t("Welcome to React")}</h2>
-                <button onClick={() => changeLanguage("de")}>de</button>
-                <button onClick={() => changeLanguage("en")}>en</button>
-            </div>
-            <div className="App-intro">
-                <Trans>
-                    To get started, edit <code>src/App.js</code> and save to reload.
-                </Trans>
-                <br />
-                <br />
-                <Trans i18nKey="welcome">trans</Trans>
-                <br />
-                <br />
-                <span>{t("interpolation.example", { what: "< 5" })}</span>
-            </div>
-        </div>
-    );
-}
 const Application = () => {
     const [login, setLogin] = useState(false)
     const [userName, setUser] = useState("")
@@ -97,7 +68,6 @@ const Application = () => {
                 <div className="scroll-container" style={{marginTop: '64px'}}>
                     <Suspense fallback="loading...">
                         <Header login={login} isLogin={handleLogout}/>
-                        <Page />
                     </Suspense>
                     <ToastContainer/>
                     <Routes>
